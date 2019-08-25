@@ -62,9 +62,9 @@ jobs:
   test-front:
     executor: front-exec
     working_directory: frontend
-      steps:
-        - *restore_npm_cache
-        - run: npm test
+    steps:
+      - *restore_npm_cache
+      - run: npm test
 
   setup-back:
     executor: back-exec
