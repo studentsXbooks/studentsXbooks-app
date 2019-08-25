@@ -50,7 +50,7 @@ jobs:
           name: Save node_modules cache
           paths:
             - frontend/node_modules
-          key: v1-front-dependencies-{{ checksum "frontend/package.json" }}
+          key: v1-front-dependencies-{{ checksum "package.json" }}
 
   flow:
     executor: front-exec
@@ -68,7 +68,7 @@ jobs:
 
   setup-back:
     executor: back-exec
-    working_directory: backend
+    working_directory: ~/repo/backend
     steps:
       - checkout:
           paths: ~/repo
@@ -78,7 +78,7 @@ jobs:
           name: Save dotnet cache
           paths:
           - ~/.nuget/packages
-          key: v1-back-dependencies-{{ checksum "backend/sXb-service/sXb-service.csproj" }}-{{checksum "backend/sXb-tests/sXb-tests.csproj"}}
+          key: v1-back-dependencies-{{ checksum "sXb-service/sXb-service.csproj" }}-{{checksum "sXb-tests/sXb-tests.csproj"}}
 
   test-back:
     executor: back-exec
