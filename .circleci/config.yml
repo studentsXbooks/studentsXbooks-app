@@ -19,7 +19,7 @@ aliases:
         - v1-back-dependencies-
   - &install_nuget
     run:
-      name: install nuget packages
+      name: Install nuget packages
       command: dotnet restore
   - &front_docker
     - image: circleci/node:10
@@ -79,6 +79,7 @@ jobs:
           paths: ~/repo
       - *restore_dotnet_cache
       - *install_nuget
+      - run: ls
       - save_cache:
           name: Save dotnet cache
           paths:
