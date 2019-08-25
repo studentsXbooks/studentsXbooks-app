@@ -112,6 +112,6 @@ workflows:
       - deploy-back:
         requires:
           - test-back
-          filters:
-            branches:
-              only: master
+        filters:
+          branches:
+            only: master
