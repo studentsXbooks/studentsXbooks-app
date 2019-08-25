@@ -41,9 +41,10 @@ jobs:
   setup-front:
     executor: front-exec
     steps:
-      - checkout
-      - cd frontend/ && *restore_npm_cache
-      - cd frontend/ && *install_npm
+      - checkout:
+          path: frontend/
+      - *restore_npm_cache
+      - *install_npm
       - save_cache:
           name: Save node_modules cache
           paths:
