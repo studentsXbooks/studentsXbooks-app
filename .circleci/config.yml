@@ -54,14 +54,14 @@ jobs:
 
   flow:
     executor: front-exec
-    working_directory: frontend
+    working_directory: ~/repo/frontend
     steps:
       - *restore_npm_cache
       - run: npm run flow
 
   test-front:
     executor: front-exec
-    working_directory: frontend
+    working_directory: ~/repo/frontend
     steps:
       - *restore_npm_cache
       - run: npm test
