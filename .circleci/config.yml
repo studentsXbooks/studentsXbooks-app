@@ -31,12 +31,10 @@ aliases:
 
 executors:
   front-exec:
-    docker:
-      - image: *front_docker
+    docker: *front_docker
     working_directory: ~/repo
   back-exec:
-    docker:
-      - image: *back_docker
+    docker: *back_docker
     working_directory: ~/repo
 
 jobs:
@@ -101,17 +99,17 @@ workflows:
       - setup-front
       - setup-back
       - flow:
-        requires:
-          - setup-front
+          requires:
+            - setup-front
       - test-front:
-        requires:
-          - setup-front
+          requires:
+            - setup-front
       - test-back:
-        requires:
-          - setup-back
+          requires:
+            - setup-back
       - deploy-back:
-        requires:
-          - test-back
-        filters:
-          branches:
-            only: master
+          requires:
+            - test-back
+          filters:
+            branches:
+              only: master
