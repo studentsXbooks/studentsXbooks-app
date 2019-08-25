@@ -40,7 +40,7 @@ executors:
 jobs:
   setup-front:
     executor: front-exec
-    working_directory: frontend
+    working_directory: ~/repo/frontend
     steps:
       - checkout:
           path: ~/repo
@@ -49,7 +49,7 @@ jobs:
       - save_cache:
           name: Save node_modules cache
           paths:
-            - frontend/node_modules
+            - node_modules
           key: v1-front-dependencies-{{ checksum "package.json" }}
 
   flow:
