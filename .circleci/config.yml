@@ -1,0 +1,121 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2.1
+
+aliases:
+  - &restore_npm_cache
+    restores_cache:
+      name: Restore node_modules cache
+        keys:
+          - v1-frontend-{{ .Environment.CIRCLE_SHA1 }}
+          - v1-frontend-{{ checksum "package.json" }}
+          - v1-front-dependencies-
+  - &install_npm
+    run:
+      name: Install NPM Packages
+      command: npm install
+  - &restore_dotnet_cache
+    restores_cache:
+      name: Restore node_modules cache
+        keys:
+          - v1-back-dependencies-{{ checksum "sXb-service/sXb-service.csproj" }}-{{checksum "sXb-tests/sXb-tests.csproj"}}
+          - v1-back-dependencies-
+  - &install_nuget
+    run:
+      name: Restore nuget packages
+      command: dotnet restore
+  - &front_docker
+    - image: circleci/node:10
+  - &back_docker
+    - image: mcr.microsoft.com/dotnet/core/sdk:2.2
+
+
+
+executors:
+  front-exec:
+    docker:
+      - image: *front_docker
+    working_directory: ~/repo
+  back-exec:
+    docker:
+      - image: *back_docker
+    working_directory: ~/repo
+
+jobs:
+  setup-front:
+    executor: front-exec
+    steps:
+      - checkout
+      - cd frontend/ && *restore_npm_cache
+      - cd frontend/ && *install_npm
+      - save_cache:
+          name: Save node_modules cache
+          paths:
+            - frontend/node_modules
+          key: v1-front-dependencies-{{ checksum "frontend/package.json" }}
+
+  flow:
+    executor: front-exec
+    working_directory: frontend
+    steps:
+      - *restore_npm_cache
+      - run: npm run flow
+
+  test-front:
+    executor: front-exec
+    working_directory: frontend
+      steps:
+        - *restore_npm_cache
+        - run: npm test
+
+  setup-back:
+    executor: back-exec
+    steps:
+      - checkout
+      - cd backend && *restore_dotnet_cache
+      - cd backend && *install_nuget
+      - save_cache:
+          name: Save dotnet cache
+          paths:
+          - ~/.nuget/packages
+          key: v1-back-dependencies-{{ checksum "backend/sXb-service/sXb-service.csproj" }}-{{checksum "backend/sXb-tests/sXb-tests.csproj"}}
+
+  test-back:
+    executor: back-exec
+    working_directory: backend
+    steps:
+      - *restore_dotnet_cache
+      - *install_nuget
+      - run: dotnet test sXb-tests
+
+  deploy-back:
+    executor: back-exec
+    working_directory: backend
+    steps:
+      - *restore_dotnet_cache
+      - *install_nuget
+
+workflows:
+  version: 2
+
+  build-test-deploy:
+    jobs:
+      - setup-front
+      - setup-back
+      - flow:
+        requires:
+          - setup-front
+      - test-front:
+        requires:
+          - setup-front
+      - test-back:
+        requires:
+          - setup-back
+      - deploy-back:
+        requires:
+          - test-back
+          filters:
+            branches:
+              only: master
