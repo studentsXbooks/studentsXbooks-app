@@ -79,8 +79,7 @@ jobs:
           paths: ~/repo
       - *restore_dotnet_cache
       - *install_nuget
-      - run:
-        command: ls
+      - run: ls
       - save_cache:
           name: Save dotnet cache
           paths:
