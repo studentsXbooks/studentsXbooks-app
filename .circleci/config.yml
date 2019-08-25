@@ -15,7 +15,7 @@ aliases:
     restore_cache:
       name: Restore nuget cache
       keys:
-        - v1-back-dependencies-{{ checksum "sXb-service/sXb-service.csproj" }}-{{checksum "sXb-tests/sXb-tests.csproj"}}
+        - v1-back-dependencies-{{ checksum "sXb-service/sXb-service.csproj" }}-{{ checksum "sXb-tests/sXb-tests.csproj" }}
         - v1-back-dependencies-
   - &install_nuget
     run:
