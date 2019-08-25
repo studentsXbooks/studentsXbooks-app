@@ -14,13 +14,13 @@ aliases:
       command: npm install
   - &restore_dotnet_cache
     restore_cache:
-      name: Restore node_modules cache
+      name: Restore nuget cache
       keys:
         - v1-back-dependencies-{{ checksum "sXb-service/sXb-service.csproj" }}-{{checksum "sXb-tests/sXb-tests.csproj"}}
         - v1-back-dependencies-
   - &install_nuget
     run:
-      name: Restore nuget packages
+      name: install nuget packages
       command: dotnet restore
   - &front_docker
     - image: circleci/node:10
@@ -40,9 +40,10 @@ executors:
 jobs:
   setup-front:
     executor: front-exec
+    working_directory: frontend
     steps:
       - checkout:
-          path: frontend/
+          path: ~/repo
       - *restore_npm_cache
       - *install_npm
       - save_cache:
@@ -67,9 +68,10 @@ jobs:
 
   setup-back:
     executor: back-exec
+    working_directory: backend
     steps:
       - checkout:
-          paths: backend/
+          paths: ~/repo
       - *restore_dotnet_cache
       - *install_nuget
       - save_cache:
