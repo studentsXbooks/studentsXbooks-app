@@ -68,9 +68,10 @@ jobs:
   setup-back:
     executor: back-exec
     steps:
-      - checkout
-      - cd backend && *restore_dotnet_cache
-      - cd backend && *install_nuget
+      - checkout:
+          paths: backend/
+      - *restore_dotnet_cache
+      - *install_nuget
       - save_cache:
           name: Save dotnet cache
           paths:
