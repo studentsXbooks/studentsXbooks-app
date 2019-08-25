@@ -55,14 +55,20 @@ jobs:
     executor: front-exec
     working_directory: ~/repo/frontend
     steps:
+      - checkout:
+          path: ~/repo
       - *restore_npm_cache
+      - *install_npm
       - run: npm run flow
 
   test-front:
     executor: front-exec
     working_directory: ~/repo/frontend
     steps:
+      - checkout:
+          path: ~/repo
       - *restore_npm_cache
+      - *install_npm
       - run: npm test
 
   setup-back:
