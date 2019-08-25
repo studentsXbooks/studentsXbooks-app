@@ -5,9 +5,8 @@ aliases:
     restore_cache:
       name: Restore node_modules cache
       keys:
-        - v1-frontend-{{ .Environment.CIRCLE_SHA1 }}
-        - v1-frontend-{{ checksum "package.json" }}
-        - v1-front-dependencies-
+        - v1-front-{{ checksum "package.json" }}
+        - v1-front-
   - &install_npm
     run:
       name: Install NPM Packages
@@ -47,10 +46,10 @@ jobs:
       - *restore_npm_cache
       - *install_npm
       - save_cache:
-          name: Save node_modules cache
+          name: Cache node_modules
           paths:
             - node_modules
-          key: v1-front-dependencies-{{ checksum "package.json" }}
+          key: v1-front-{{ checksum "package.json" }}
 
   flow:
     executor: front-exec
