@@ -77,8 +77,6 @@ jobs:
     steps:
       - checkout:
           path: ~/repo
-      - run: ls
-      - run: pwd
       - *restore_dotnet_cache
       - *install_nuget
       - save_cache:
@@ -92,15 +90,17 @@ jobs:
     working_directory: ~/repo/backend
     steps:
       - checkout:
-          paths: ~/repo
+          path: ~/repo
       - *restore_dotnet_cache
       - *install_nuget
       - run: dotnet test
 
   deploy-back:
     executor: back-exec
-    working_directory: backend
+    working_directory: ~/repo/backend
     steps:
+      - checkout:
+          path: ~/repo
       - *restore_dotnet_cache
       - *install_nuget
 
