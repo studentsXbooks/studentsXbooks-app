@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 namespace sXb_models.Entities
 {
     [Table("Users", Schema = "sXb")]
-    public class User : IdentityUser
+    public class User
     {
         [DataType(DataType.Text), MaxLength(255)]
         public string FirstName { get; set; }
