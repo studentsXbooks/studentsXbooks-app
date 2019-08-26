@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sXb-service", "sXb-service\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sXb-tests", "sXb-tests\sXb-tests.csproj", "{72DBA4D3-3B19-45F4-954E-466D3C4D689C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sXb-DAL", "sXb-DAL\sXb-DAL.csproj", "{0D6C88C0-CF1F-40D4-A603-A11BEC5C8AAD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,5 +46,17 @@ Global
 		{72DBA4D3-3B19-45F4-954E-466D3C4D689C}.Release|x64.Build.0 = Release|Any CPU
 		{72DBA4D3-3B19-45F4-954E-466D3C4D689C}.Release|x86.ActiveCfg = Release|Any CPU
 		{72DBA4D3-3B19-45F4-954E-466D3C4D689C}.Release|x86.Build.0 = Release|Any CPU
+		{0D6C88C0-CF1F-40D4-A603-A11BEC5C8AAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D6C88C0-CF1F-40D4-A603-A11BEC5C8AAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D6C88C0-CF1F-40D4-A603-A11BEC5C8AAD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0D6C88C0-CF1F-40D4-A603-A11BEC5C8AAD}.Debug|x64.Build.0 = Debug|Any CPU
+		{0D6C88C0-CF1F-40D4-A603-A11BEC5C8AAD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0D6C88C0-CF1F-40D4-A603-A11BEC5C8AAD}.Debug|x86.Build.0 = Debug|Any CPU
+		{0D6C88C0-CF1F-40D4-A603-A11BEC5C8AAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D6C88C0-CF1F-40D4-A603-A11BEC5C8AAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D6C88C0-CF1F-40D4-A603-A11BEC5C8AAD}.Release|x64.ActiveCfg = Release|Any CPU
+		{0D6C88C0-CF1F-40D4-A603-A11BEC5C8AAD}.Release|x64.Build.0 = Release|Any CPU
+		{0D6C88C0-CF1F-40D4-A603-A11BEC5C8AAD}.Release|x86.ActiveCfg = Release|Any CPU
+		{0D6C88C0-CF1F-40D4-A603-A11BEC5C8AAD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
