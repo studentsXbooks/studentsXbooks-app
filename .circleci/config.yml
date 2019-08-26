@@ -76,7 +76,7 @@ jobs:
     working_directory: ~/repo/backend
     steps:
       - checkout:
-          paths: ~/repo
+          path: ~/repo
       - run: ls
       - run: pwd
       - *restore_dotnet_cache
