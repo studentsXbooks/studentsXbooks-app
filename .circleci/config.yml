@@ -79,20 +79,21 @@ jobs:
           paths: ~/repo
       - *restore_dotnet_cache
       - *install_nuget
-      - run: ls
       - save_cache:
           name: Save dotnet cache
           paths:
-          - ~/.nuget/packages
+            - ~/.nuget/packages
           key: v1-back-dependencies-{{ checksum "sXb-service/sXb-service.csproj" }}-{{checksum "sXb-tests/sXb-tests.csproj"}}
 
   test-back:
     executor: back-exec
-    working_directory: backend
+    working_directory: ~/repo/backend
     steps:
+      - checkout:
+          paths: ~/repo
       - *restore_dotnet_cache
       - *install_nuget
-      - run: dotnet test sXb-tests
+      - run: dotnet test
 
   deploy-back:
     executor: back-exec
