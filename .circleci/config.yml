@@ -77,6 +77,8 @@ jobs:
     steps:
       - checkout:
           paths: ~/repo
+      - run: ls
+      - run: pwd
       - *restore_dotnet_cache
       - *install_nuget
       - save_cache:
