@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sXb-tests", "sXb-tests\sXb-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sXb-DAL", "sXb-DAL\sXb-DAL.csproj", "{0D6C88C0-CF1F-40D4-A603-A11BEC5C8AAD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sXb-models", "sXb-models\sXb-models.csproj", "{EDB4B640-1A09-491F-8331-2B3F2F71A8B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,5 +60,17 @@ Global
 		{0D6C88C0-CF1F-40D4-A603-A11BEC5C8AAD}.Release|x64.Build.0 = Release|Any CPU
 		{0D6C88C0-CF1F-40D4-A603-A11BEC5C8AAD}.Release|x86.ActiveCfg = Release|Any CPU
 		{0D6C88C0-CF1F-40D4-A603-A11BEC5C8AAD}.Release|x86.Build.0 = Release|Any CPU
+		{EDB4B640-1A09-491F-8331-2B3F2F71A8B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDB4B640-1A09-491F-8331-2B3F2F71A8B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDB4B640-1A09-491F-8331-2B3F2F71A8B6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EDB4B640-1A09-491F-8331-2B3F2F71A8B6}.Debug|x64.Build.0 = Debug|Any CPU
+		{EDB4B640-1A09-491F-8331-2B3F2F71A8B6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EDB4B640-1A09-491F-8331-2B3F2F71A8B6}.Debug|x86.Build.0 = Debug|Any CPU
+		{EDB4B640-1A09-491F-8331-2B3F2F71A8B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDB4B640-1A09-491F-8331-2B3F2F71A8B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDB4B640-1A09-491F-8331-2B3F2F71A8B6}.Release|x64.ActiveCfg = Release|Any CPU
+		{EDB4B640-1A09-491F-8331-2B3F2F71A8B6}.Release|x64.Build.0 = Release|Any CPU
+		{EDB4B640-1A09-491F-8331-2B3F2F71A8B6}.Release|x86.ActiveCfg = Release|Any CPU
+		{EDB4B640-1A09-491F-8331-2B3F2F71A8B6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

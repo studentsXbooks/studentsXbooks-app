@@ -6,4 +6,14 @@
     <RootNamespace>sXb_DAL</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="EF\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\sXb-models\sXb-models.csproj" />
+  </ItemGroup>
 </Project>
