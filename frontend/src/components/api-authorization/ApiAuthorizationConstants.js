@@ -1,4 +1,4 @@
-export const ApplicationName = 'react_dotnet';
+export const ApplicationName = 'angularindividualpreview3final';
 
 export const QueryParameterNames = {
   ReturnUrl: 'returnUrl',
