@@ -1,24 +1,176 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <RootNamespace>sXb_service</RootNamespace>
+    <AssemblyName>sXb-service</AssemblyName>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <IsPackable>false</IsPackable>
+    <SpaRoot>..\..\frontend\</SpaRoot>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
   </PropertyGroup>
+  <!-- <ItemGroup>
+    <ApplicationDefinition Include="App.xaml" />
+    <Page Incluide="MainWindow.xaml" />
+  </ItemGroup> -->
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+    <!-- <PackageReference Include="Microsoft.AspNetCore.App">
+      <PrivateAssets Condition="'%(PackageReference.Version)' == ''">all</PrivateAssets>
+      <Publish Condition="'%(PackageReference.Version)' == ''">true</Publish>
+    </PackageReference> -->
+    
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.0.0-preview8.19405.7" />
+    <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="3.0.0-preview8.19405.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.0.0-preview8.19405.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0-preview8.19405.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.0.0-preview8.19405.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.0.0-preview8.19405.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0-preview8.19405.11" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\" />
-    <Folder Include="Entities\Base\" />
+    <None Update="app.db" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="..\..\frontend\.gitignore">
+      <Link>frontend\.gitignore</Link>
+    </None>
+    <None Update="..\..\frontend\public\favicon.ico">
+      <Link>frontend\public\favicon.ico</Link>
+    </None>
+    <None Update="..\..\frontend\public\index.html">
+      <Link>frontend\public\index.html</Link>
+    </None>
+    <None Update="..\..\frontend\public\logo192.png">
+      <Link>frontend\public\logo192.png</Link>
+    </None>
+    <None Update="..\..\frontend\public\logo512.png">
+      <Link>frontend\public\logo512.png</Link>
+    </None>
+    <None Update="..\..\frontend\public\manifest.json">
+      <Link>frontend\public\manifest.json</Link>
+    </None>
+    <None Update="..\..\frontend\public\robots.txt">
+      <Link>frontend\public\robots.txt</Link>
+    </None>
+    <None Update="..\..\frontend\src\App.css">
+      <Link>frontend\src\App.css</Link>
+    </None>
+    <None Update="..\..\frontend\src\App.js">
+      <Link>frontend\src\App.js</Link>
+    </None>
+    <None Update="..\..\frontend\src\App.test.js">
+      <Link>frontend\src\App.test.js</Link>
+    </None>
+    <None Update="..\..\frontend\src\custom.css">
+      <Link>frontend\src\custom.css</Link>
+    </None>
+    <None Update="..\..\frontend\src\index.css">
+      <Link>frontend\src\index.css</Link>
+    </None>
+    <None Update="..\..\frontend\src\index.js">
+      <Link>frontend\src\index.js</Link>
+    </None>
+    <None Update="..\..\frontend\src\logo.svg">
+      <Link>frontend\src\logo.svg</Link>
+    </None>
+    <None Update="..\..\frontend\src\registerServiceWorker.js">
+      <Link>frontend\src\registerServiceWorker.js</Link>
+    </None>
+    <None Update="..\..\frontend\src\serviceWorker.js">
+      <Link>frontend\src\serviceWorker.js</Link>
+    </None>
+    <None Update="..\..\frontend\src\setupTests.js">
+      <Link>frontend\src\setupTests.js</Link>
+    </None>
+    <None Update="..\..\frontend\src\components\Counter.js">
+      <Link>frontend\src\components\Counter.js</Link>
+    </None>
+    <None Update="..\..\frontend\src\components\FetchData.js">
+      <Link>frontend\src\components\FetchData.js</Link>
+    </None>
+    <None Update="..\..\frontend\src\components\Home.js">
+      <Link>frontend\src\components\Home.js</Link>
+    </None>
+    <None Update="..\..\frontend\src\components\Layout.js">
+      <Link>frontend\src\components\Layout.js</Link>
+    </None>
+    <None Update="..\..\frontend\src\components\NavMenu.css">
+      <Link>frontend\src\components\NavMenu.css</Link>
+    </None>
+    <None Update="..\..\frontend\src\components\NavMenu.js">
+      <Link>frontend\src\components\NavMenu.js</Link>
+    </None>
+    <None Update="..\..\frontend\src\components\api-authorization\ApiAuthorizationConstants.js">
+      <Link>frontend\src\components\api-authorization\ApiAuthorizationConstants.js</Link>
+    </None>
+    <None Update="..\..\frontend\src\components\api-authorization\ApiAuthorizationRoutes.js">
+      <Link>frontend\src\components\api-authorization\ApiAuthorizationRoutes.js</Link>
+    </None>
+    <None Update="..\..\frontend\src\components\api-authorization\AuthorizeRoute.js">
+      <Link>frontend\src\components\api-authorization\AuthorizeRoute.js</Link>
+    </None>
+    <None Update="..\..\frontend\src\components\api-authorization\AuthorizeService.js">
+      <Link>frontend\src\components\api-authorization\AuthorizeService.js</Link>
+    </None>
+    <None Update="..\..\frontend\src\components\api-authorization\Login.js">
+      <Link>frontend\src\components\api-authorization\Login.js</Link>
+    </None>
+    <None Update="..\..\frontend\src\components\api-authorization\LoginMenu.js">
+      <Link>frontend\src\components\api-authorization\LoginMenu.js</Link>
+    </None>
+    <None Update="..\..\frontend\src\components\api-authorization\Logout.js">
+      <Link>frontend\src\components\api-authorization\Logout.js</Link>
+    </None>
+    <None Update="..\..\frontend\package.json">
+      <Link>frontend\package.json</Link>
+    </None>
+    <None Update="..\..\frontend\package-lock.json">
+      <Link>frontend\package-lock.json</Link>
+    </None>
+    <None Update="..\..\frontend\README.md">
+      <Link>frontend\README.md</Link>
+    </None>
+    <None Update="..\..\frontend\.flowconfig">
+      <Link>frontend\.flowconfig</Link>
+    </None>
   </ItemGroup>
+  <ItemGroup>
+    <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Content Remove="$(SpaRoot)**" />
+    <None Remove="$(SpaRoot)**" />
+    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="frontend\" />
+    <Folder Include="frontend\public\" />
+    <Folder Include="frontend\src\" />
+    <Folder Include="frontend\src\components\" />
+    <Folder Include="frontend\src\components\api-authorization\" />
+  </ItemGroup>
+  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+  </Target>
+
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="$(SpaRoot)build\**" />
+      <ResolvedFileToPublish Include="@(DistFiles-&gt;'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
 </Project>
