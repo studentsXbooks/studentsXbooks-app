@@ -57,7 +57,7 @@ namespace sXb_service
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "ClientApp/build";
+                configuration.RootPath = "../../frontend/build";
             });
         }
 
@@ -95,7 +95,7 @@ namespace sXb_service
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "../frontend";
+                spa.Options.SourcePath = "../../frontend";
 
                 if (env.IsDevelopment())
                 {

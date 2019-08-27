@@ -1,3 +1,11 @@
+//// Added by dotnet-react support
+
+import 'bootstrap/dist/css/bootstrap.css';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App';
+//import registerServiceWorker from './registerServiceWorker';
 
 import './index.css';
 import * as serviceWorker from './serviceWorker';
@@ -9,14 +17,7 @@ import * as serviceWorker from './serviceWorker';
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 
-//// Added by dotnet-react support
 
-import 'bootstrap/dist/css/bootstrap.css';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
-import App from './App';
-//import registerServiceWorker from './registerServiceWorker';
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
