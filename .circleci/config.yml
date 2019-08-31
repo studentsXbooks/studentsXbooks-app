@@ -21,19 +21,24 @@ aliases:
     run:
       name: Install nuget packages
       command: dotnet restore
-  - &front_docker
-    - image: circleci/node:10
-  - &back_docker
-    - image: mcr.microsoft.com/dotnet/core/sdk:2.2
-
-
+  - &login_docker
+    run:
+      name: Login with Docker Account
+      command: docker login -u $DOCKER_USER -p $DOCKER_PASS
 
 executors:
   front-exec:
-    docker: *front_docker
+    docker:
+      - image: circleci/node:10
     working_directory: ~/repo
   back-exec:
-    docker: *back_docker
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:2.2
+    working_directory: ~/repo
+  # Used for running docker commands
+  docker-exec:
+    docker:
+      - image: circleci/buildpack-deps:stretch
     working_directory: ~/repo
 
 jobs:
@@ -96,13 +101,19 @@ jobs:
       - run: dotnet test
 
   deploy-back:
-    executor: back-exec
-    working_directory: ~/repo/backend
+    executor: docker-exec
+    working_directory: ~/repo/backend/
     steps:
+      - setup_remote_docker
       - checkout:
           path: ~/repo
-      - *restore_dotnet_cache
-      - *install_nuget
+      - *login_docker
+      - run:
+          name: Building Docker Image
+          command: docker build -t $DOCKER_USER/sxb-service:$CIRCLE_BRANCH sXb-service/
+      - run:
+          name: Pushing Image to Docker Hub
+          command: docker push $DOCKER_USER/sxb-service:$CIRCLE_BRANCH
 
 workflows:
   version: 2
