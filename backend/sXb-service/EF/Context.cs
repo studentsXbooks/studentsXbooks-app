@@ -14,7 +14,7 @@ namespace sXb_service.EF
     public class Context : IdentityDbContext<IdentityUser>
     {
 
-        
+        private string connectionString = @"Server=localhost;user=sa;password=DevPassword1;MultipleActiveResultSets=true;";
         public DbSet<User> User { get; set; }
 
         public Context(DbContextOptions<Context> options) : base(options)
@@ -34,7 +34,11 @@ namespace sXb_service.EF
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            base.OnConfiguring(optionsBuilder);
+            //base.OnConfiguring(optionsBuilder);
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(connectionString);
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

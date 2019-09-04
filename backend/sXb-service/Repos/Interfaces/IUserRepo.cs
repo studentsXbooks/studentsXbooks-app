@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace sXb_service.Repos.Interfaces
 {
-    public interface IUserRepo
+    public interface IUserRepo 
     {
         IEnumerable<User> GetAll();
         Task<User> Get(string id);

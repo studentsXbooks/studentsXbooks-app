@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using sXb_service.Models;
 using sXb_service.Services;
 using sXb_service.EF;
+using sXb_service.Repos.Interfaces;
+using sXb_service.Repos;
 
 namespace sXb_service
 {
@@ -27,11 +29,14 @@ namespace sXb_service
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<Context>(options =>
-              options.UseSqlServer(Configuration["Db:Connection"]));
+              //options.UseSqlServer(Configuration["Db:Connection"]));
+              options.UseSqlServer("Server=localhost;user=sa;password=DevPassword1;MultipleActiveResultSets=true;"));
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<Context>()
                 .AddDefaultTokenProviders();
+
+            services.AddScoped<IUserRepo, UserRepo>();
 
             services.Configure<IdentityOptions>(options =>
             {

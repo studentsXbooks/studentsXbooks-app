@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace sXb_service.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserController : Controller
     {
@@ -40,12 +40,6 @@ namespace sXb_service.Controllers
             _logger = logger;
         }
 
-        public UserController(IUserRepo repo, UserManager<User> userManager, SignInManager<User> signinManager)
-        {
-            Repo = repo;
-            _userManager = userManager;
-            _signInManager = signinManager;
-        }
 
         
         //http://localhost:40001/api/[controller]/
@@ -65,7 +59,7 @@ namespace sXb_service.Controllers
             }
             return Json(item);
         }
-        [HttpPut("Update/{id}")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Update(string id, [FromBody] User item)
         {
             User user = await Repo.Get(id);
@@ -103,7 +97,7 @@ namespace sXb_service.Controllers
             return NotFound();
         }
 
-        [HttpGet("Search/{keyword}")]
+        [HttpGet("{keyword}")]
         public IActionResult Search(string keyword)
         {
             var users = Repo.FindUsers(keyword);
@@ -111,28 +105,51 @@ namespace sXb_service.Controllers
         }
 
         
-        [HttpGet("FindIdByName/{first}/{last}")]
+        [HttpGet("{first}/{last}")]
         public IActionResult FindIdByName(string first, string last)
         {
             string data = Repo.FindIdByName(first, last);
             return data == null ? (IActionResult)NotFound() : new ObjectResult(data);
         }
-        // POST api/values
+        
+
+       
+
         [HttpPost]
-        public void Post([FromBody] string value)
+        [AllowAnonymous]
+        //TODO: Enable for Anti-XSRF
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
-        }
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                // This does not count login failures towards account lockout
+                // To enable password failures to trigger account lockout,
+                // set lockoutOnFailure: true
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    
+                    _logger.LogInformation("User logged in.");
+                    return RedirectToLocal(returnUrl);
+                }
+            }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
+            // If execution got this far, something failed, redisplay the form.
+            return RedirectToAction(nameof(GetAll));
         }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        private IActionResult RedirectToLocal(string returnUrl)
         {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                // Questionable to return all records.
+                return RedirectToAction(nameof(GetAll));
+            }
         }
     }
 }

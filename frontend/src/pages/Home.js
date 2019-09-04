@@ -1,23 +1,18 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { Link, Header, Card } from '../../ui';
+import { Link, Header, Card } from '../ui';
 
 const Home = ({ location }) => (
   <FullScreenContainer>
     {location && location.state && location.state.info && (
       <StyledInfoPopUp info={location.state.info} />
     )}
-    <BoxLink to="/signin" style={{ gridArea: 'boxLeft' }}>
-      <Box>Sign In</Box>
+    <BoxLink to="/register" style={{gridArea:'boxLeft'}}>
+      <Box>Register</Box>
     </BoxLink>
-    <BoxLink to="/signout" style={{ gridArea: 'boxRight' }}>
-      <Box>Sign Out</Box>
+    <BoxLink to="/login" style={{ gridArea: 'boxLeft' }}>
+      <Box>Login</Box>
     </BoxLink>
-    <Footer>
-      <Header type="h3" align="center">
-        <Link to="/signin/teacher">Sign in for teachers</Link>
-      </Header>
-    </Footer>
   </FullScreenContainer>
 );
 
@@ -51,6 +46,7 @@ const StyledInfoPopUp = styled(InfoPopUp)`
 const BoxLink = styled(Link)`
   align-self: center;
   justify-self: center;
+
   &:hover {
     transform: scale(1.1);
   }
