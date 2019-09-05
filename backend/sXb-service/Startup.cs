@@ -29,8 +29,8 @@ namespace sXb_service
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<Context>(options =>
-              //options.UseSqlServer(Configuration["Db:Connection"]));
-              options.UseSqlServer("Server=localhost;user=sa;password=DevPassword1;MultipleActiveResultSets=true;"));
+              options.UseSqlServer(Configuration["Db:Connection"]));
+          
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<Context>()

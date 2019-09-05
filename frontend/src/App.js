@@ -1,26 +1,20 @@
 // @flow
 
-//import logo from "./logo.svg";
-import "./App.css";
+import React from "react";
+import { Router, Link } from "@reach/router";
 
-// Added by dotnet-react support for authentication
-import React, { Component } from 'react';
+export default () => (
+  <Router>
+    <Home default />
+    <Login path="/Login" />
+  </Router>
+);
 
-import { Route } from 'react-router';
-import { Home, Login } from './pages';
- 
-import './custom.css';
+const Home = () => (
+  <div>
+    <h1>Home</h1>
+    <Link to="/Login">Login</Link>
+  </div>
+);
 
-export default class App extends Component {
-  static displayName = App.name;
-
-  render () {
-    return (
-      <div>
-        <Route exact path='/' component={Home} />
-        {/* <Route path='/register' component={Register} /> */}
-        <Route path='/login' component={Login} />
-      </div>
-    );
-  }
-}
+const Login = () => <div>Login</div>;

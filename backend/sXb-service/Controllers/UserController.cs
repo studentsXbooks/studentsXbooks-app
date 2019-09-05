@@ -9,6 +9,7 @@ using sXb_service.Models;
 using sXb_service.Models.AccountViewModels;
 using sXb_service.Services;
 using sXb_service.Repos.Interfaces;
+
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -16,7 +17,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace sXb_service.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UserController : Controller
     {
@@ -43,7 +44,7 @@ namespace sXb_service.Controllers
 
         
         //http://localhost:40001/api/[controller]/
-        [HttpGet("All", Name = "GetAllUsers")]
+        [HttpGet]
         public IActionResult GetAll ()
         {
             IEnumerable<User> data = Repo.GetAll();
@@ -85,6 +86,7 @@ namespace sXb_service.Controllers
             return RedirectToAction("GetAll");
         }
 
+        //TODO: Create Viewmodel for user password, don't pass in url.
         [HttpPost("{password}")]
         public async Task<IActionResult> Create(string password, [FromBody] User user)
         {
@@ -97,7 +99,7 @@ namespace sXb_service.Controllers
             return NotFound();
         }
 
-        [HttpGet("{keyword}")]
+        [HttpGet("Search/{keyword}")]
         public IActionResult Search(string keyword)
         {
             var users = Repo.FindUsers(keyword);

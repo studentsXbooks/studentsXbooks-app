@@ -16,14 +16,7 @@ namespace sXb_service.Repos
         public readonly Context Db;
         public DbSet<User> Table { get; }
 
-        public UserRepo()
-        {
-            Db = new Context();
-            Table = Db.Set<User>();
-        }
-
-
-        protected UserRepo(DbContextOptions<Context> options)
+        public UserRepo(DbContextOptions<Context> options)
         {
             Db = new Context(options);
             Table = Db.Set<User>();
