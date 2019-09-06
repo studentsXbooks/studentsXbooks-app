@@ -9,8 +9,8 @@ type Props = {
 };
 
 const Register = (props: Props) => {
-  const [email, setEmail] = useState("@wvup.edu");
   const [username, setUsername] = useState();
+  const [email, setEmail] = useState("@wvup.edu");
   const [password, setPassword] = useState();
   return (
     <div>
@@ -20,7 +20,7 @@ const Register = (props: Props) => {
         onSubmit={e => {
           e.preventDefault();
           e.persist();
-          ApiPost("users/new", false, { email, password }).then(res =>
+          ApiPost("users/new", false, { username, email, password }).then(res =>
             // After registering, log user in,
             ApiPost("users", true, { email, password }).then(
               // ...Then, refresh to show username.
