@@ -6,6 +6,7 @@ import { Router, Link } from "@reach/router";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import LoginSuccess from "./pages/LoginSuccess";
 
 import ApiGet from "./components/ApiGet";
 import ApiPost from "./components/ApiPost";
@@ -17,6 +18,7 @@ export default () => (
       <Login path="login" email={"null"}></Login>
       <Register path="register" />
       <Logout path="logout" />
+      <LoginSuccess path="loginsuccess" />
     </Layout>
   </Router>
 );
@@ -32,6 +34,7 @@ const Layout = ({ children }) => (
   </div>
 );
 
+// TODO: Only call api when cookie is present.
 const Username = () => {
   const [username, setUsername] = useState();
   useEffect(() => {

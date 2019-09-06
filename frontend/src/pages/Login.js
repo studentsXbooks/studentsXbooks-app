@@ -20,9 +20,8 @@ const Login = (prop: Props) => {
           e.preventDefault();
           e.persist();
           ApiPost("users", true, { email, password }).then(
-            // Shows username after login.
-            // I used a redirect to reload.
-            res => (window.location.href = "/Home")
+            // Redirect to Login success message window.
+            res => (window.location.href = "/loginsuccess")
           );
         }}
       >
