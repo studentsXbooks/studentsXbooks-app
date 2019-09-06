@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using sXb_service.Models;
+using sXb_service.Models.ViewModels;
 using sXb_service.Models.AccountViewModels;
 using sXb_service.Services;
 using sXb_service.Repos.Interfaces;
@@ -14,6 +15,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using RegisterViewModel = sXb_service.Models.ViewModels.RegisterViewModel;
 
 namespace sXb_service.Controllers
 {
@@ -93,15 +95,20 @@ namespace sXb_service.Controllers
 
         //TODO: Create Viewmodel for user password, don't pass in url.
         [HttpPost("new")]
-        public async Task<IActionResult> Create([FromBody] LoginViewModel login)
+        public async Task<IActionResult> Create([FromBody] sXb_service.Models.ViewModels.RegisterViewModel newUser)
         {
             User user = new User();
-            if (login.Email != null)
-                user.UserName = login.Email;
-            if (login.Email != null)
-                user.Email = login.Email;
+            if (newUser.Username != null)
+                user.UserName = newUser.Username;
+            else
+                return BadRequest();
 
-            var result = await _userManager.CreateAsync(user, login.Password);
+            if (newUser.Email != null)
+                user.Email = newUser.Email;
+            else
+                return BadRequest();
+
+            var result = await _userManager.CreateAsync(user, newUser.Password);
             
             if (result.Succeeded)
             {
@@ -136,12 +143,16 @@ namespace sXb_service.Controllers
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+            
             if (ModelState.IsValid)
             {
+                // Gets username because login uses username.
+                // TODO: Implement custom login method that uses email instead.
+                string username = Repo.GetUsernameByEmail(model.Email);
                 // This does not count login failures towards account lockout
                 // To enable password failures to trigger account lockout,
                 // set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(username, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     

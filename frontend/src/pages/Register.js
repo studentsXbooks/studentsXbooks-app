@@ -10,6 +10,7 @@ type Props = {
 
 const Register = (props: Props) => {
   const [email, setEmail] = useState("@wvup.edu");
+  const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   return (
     <div>
@@ -28,6 +29,17 @@ const Register = (props: Props) => {
           );
         }}
       >
+        <label htmlFor="Username">Username</label>
+        <input
+          type="text"
+          onChange={e => {
+            setUsername(e.target.value);
+          }}
+          id="Username"
+          name="Username"
+        />
+
+        <br />
         <label htmlFor="Email">Email</label>
         <input
           type="text"
@@ -39,6 +51,7 @@ const Register = (props: Props) => {
           name="Email"
         />
         <br />
+
         <label htmlFor="Password">Password</label>
         <input
           type="password"

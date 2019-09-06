@@ -13,5 +13,6 @@ namespace sXb_service.Repos.Interfaces
         IEnumerable<User> FindUsers(string keyword);
         int Update(User user, bool persists = true);
         string FindIdByName(string first, string last);
+        string GetUsernameByEmail(string email);
     }
 }

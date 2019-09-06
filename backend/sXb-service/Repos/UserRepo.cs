@@ -99,5 +99,12 @@ namespace sXb_service.Repos
                             e.LastName.ToLower().Equals(last.ToLower())).First();
             return user.Id;
         }
+        public string GetUsernameByEmail(string email)
+        {
+            User user = Table.Where(e =>
+           e.Email.ToLower().Equals(email.ToLower())
+           ).First();
+            return user.UserName;
+        }
     }
 }

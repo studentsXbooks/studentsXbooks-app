@@ -1,5 +1,7 @@
 import React from "react";
 
+// TODO: Consider changing this page to self-dismissing modal popup.
+
 const LoginSuccess = () => {
   setTimeout(() => {
     window.location.href = "/home";

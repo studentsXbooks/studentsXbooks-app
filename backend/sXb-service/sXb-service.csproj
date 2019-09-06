@@ -22,6 +22,7 @@
     <Folder Include="EF\" />
     <Folder Include="SampleData\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Models\ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Migrations\.DS_Store" />
