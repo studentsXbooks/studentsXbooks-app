@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 
 import ApiGet from "./components/ApiGet";
+import ApiPost from "./components/ApiPost";
 
 export default () => (
   <Router>
@@ -44,5 +45,7 @@ const Username = () => {
 };
 
 const Logout = () => {
-  
-}
+  ApiPost("users/logout", true, {})
+    .then(res => console.log(res))
+    .then(redirec => (window.location.href = "/Home"));
+};
