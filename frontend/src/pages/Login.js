@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useState } from "react";
-import BaseUrl from "../components/BaseUrl";
+import ApiPost from "../components/ApiPost";
 
 type Props = {
   email: string,
@@ -19,14 +19,11 @@ const Login = (prop: Props) => {
         onSubmit={e => {
           e.preventDefault();
           e.persist();
-          fetch(BaseUrl + "user", {
-            method: "POST",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ email, password })
-          }).then(res => console.log(res));
+          ApiPost("user", true, { email, password }).then(
+            // Shows username after login.
+            // I used a redirect to reload.
+            res => (window.location.href = "/Home")
+          );
         }}
       >
         <label htmlFor="Email">Email</label>

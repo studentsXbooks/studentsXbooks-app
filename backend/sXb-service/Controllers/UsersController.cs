@@ -19,7 +19,7 @@ namespace sXb_service.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : Controller
+    public class UsersController : Controller
     {
         
         private readonly UserManager<User> _userManager;
@@ -28,7 +28,7 @@ namespace sXb_service.Controllers
         private readonly ILogger _logger;
         private IUserRepo Repo { get; set; }
 
-        public UserController( IUserRepo repo,
+        public UsersController( IUserRepo repo,
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             IEmailSender emailSender,
@@ -92,10 +92,17 @@ namespace sXb_service.Controllers
         }
 
         //TODO: Create Viewmodel for user password, don't pass in url.
-        [HttpPost("{password}")]
-        public async Task<IActionResult> Create(string password, [FromBody] User user)
+        [HttpPost("new")]
+        public async Task<IActionResult> Create([FromBody] LoginViewModel login)
         {
-            var result = await _userManager.CreateAsync(user, password);
+            User user = new User();
+            if (login.Email != null)
+                user.UserName = login.Email;
+            if (login.Email != null)
+                user.Email = login.Email;
+
+            var result = await _userManager.CreateAsync(user, login.Password);
+            
             if (result.Succeeded)
             {
                 return Created($"api/User/Get/{user.Id}", user);

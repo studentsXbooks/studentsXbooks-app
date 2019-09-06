@@ -1,0 +1,1 @@
+Must set /components/BaseUrl & dotnet user-secrets in Startup.Configure...Cors to: sxb-front.com

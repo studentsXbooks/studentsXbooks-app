@@ -1,7 +1,8 @@
 import BaseUrl from "./BaseUrl";
 
-async function ApiPost(url: string, creds: boolean, json) {
-  return await fetch(BaseUrl + url, {
+// TODO: Should this be stateless?
+function ApiPost(url: string, creds: boolean, json) {
+  return fetch(BaseUrl + url, {
     method: "POST",
     credentials: creds ? "include" : "omit",
     headers: {
