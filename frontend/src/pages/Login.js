@@ -21,7 +21,7 @@ const Login = (prop: Props) => {
           e.persist();
           ApiPost("users", true, { email, password }).then(
             // Redirect to Login success message window.
-            res => (window.location.href = "/loginsuccess")
+            res => (window.location.href = "/login-success")
           );
         }}
       >

@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using RegisterViewModel = sXb_service.Models.ViewModels.RegisterViewModel;
+using System.Text.Encodings.Web;
 
 namespace sXb_service.Controllers
 {
@@ -67,6 +68,7 @@ namespace sXb_service.Controllers
         {
             return Ok(new { username = (await _userManager.GetUserAsync(HttpContext.User)).UserName });
         }
+        
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(string id, [FromBody] User item)
         {
@@ -97,6 +99,7 @@ namespace sXb_service.Controllers
         [HttpPost("new")]
         public async Task<IActionResult> Create([FromBody] sXb_service.Models.ViewModels.RegisterViewModel newUser)
         {
+            
             User user = new User();
             if (newUser.Username != null)
                 user.UserName = newUser.Username;
@@ -112,11 +115,54 @@ namespace sXb_service.Controllers
             
             if (result.Succeeded)
             {
+                _logger.LogInformation("User created a new account with password.");
+
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var callbackUrl = Url.Page(
+                    "/emailconfirmed",
+                    pageHandler: null,
+                    values: new { userId = user.Id, code = code },
+                    protocol: Request.Scheme);
+                await _emailSender.SendEmailAsync(user.Email, "Confirm your email",
+                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                //await _signInManager.SignInAsync(user, isPersistent: false);
+               
                 return Created($"api/User/Get/{user.Id}", user);
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
             }
 
             return NotFound();
         }
+
+        [HttpGet("new")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail([FromQuery]string userId, [FromQuery]string code)
+        {
+            if (userId == null || code == null)
+            {
+                return NotFound();
+            }
+            User user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{userId}'.");
+            }
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            
+            // TODO: This is a literal url string. Get root url from user secrets.
+            return Redirect("http://sxb-front.com:3000/email-confirmed");
+            // return Ok(result);
+
+        }
+
 
         [HttpGet("Search/{keyword}")]
         public IActionResult Search(string keyword)
@@ -132,7 +178,7 @@ namespace sXb_service.Controllers
             string data = Repo.FindIdByName(first, last);
             return data == null ? (IActionResult)NotFound() : new ObjectResult(data);
         }
-        
+
 
        
 
@@ -172,6 +218,8 @@ namespace sXb_service.Controllers
             _logger.LogInformation("User logged out.");
             return Ok("Logout complete!");
         }
+
+
         private IActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))

@@ -7,18 +7,23 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import LoginSuccess from "./pages/LoginSuccess";
+import EmailConfirmed from "./pages/EmailConfirmed";
+import VerifyEmail from "./pages/VerifyEmail";
 
 import ApiGet from "./components/ApiGet";
 import ApiPost from "./components/ApiPost";
 
 export default () => (
+  // TODO: Clean up Router structure by groups.
   <Router>
     <Layout path="/">
       <Home default />
       <Login path="login" email={"null"}></Login>
       <Register path="register" />
       <Logout path="logout" />
-      <LoginSuccess path="loginsuccess" />
+      <LoginSuccess path="login-success" />
+      <EmailConfirmed path="email-confirmed" />
+      <VerifyEmail path="verify-email" />
     </Layout>
   </Router>
 );

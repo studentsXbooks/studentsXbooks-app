@@ -10,7 +10,7 @@ type Props = {
 
 const Register = (props: Props) => {
   const [username, setUsername] = useState();
-  const [email, setEmail] = useState("@wvup.edu");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState();
   return (
     <div>
@@ -20,12 +20,10 @@ const Register = (props: Props) => {
         onSubmit={e => {
           e.preventDefault();
           e.persist();
-          ApiPost("users/new", false, { username, email, password }).then(res =>
-            // After registering, log user in,
-            ApiPost("users", true, { email, password }).then(
-              // ...Then, refresh to show username.
-              res => (window.location.href = "/Home")
-            )
+          ApiPost("users/new", false, { username, email, password }).then(
+            res =>
+              // After registering, show verify email page.
+              (window.location.href = "/verify-email?email=" + email)
           );
         }}
       >
@@ -38,12 +36,13 @@ const Register = (props: Props) => {
           id="Username"
           name="Username"
         />
-
+        {/* TODO: Regex to validate email with edu address. */}
         <br />
         <label htmlFor="Email">Email</label>
         <input
           type="text"
           value={email}
+          placeholder="must be '.edu' address"
           onChange={e => {
             setEmail(e.target.value);
           }}

@@ -14,6 +14,7 @@ using sXb_service.Services;
 using sXb_service.EF;
 using sXb_service.Repos.Interfaces;
 using sXb_service.Repos;
+using Microsoft.AspNetCore.Mvc;
 
 namespace sXb_service
 {
@@ -47,9 +48,15 @@ namespace sXb_service
 
             services.AddDbContext<Context>(options =>
               options.UseSqlServer(Configuration["Db:Connection"]));
-          
 
-            services.AddIdentity<User, IdentityRole>()
+            //services.AddDefaultIdentity<IdentityUser>(config =>
+            //{
+                
+            //});
+
+            services.AddIdentity<User, IdentityRole>( config =>
+                { config.SignIn.RequireConfirmedEmail = true; }
+            )
                 .AddEntityFrameworkStores<Context>()
                 .AddDefaultTokenProviders();
 
@@ -88,10 +95,15 @@ namespace sXb_service
                 options.SlidingExpiration = true;
             });
 
-            // Add application services.
+            
+            // requires
+            // using Microsoft.AspNetCore.Identity.UI.Services;
             services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddMvc();
+
+            //services.AddMvc();
 
         }
 
