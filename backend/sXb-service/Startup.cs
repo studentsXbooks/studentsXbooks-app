@@ -26,8 +26,25 @@ namespace sXb_service
             Configuration = configuration;
         }
 
+        readonly string AllowAnywhere = "_AllowAnywhere";
+
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddCors(options =>
+           {
+               options.AddPolicy(AllowAnywhere,
+                   builder =>
+                   {
+                       builder.WithOrigins(Configuration["Domain:sXb-frontend"])
+                       .AllowAnyHeader()
+                       .WithExposedHeaders("*")
+                       .AllowCredentials()
+                       .AllowAnyMethod();
+                   });
+
+           });
+
             services.AddDbContext<Context>(options =>
               options.UseSqlServer(Configuration["Db:Connection"]));
           
@@ -93,6 +110,8 @@ namespace sXb_service
             }
 
             app.UseStaticFiles();
+
+            app.UseCors(AllowAnywhere);
 
             app.UseAuthentication();
 

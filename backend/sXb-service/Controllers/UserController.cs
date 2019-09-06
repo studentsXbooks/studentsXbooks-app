@@ -60,6 +60,11 @@ namespace sXb_service.Controllers
             }
             return Json(item);
         }
+        [HttpGet("name")]
+        public async Task<IActionResult>GetUsername()
+        {
+            return Ok(new { username = (await _userManager.GetUserAsync(HttpContext.User)).UserName });
+        }
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(string id, [FromBody] User item)
         {
@@ -106,7 +111,7 @@ namespace sXb_service.Controllers
             return Ok(users);
         }
 
-        
+        // TODO: Pattern mat
         [HttpGet("{first}/{last}")]
         public IActionResult FindIdByName(string first, string last)
         {
