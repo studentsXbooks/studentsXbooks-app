@@ -19,7 +19,7 @@ const Login = (prop: Props) => {
         onSubmit={e => {
           e.preventDefault();
           e.persist();
-          ApiPost("user", true, { email, password }).then(
+          ApiPost("users", true, { email, password }).then(
             // Shows username after login.
             // I used a redirect to reload.
             res => (window.location.href = "/Home")

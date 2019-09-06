@@ -7,12 +7,15 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
+import ApiGet from "./components/ApiGet";
+
 export default () => (
   <Router>
     <Layout path="/">
       <Home default />
       <Login path="login" email={"null"}></Login>
       <Register path="register" />
+      <Logout path="logout" />
     </Layout>
   </Router>
 );
@@ -22,6 +25,7 @@ const Layout = ({ children }) => (
     <Link to="/">Home</Link>
     <Link to="/login">Login</Link>
     <Link to="/register">Register</Link>
+    <Link to="/logout">Logout</Link>
     <Username />
     {children}
   </div>
@@ -30,16 +34,15 @@ const Layout = ({ children }) => (
 const Username = () => {
   const [username, setUsername] = useState();
   useEffect(() => {
-    fetch("http://sXb-front.com:5000/api/user/name", {
-      credentials: "include"
-    })
-      .then(res => res.json())
-      .then(json => {
-        const { username } = json;
-        setUsername(username);
-        console.log(username);
-      });
+    ApiGet("users/name", true).then(json => {
+      const { username } = json;
+      setUsername(username);
+    });
   });
 
   return <span>{username}</span>;
 };
+
+const Logout = () => {
+  
+}

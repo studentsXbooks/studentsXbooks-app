@@ -153,6 +153,14 @@ namespace sXb_service.Controllers
             // If execution got this far, something failed, redisplay the form.
             return RedirectToAction(nameof(GetAll));
         }
+        [HttpPost("logout")]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation("User logged out.");
+            return Ok("Logout complete!");
+        }
         private IActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))

@@ -1,6 +1,7 @@
 // @flow
 
 import React, { useState } from "react";
+import ApiPost from "../components/ApiPost";
 
 type Props = {
   email: string,
@@ -10,17 +11,20 @@ type Props = {
 const Register = (props: Props) => {
   const [email, setEmail] = useState("@wvup.edu");
   const [password, setPassword] = useState();
-  <div>
-    <h1>Register</h1>
+  return (
+    <div>
+      <h1>Register</h1>
 
-    <form
+      <form
         onSubmit={e => {
           e.preventDefault();
           e.persist();
-          ApiPost("user/create", true, { email, password }).then(
-            // Shows username after login.
-            // I used a redirect to reload.
-            res => (window.location.href = "/Home")
+          ApiPost("users/new", false, { email, password }).then(res =>
+            // After registering, log user in,
+            ApiPost("users", true, { email, password }).then(
+              // ...Then, refresh to show username.
+              res => (window.location.href = "/Home")
+            )
           );
         }}
       >
@@ -47,15 +51,6 @@ const Register = (props: Props) => {
         <br />
         <input type="submit" value="Submit" />
       </form>
-  </div>;
-};
-
-const Login = (prop: Props) => {
-  return (
-    <div>
-      <h1>Login</h1>
-
-      
     </div>
   );
 };
