@@ -20,7 +20,7 @@ export default () => (
       <Home default />
       <Login path="login" email={"null"}></Login>
       <Register path="register" />
-      <Logout path="logout" />
+      {/* <Logout path="logout" /> */}
       <LoginSuccess path="login-success" />
       <EmailConfirmed path="email-confirmed" />
       <VerifyEmail path="verify-email" />

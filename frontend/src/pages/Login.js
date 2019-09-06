@@ -4,8 +4,9 @@ import React, { useState } from "react";
 import ApiPost from "../components/ApiPost";
 
 type Props = {
-  email: string,
-  children: any
+  email: string
+  //,
+  //children : any
 };
 
 const Login = (prop: Props) => {

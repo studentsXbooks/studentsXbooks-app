@@ -3,12 +3,7 @@
 import React, { useState } from "react";
 import ApiPost from "../components/ApiPost";
 
-type Props = {
-  email: string,
-  children: any
-};
-
-const Register = (props: Props) => {
+const Register = () => {
   const [username, setUsername] = useState();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState();
