@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 namespace sXb_service.Repos
 {
     public class ListingRepo : BaseRepo<Listing>, IListingRepo
+
     {
         public ListingRepo(DbContextOptions options) : base(options) { }
 
@@ -53,7 +54,11 @@ namespace sXb_service.Repos
 
         public async Task<IEnumerable<Listing>> ByUser(Guid userId)
         {
-            return await _db.Listings.Where(e => e.UserBook.UserId == userId).ToListAsync();
+            if(_db.Listings.Any(x => x.UserBook.UserId == userId))
+            {
+                return await _db.Listings.Where(e => e.UserBook.UserId == userId).Include(e => e.UserBook.Book).ToListAsync();
+            }
+            return null;
         }
 
     }

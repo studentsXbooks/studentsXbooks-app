@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using sXb_service.Models;
@@ -14,63 +12,63 @@ namespace sXb_service.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BooksController : ControllerBase
+    public class UserBooksController : ControllerBase
     {
         private IMapper _mapper;
-        private IBookRepo _iRepo;
+        private IUserBookRepo _iRepo;
 
-        public BooksController(IBookRepo iRepo, IMapper mapper)
+        public UserBooksController(IUserBookRepo iRepo, IMapper mapper)
         {
             _iRepo = iRepo;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public IActionResult GetBooks() => Ok(_iRepo.GetAll());
+        public IActionResult GetListings() => Ok(_iRepo.GetAll());
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetBook([FromRoute] Guid id)
+        public async Task<IActionResult> GetUserBook([FromRoute] Guid id)
         {
-            var book = await _iRepo.Find(id);
+            var userBook = await _iRepo.Find(id);
 
-            if (book == null)
+            if (userBook == null)
             {
                 return NotFound();
             }
 
-            return Ok(book);
+            return Ok(userBook);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] BookViewModel bookViewModel)
+        public async Task<IActionResult> Create([FromBody] UserBookViewModel userBookViewModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var book = _mapper.Map<Book>(bookViewModel);
-            
-            await _iRepo.Add(book);
-            return Created("GetBook", new { id = book.Id });
+            var userBook = _mapper.Map<UserBook>(userBookViewModel);
+
+            await _iRepo.Add(userBook);
+            return Created("GetUserBook", new { id = userBook.Id });
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] BookViewModel bookViewModel)
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UserBookViewModel userBookViewModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != bookViewModel.Id)
+            if (id != userBookViewModel.Id)
             {
                 return BadRequest();
             }
-            var book = _mapper.Map<Book>(bookViewModel);
+            var userBook = _mapper.Map<UserBook>(userBookViewModel);
             try
             {
-                var result = await _iRepo.Update(book);
+                var result = await _iRepo.Update(userBook);
                 return Ok(result);
             }
             catch (DbUpdateConcurrencyException)
