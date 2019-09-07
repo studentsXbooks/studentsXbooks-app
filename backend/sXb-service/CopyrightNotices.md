@@ -1,0 +1,5 @@
+﻿# txtX Copyright Notices
+--
+THE FOLLOWING SETS FORTH ATTRIBUTION NOTICES FOR THIRD PARTY SOFTWARE THAT MAY BE CONTAINED IN PORTIONS OF THE txtX PRODUCT.
+--
+The following code may be included in this product:
