@@ -15,7 +15,7 @@ aliases:
     restore_cache:
       name: Restore nuget cache
       keys:
-        - v1-back-dependencies-{{ checksum "sXb-service/sXb-service.csproj" }}-{{ checksum "sXb-tests/sXb-tests.csproj" }}
+        - v1-back-dependencies-{{ checksum "sXb-service/sXb-service.csproj" }}-{{ checksum "sXb-tests/sXb-tests.csproj" }}-{{checksum "sXb-integration-tests/sXb-integration-tests.csproj"}}
         - v1-back-dependencies-
   - &install_nuget
     run:
@@ -88,7 +88,7 @@ jobs:
           name: Save dotnet cache
           paths:
             - ~/.nuget/packages
-          key: v1-back-dependencies-{{ checksum "sXb-service/sXb-service.csproj" }}-{{checksum "sXb-tests/sXb-tests.csproj"}}
+          key: v1-back-dependencies-{{ checksum "sXb-service/sXb-service.csproj" }}-{{ checksum "sXb-tests/sXb-tests.csproj" }}-{{checksum "sXb-integration-tests/sXb-integration-tests.csproj"}}
 
   test-back:
     executor: back-exec
@@ -115,6 +115,17 @@ jobs:
           name: Pushing Image to Docker Hub
           command: docker push $DOCKER_USER/sxb-service:$CIRCLE_BRANCH
 
+  test-integration:
+    executor: docker-exec
+    working_directory: ~/repo/
+    steps:
+      - setup_remote_docker
+      - checkout:
+          path: ~/repo
+      - run:
+          name: Run Integration Tests
+          command: docker-compose -f docker-compose.Test.yml run sxb-integration
+
 workflows:
   version: 2
 
@@ -131,9 +142,13 @@ workflows:
       - test-back:
           requires:
             - setup-back
+      - test-integration:
+          requires:
+            - setup-back
       - deploy-back:
           requires:
             - test-back
+            - test-integration
           filters:
             branches:
               only: master
