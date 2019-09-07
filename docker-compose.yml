@@ -1,0 +1,38 @@
+version: "3.7"
+
+services:
+  sxb-front:
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_BACKEND: "http://localhost:8080/api/"
+    depends_on:
+      - sxb-service
+    ports:
+      - "3000:3000"
+
+  sxb-service:
+    build:
+      context: ./backend/sXb-service
+      dockerfile: Dockerfile
+    depends_on:
+      - sxb-db
+    ports:
+      - "8080:80"
+    environment:
+      DB:connectionString: "Server=sxb-db;Database=sxb;User Id=SA;Password=Develop@90"
+      ASPNETCORE_ENVIRONMENT: DEVELOPMENT
+
+  sxb-db:
+    image: microsoft/mssql-server-linux
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: Develop@90
+    expose:
+      - "1443"
+    volumes:
+      - db-data:/var/opt/mssql
+
+volumes:
+  db-data:

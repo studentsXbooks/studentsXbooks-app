@@ -1,0 +1,33 @@
+version: "3.7"
+
+services:
+  sxb-service:
+    image: lcbutch/sxb-service:master
+    depends_on:
+      - sxb-db
+    ports:
+      - "80:80"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+    env_file:
+      - .env
+    restart: always
+
+  sxb-db:
+    image: microsoft/mssql-server-linux
+    env_file:
+      - .env
+    expose:
+      - "1443"
+    volumes:
+      - db-data:/var/opt/mssql
+    restart: always
+
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 30
+
+volumes:
+  db-data:
