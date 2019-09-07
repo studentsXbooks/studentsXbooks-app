@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,49 +18,127 @@ using sXb_service.EF;
 using sXb_service.Repos;
 using sXb_service.Repos.Interfaces;
 
+using sXb_service.Models;
+using sXb_service.Services;
+using sXb_service.EF;
+using sXb_service.Repos.Interfaces;
+using sXb_service.Repos;
+using Microsoft.AspNetCore.Mvc;
+
 namespace sXb_service
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        readonly string AllowAnywhere = "_AllowAnywhere";
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddCors(options =>
+           {
+               options.AddPolicy(AllowAnywhere,
+                   builder =>
+                   {
+                       builder.WithOrigins(Configuration["Domain:sXb-frontend"])
+                       .AllowAnyHeader()
+                       .WithExposedHeaders("*")
+                       .AllowCredentials()
+                       .AllowAnyMethod();
+                   });
+
+           });
+
+            services.AddDbContext<Context>(options =>
+              options.UseSqlServer(Configuration["Db:Connection"]));
+
+            
+
+            services.AddIdentity<User, IdentityRole>( config =>
+                { config.SignIn.RequireConfirmedEmail = true; }
+            )
+                .AddEntityFrameworkStores<Context>()
+                .AddDefaultTokenProviders();
+
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<IListingRepo, ListingRepo>();
             services.AddScoped<IBookRepo, BookRepo>();
             services.AddScoped<IUserBookRepo, UserBookRepo>();
-            
+            services.AddScoped<IUserRepo, UserRepo>();
 
+
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = false;
+                options.Password.RequiredUniqueChars = 6;
+
+                // Lockout settings
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                options.Lockout.MaxFailedAccessAttempts = 10;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings
+                options.User.RequireUniqueEmail = true;
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.Cookie.Expiration = TimeSpan.FromDays(150);
+                // If the LoginPath isn't set, ASP.NET Core defaults 
+                // the path to /Account/Login.
+                options.LoginPath = "/Account/Login";
+                // If the AccessDeniedPath isn't set, ASP.NET Core defaults 
+                // the path to /Account/AccessDenied.
+                options.AccessDeniedPath = "/Account/AccessDenied";
+                options.SlidingExpiration = true;
+            });
+
+            
+            // requires
+            // using Microsoft.AspNetCore.Identity.UI.Services;
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddDbContext<TxtXContext>(options =>
-               options.UseSqlServer(Configuration["DB:connectionString"]));
-            
+
+            //services.AddMvc();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, TxtXContext db)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
-                DbInitializer.InitializeData(db);
                 app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
+                app.UseDatabaseErrorPage();
             }
             else
             {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseStaticFiles();
+
+            app.UseCors(AllowAnywhere);
+
+            app.UseAuthentication();
+
         }
     }
 }
