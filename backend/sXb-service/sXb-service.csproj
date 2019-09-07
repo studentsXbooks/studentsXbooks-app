@@ -13,226 +13,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="frontend\" />
-    <Folder Include="frontend\public\" />
-    <Folder Include="frontend\src\" />
-    <Folder Include="frontend\src\components\" />
-    <Folder Include="frontend\src\components\api-authorization\" />
     <Folder Include="Repos\" />
     <Folder Include="EF\" />
     <Folder Include="SampleData\" />
     <Folder Include="Migrations\" />
     <Folder Include="Models\ViewModels\" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Migrations\.DS_Store" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="..\..\frontend\.gitignore">
-      <Link>frontend\.gitignore</Link>
-    </None>
-    <None Update="..\..\frontend\public\favicon.ico">
-      <Link>frontend\public\favicon.ico</Link>
-    </None>
-    <None Update="..\..\frontend\public\index.html">
-      <Link>frontend\public\index.html</Link>
-    </None>
-    <None Update="..\..\frontend\public\logo192.png">
-      <Link>frontend\public\logo192.png</Link>
-    </None>
-    <None Update="..\..\frontend\public\logo512.png">
-      <Link>frontend\public\logo512.png</Link>
-    </None>
-    <None Update="..\..\frontend\public\manifest.json">
-      <Link>frontend\public\manifest.json</Link>
-    </None>
-    <None Update="..\..\frontend\public\robots.txt">
-      <Link>frontend\public\robots.txt</Link>
-    </None>
-    <None Update="..\..\frontend\src\App.css">
-      <Link>frontend\src\App.css</Link>
-    </None>
-    <None Update="..\..\frontend\src\App.js">
-      <Link>frontend\src\App.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\App.test.js">
-      <Link>frontend\src\App.test.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\custom.css">
-      <Link>frontend\src\custom.css</Link>
-    </None>
-    <None Update="..\..\frontend\src\index.css">
-      <Link>frontend\src\index.css</Link>
-    </None>
-    <None Update="..\..\frontend\src\index.js">
-      <Link>frontend\src\index.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\logo.svg">
-      <Link>frontend\src\logo.svg</Link>
-    </None>
-    <None Update="..\..\frontend\src\registerServiceWorker.js">
-      <Link>frontend\src\registerServiceWorker.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\serviceWorker.js">
-      <Link>frontend\src\serviceWorker.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\setupTests.js">
-      <Link>frontend\src\setupTests.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\Counter.js">
-      <Link>frontend\src\components\Counter.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\FetchData.js">
-      <Link>frontend\src\components\FetchData.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\Home.js">
-      <Link>frontend\src\components\Home.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\Layout.js">
-      <Link>frontend\src\components\Layout.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\NavMenu.css">
-      <Link>frontend\src\components\NavMenu.css</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\NavMenu.js">
-      <Link>frontend\src\components\NavMenu.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\api-authorization\ApiAuthorizationConstants.js">
-      <Link>frontend\src\components\api-authorization\ApiAuthorizationConstants.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\api-authorization\ApiAuthorizationRoutes.js">
-      <Link>frontend\src\components\api-authorization\ApiAuthorizationRoutes.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\api-authorization\AuthorizeRoute.js">
-      <Link>frontend\src\components\api-authorization\AuthorizeRoute.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\api-authorization\AuthorizeService.js">
-      <Link>frontend\src\components\api-authorization\AuthorizeService.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\api-authorization\Login.js">
-      <Link>frontend\src\components\api-authorization\Login.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\api-authorization\LoginMenu.js">
-      <Link>frontend\src\components\api-authorization\LoginMenu.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\api-authorization\Logout.js">
-      <Link>frontend\src\components\api-authorization\Logout.js</Link>
-    </None>
-    <None Update="..\..\frontend\package.json">
-      <Link>frontend\package.json</Link>
-    </None>
-    <None Update="..\..\frontend\package-lock.json">
-      <Link>frontend\package-lock.json</Link>
-    </None>
-    <None Update="..\..\frontend\README.md">
-      <Link>frontend\README.md</Link>
-    </None>
-    <None Update="..\..\frontend\.flowconfig">
-      <Link>frontend\.flowconfig</Link>
-    </None>
-    <None Update="..\..\frontend\src\App.css">
-      <Link>frontend\src\App.css</Link>
-    </None>
-    <None Update="..\..\frontend\src\App.js">
-      <Link>frontend\src\App.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\App.test.js">
-      <Link>frontend\src\App.test.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\custom.css">
-      <Link>frontend\src\custom.css</Link>
-    </None>
-    <None Update="..\..\frontend\src\index.css">
-      <Link>frontend\src\index.css</Link>
-    </None>
-    <None Update="..\..\frontend\src\index.js">
-      <Link>frontend\src\index.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\logo.svg">
-      <Link>frontend\src\logo.svg</Link>
-    </None>
-    <None Update="..\..\frontend\src\registerServiceWorker.js">
-      <Link>frontend\src\registerServiceWorker.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\serviceWorker.js">
-      <Link>frontend\src\serviceWorker.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\setupTests.js">
-      <Link>frontend\src\setupTests.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\Counter.js">
-      <Link>frontend\src\components\Counter.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\FetchData.js">
-      <Link>frontend\src\components\FetchData.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\Home.js">
-      <Link>frontend\src\components\Home.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\Layout.js">
-      <Link>frontend\src\components\Layout.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\NavMenu.css">
-      <Link>frontend\src\components\NavMenu.css</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\NavMenu.js">
-      <Link>frontend\src\components\NavMenu.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\api-authorization\ApiAuthorizationConstants.js">
-      <Link>frontend\src\components\api-authorization\ApiAuthorizationConstants.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\api-authorization\ApiAuthorizationRoutes.js">
-      <Link>frontend\src\components\api-authorization\ApiAuthorizationRoutes.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\api-authorization\AuthorizeRoute.js">
-      <Link>frontend\src\components\api-authorization\AuthorizeRoute.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\api-authorization\AuthorizeService.js">
-      <Link>frontend\src\components\api-authorization\AuthorizeService.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\api-authorization\Login.js">
-      <Link>frontend\src\components\api-authorization\Login.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\api-authorization\LoginMenu.js">
-      <Link>frontend\src\components\api-authorization\LoginMenu.js</Link>
-    </None>
-    <None Update="..\..\frontend\src\components\api-authorization\Logout.js">
-      <Link>frontend\src\components\api-authorization\Logout.js</Link>
-    </None>
-    <None Update="..\..\frontend\public\favicon.ico">
-      <Link>frontend\public\favicon.ico</Link>
-    </None>
-    <None Update="..\..\frontend\public\index.html">
-      <Link>frontend\public\index.html</Link>
-    </None>
-    <None Update="..\..\frontend\public\logo192.png">
-      <Link>frontend\public\logo192.png</Link>
-    </None>
-    <None Update="..\..\frontend\public\logo512.png">
-      <Link>frontend\public\logo512.png</Link>
-    </None>
-    <None Update="..\..\frontend\public\manifest.json">
-      <Link>frontend\public\manifest.json</Link>
-    </None>
-    <None Update="..\..\frontend\public\robots.txt">
-      <Link>frontend\public\robots.txt</Link>
-    </None>
-    <None Update="..\..\frontend\package.json">
-      <Link>frontend\package.json</Link>
-    </None>
-    <None Update="..\..\frontend\package-lock.json">
-      <Link>frontend\package-lock.json</Link>
-    </None>
-    <None Update="..\..\frontend\README.md">
-      <Link>frontend\README.md</Link>
-    </None>
-    <None Update="..\..\frontend\.flowconfig">
-      <Link>frontend\.flowconfig</Link>
-    </None>
-    <None Update="..\..\frontend\.gitignore">
-      <Link>frontend\.gitignore</Link>
-    </None>
-  </ItemGroup>
+  
   
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
@@ -242,17 +29,14 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="2.2.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="2.2.5" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.6"><PrivateAssets Condition="'%(PackageReference.Version)' == ''">all</PrivateAssets>
+    <PackageReference Include="Microsoft.AspNetCore.App">
+      <PrivateAssets Condition="'%(PackageReference.Version)' == ''">all</PrivateAssets>
       <Publish Condition="'%(PackageReference.Version)' == ''">true</Publish>
     </PackageReference>
-    <PackageReference Include="AspNet.Security.OAuth.Validation" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.6">
+    <PackageReference Include="Microsoft.AspNetCore.All">
       <PrivateAssets Condition="'%(PackageReference.Version)' == ''">all</PrivateAssets>
       <Publish Condition="'%(PackageReference.Version)' == ''">true</Publish>
     </PackageReference>
@@ -261,12 +45,10 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="2.2.0" />
     <PackageReference Include="SendGrid" Version="9.12.0" />
   </ItemGroup>
-<ItemGroup>
+  <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
-    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.2.6" />
-    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
   </ItemGroup>
-<ItemGroup>
-  <Compile Remove="WeatherForecast.cs" />
-</ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Extensions\EmailSenderExtensions.cs" />
+  </ItemGroup>
 </Project>

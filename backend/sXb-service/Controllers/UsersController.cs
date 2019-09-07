@@ -1,21 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using sXb_service.Models;
-using sXb_service.Models.ViewModels;
-using sXb_service.Models.AccountViewModels;
 using sXb_service.Services;
 using sXb_service.Repos.Interfaces;
 
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using RegisterViewModel = sXb_service.Models.ViewModels.RegisterViewModel;
+using sXb_service.Models.ViewModels;
 using System.Text.Encodings.Web;
 
 namespace sXb_service.Controllers
@@ -28,20 +21,17 @@ namespace sXb_service.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IEmailSender _emailSender;
-        private readonly ILogger _logger;
         private IUserRepo Repo { get; set; }
 
         public UsersController( IUserRepo repo,
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            IEmailSender emailSender)
         {
             Repo = repo;
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
-            _logger = logger;
         }
 
 
@@ -97,7 +87,7 @@ namespace sXb_service.Controllers
 
         //TODO: Create Viewmodel for user password, don't pass in url.
         [HttpPost("new")]
-        public async Task<IActionResult> Create([FromBody] sXb_service.Models.ViewModels.RegisterViewModel newUser)
+        public async Task<IActionResult> Create([FromBody] RegisterViewModel newUser)
         {
             
             User user = new User();
@@ -115,8 +105,7 @@ namespace sXb_service.Controllers
             
             if (result.Succeeded)
             {
-                _logger.LogInformation("User created a new account with password.");
-
+                
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var callbackUrl = Url.Page(
                     "/emailconfirmed",
@@ -126,6 +115,7 @@ namespace sXb_service.Controllers
                 await _emailSender.SendEmailAsync(user.Email, "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
+                // Uncomment for registration w/o email confirmation.
                 //await _signInManager.SignInAsync(user, isPersistent: false);
                
                 return Created($"api/User/Get/{user.Id}", user);
@@ -159,7 +149,6 @@ namespace sXb_service.Controllers
             
             // TODO: This is a literal url string. Get root url from user secrets.
             return Redirect("http://sxb-front.com:3000/email-confirmed");
-            // return Ok(result);
 
         }
 
@@ -202,7 +191,7 @@ namespace sXb_service.Controllers
                 if (result.Succeeded)
                 {
                     
-                    _logger.LogInformation("User logged in.");
+                    
                     return RedirectToLocal(returnUrl);
                 }
             }
@@ -215,7 +204,7 @@ namespace sXb_service.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            _logger.LogInformation("User logged out.");
+            
             return Ok("Logout complete!");
         }
 

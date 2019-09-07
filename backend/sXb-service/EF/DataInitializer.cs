@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using sXb_service.EF;
 using sXb_service.Models;
-using sXb_service.SampleData;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 
 namespace sXb_service.EF
 {
@@ -24,11 +22,7 @@ namespace sXb_service.EF
             ResetAllIdentities(context);
             SeedData(context);
         }
-        //public static void setTableToNull(Context context)
-        //{
-        //    var sql = $"Update sXb_service.Follow set UserId = NULL";
-        //    context.Database.ExecuteSqlCommand(sql);
-        //}
+     
         public static void ClearData(Context context)
         {
             
@@ -38,10 +32,15 @@ namespace sXb_service.EF
         public static void ResetAllIdentities (Context context)
         {
         }
-        public static void DeleteRowsFromTable(Context context, string schemaName, string tableName)
+        public async static void DeleteRowsFromTable(Context context, string schemaName, string tableName)
         {
-            var sql = $"Delete from [{schemaName}].[{tableName}]";
-            context.Database.ExecuteSqlCommand(sql);
+            
+            var sql = @"DELETE from [@schemaName].[@tableName]";
+
+            await context.Database.ExecuteSqlCommandAsync(
+                sql,
+                new SqlParameter("@schemaName", schemaName),
+                new SqlParameter("@tableName", tableName)); 
         }
 
         public static void ResetIdentity(Context context)
@@ -49,10 +48,14 @@ namespace sXb_service.EF
 
         }
 
-        public static void ResetIdentity(Context context, string schemaName, string tableName )
+        public async static void ResetIdentity(Context context, string schemaName, string tableName )
         {
-            var sql = $"DBCC CHECKIDENT (\"{schemaName}.{tableName}\", RESEED, 0);";
-            context.Database.ExecuteSqlCommand(sql);
+            var sql = @"DBCC CHECKIDENT (\@schemaName.@tableName\, RESEED, 0);";
+
+            await context.Database.ExecuteSqlCommandAsync(
+                sql,
+                new SqlParameter("@schemaName", schemaName),
+                new SqlParameter("@tableName", tableName));
         }
 
         public static void SeedData(Context context)

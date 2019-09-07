@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using sXb_service.Controllers;
+using sXb_service.Controllers.Identity;
+
 
 namespace Microsoft.AspNetCore.Mvc
 {

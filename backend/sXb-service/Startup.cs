@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -49,10 +46,7 @@ namespace sXb_service
             services.AddDbContext<Context>(options =>
               options.UseSqlServer(Configuration["Db:Connection"]));
 
-            //services.AddDefaultIdentity<IdentityUser>(config =>
-            //{
-                
-            //});
+            
 
             services.AddIdentity<User, IdentityRole>( config =>
                 { config.SignIn.RequireConfirmedEmail = true; }
@@ -127,13 +121,6 @@ namespace sXb_service
 
             app.UseAuthentication();
 
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
         }
     }
 }
