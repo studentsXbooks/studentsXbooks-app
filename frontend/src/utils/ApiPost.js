@@ -1,9 +1,8 @@
 // @flow
 
-const BaseUrl = process.env.REACT_APP_BACKEND;
+const BaseUrl: string = process.env.REACT_APP_BACKEND || "";
 
-// TODO: Should this be stateless?
-function ApiPost(url, creds, json) {
+function ApiPost(url: string, creds: boolean, json: Object) {
   return fetch(BaseUrl + url, {
     method: "POST",
     credentials: creds ? "include" : "omit",
