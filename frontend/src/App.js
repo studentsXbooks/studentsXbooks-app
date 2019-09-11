@@ -2,16 +2,16 @@
 
 import React, { useState, useEffect } from "react";
 import { Router, Link } from "@reach/router";
-
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import LoginSuccess from "./pages/LoginSuccess";
-import EmailConfirmed from "./pages/EmailConfirmed";
-import VerifyEmail from "./pages/VerifyEmail";
-
-import ApiGet from "./components/ApiGet";
-import ApiPost from "./components/ApiPost";
+import {
+  Home,
+  Login,
+  Register,
+  LoginSuccess,
+  EmailConfirmed,
+  VerifyEmail,
+  UserListing
+} from "./pages";
+import { ApiGet, ApiPost } from "./utils";
 
 export default () => (
   // TODO: Clean up Router structure by groups.
@@ -24,6 +24,7 @@ export default () => (
       <LoginSuccess path="login-success" />
       <EmailConfirmed path="email-confirmed" />
       <VerifyEmail path="verify-email" />
+      <UserListing path="user/listings" />
     </Layout>
   </Router>
 );
@@ -49,7 +50,16 @@ const Username = () => {
     });
   });
 
-  return <span>{username}</span>;
+  return (
+    <>
+      {username && (
+        <div>
+          <span>{username}</span>
+          <Link to="/user/listings">My Listings</Link>
+        </div>
+      )}
+    </>
+  );
 };
 
 const Logout = () => {

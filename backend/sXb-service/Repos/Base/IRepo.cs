@@ -1,23 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using sXb_service.Models;
 
 namespace sXb_service.Repos.Base
 {
-    public interface IRepo<T> where T : EntityBase
+    public interface IRepo<T> where T : new()
     {
-        int Count { get; }
-        bool HasChanges { get; }
-        T Find(int? id);
-        T GetFirst();
+        Task<bool> Exist(Guid id);
+
+        Task<T> Find(Guid id);
+
         IEnumerable<T> GetAll();
-        IEnumerable<T> GetRange(int skip,int take);
-        int Add(T entity, bool persist = true);
-        int AddRange(IEnumerable<T> entities, bool persist = true);
-        int Update(T entity, bool persist = true);
-        int UpdateRange(IEnumerable<T> entities, bool persist = true);
-        int Delete(T entity, bool persist = true);
-        int DeleteRange(IEnumerable<T> entities, bool persist = true);
-        int Delete(int id, byte[] timeStamp, bool persist = true);
-        int SaveChanges();
+
+        Task<T> Remove(Guid id);
     }
 }

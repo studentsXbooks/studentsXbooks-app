@@ -2,7 +2,7 @@ import React from "react";
 
 // TODO: Consider changing this page to self-dismissing modal popup.
 
-const LoginSuccess = () => {
+const EmailConfirmed = () => {
   setTimeout(() => {
     window.location.href = "/login";
   }, 1500);
@@ -14,4 +14,4 @@ const LoginSuccess = () => {
     </div>
   );
 };
-export default LoginSuccess;
+export default EmailConfirmed;

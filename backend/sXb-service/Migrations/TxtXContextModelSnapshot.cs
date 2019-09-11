@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using sXb_service.EF;
 
 namespace sXb_service.Migrations
 {
-    [DbContext(typeof(Context))]
-    [Migration("20190903182146_Initial")]
-    partial class Initial
+    [DbContext(typeof(TxtXContext))]
+    partial class TxtXContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -187,6 +185,62 @@ namespace sXb_service.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("sXb_service.Models.Book", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Author");
+
+                    b.Property<string>("ISBN");
+
+                    b.Property<string>("ImageURL");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("sXb_service.Models.Listing", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("Deleted");
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<bool>("Sold");
+
+                    b.Property<Guid>("UserBookId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserBookId");
+
+                    b.ToTable("Listings");
+                });
+
+            modelBuilder.Entity("sXb_service.Models.UserBook", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("BookId");
+
+                    b.Property<int>("Condition");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("UserBooks");
+                });
+
             modelBuilder.Entity("sXb_service.Models.User", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
@@ -246,6 +300,22 @@ namespace sXb_service.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("sXb_service.Models.Listing", b =>
+                {
+                    b.HasOne("sXb_service.Models.UserBook", "UserBook")
+                        .WithMany()
+                        .HasForeignKey("UserBookId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("sXb_service.Models.UserBook", b =>
+                {
+                    b.HasOne("sXb_service.Models.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

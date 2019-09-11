@@ -1,30 +1,35 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using sXb_service.EF;
+using sXb_service.Repos;
+using sXb_service.Repos.Interfaces;
 using sXb_service.Models;
 using sXb_service.Services;
-using sXb_service.EF;
-using sXb_service.Repos.Interfaces;
-using sXb_service.Repos;
-using Microsoft.AspNetCore.Mvc;
 
 namespace sXb_service
 {
     public class Startup
     {
+        readonly string AllowAnywhere = "_AllowAnywhere";
         public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-        }
-
-        readonly string AllowAnywhere = "_AllowAnywhere";
+        }        
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -40,10 +45,9 @@ namespace sXb_service
                        .AllowCredentials()
                        .AllowAnyMethod();
                    });
-
            });
 
-            services.AddDbContext<Context>(options =>
+            services.AddDbContext<TxtXContext>(options =>
               options.UseSqlServer(Configuration["Db:Connection"]));
 
             
@@ -51,11 +55,15 @@ namespace sXb_service
             services.AddIdentity<User, IdentityRole>( config =>
                 { config.SignIn.RequireConfirmedEmail = true; }
             )
-                .AddEntityFrameworkStores<Context>()
+                .AddEntityFrameworkStores<TxtXContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddAutoMapper(typeof(Startup));
+            services.AddScoped<IListingRepo, ListingRepo>();
+            services.AddScoped<IBookRepo, BookRepo>();
+            services.AddScoped<IUserBookRepo, UserBookRepo>();
             services.AddScoped<IUserRepo, UserRepo>();
-
+                       
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings
@@ -96,16 +104,14 @@ namespace sXb_service
             services.Configure<AuthMessageSenderOptions>(Configuration);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-
-            //services.AddMvc();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, TxtXContext context)
         {
             if (env.IsDevelopment())
             {
+                DbInitializer.InitializeData(context);
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
                 app.UseDatabaseErrorPage();
@@ -120,6 +126,8 @@ namespace sXb_service
             app.UseCors(AllowAnywhere);
 
             app.UseAuthentication();
+
+            app.UseMvc();
 
         }
     }

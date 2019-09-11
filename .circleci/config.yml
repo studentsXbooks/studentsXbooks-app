@@ -98,7 +98,7 @@ jobs:
           path: ~/repo
       - *restore_dotnet_cache
       - *install_nuget
-      - run: dotnet test
+      - run: dotnet test sXb-tests/
 
   deploy-back:
     executor: docker-exec

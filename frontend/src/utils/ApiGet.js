@@ -1,6 +1,8 @@
-import BaseUrl from "./BaseUrl";
+// @flow
 
-function ApiGet(url: string, creds: boolean) {
+const BaseUrl: string = process.env.REACT_APP_BACKEND || "";
+
+function ApiGet(url: string, creds: boolean): Object {
   return fetch(BaseUrl + url, {
     method: "GET",
     credentials: creds ? "include" : "omit"

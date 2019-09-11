@@ -1,32 +1,41 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using sXb_service.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace sXb_service.EF
 {
-    public class Context : IdentityDbContext<IdentityUser>
+    public class TxtXContext : IdentityDbContext<IdentityUser>
     {
-        
+        public DbSet<Book> Books { get; set; }
+
+        public DbSet<Listing> Listings { get; set; }
+
+        public DbSet<UserBook> UserBooks { get; set; }
 
         public DbSet<User> User { get; set; }
 
-        public Context(DbContextOptions<Context> options) : base(options)
+        public TxtXContext()
+        {
+
+        }
+
+        public TxtXContext(DbContextOptions options) : base(options)
         {
             try
             {
                 Database.Migrate();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                //Should do something meaningful here                
+                Console.WriteLine(e.Message);
             }
         }
 
-        public Context()
-        {
-        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
@@ -34,9 +43,7 @@ namespace sXb_service.EF
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             base.OnModelCreating(modelBuilder);
-
         }
     }
 }

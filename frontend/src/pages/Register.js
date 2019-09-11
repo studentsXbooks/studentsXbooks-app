@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useState } from "react";
-import ApiPost from "../components/ApiPost";
+import { ApiPost } from "../utils";
 
 const Register = () => {
   const [username, setUsername] = useState();
