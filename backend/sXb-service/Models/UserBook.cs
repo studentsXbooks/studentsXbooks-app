@@ -10,7 +10,7 @@ namespace sXb_service.Models
     {
         public Guid Id { get; set; }
 
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
 
         [ForeignKey(nameof(BookId))]
         public Book Book { get; set; }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace sXb_service.Models
 {
-    public class Book
+    public class Book 
     {
         public Guid Id { get; set; }
 

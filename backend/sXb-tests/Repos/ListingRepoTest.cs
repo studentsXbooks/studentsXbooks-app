@@ -124,7 +124,7 @@ namespace sXb_tests.Repos
         public async void GetByUser__HappyPath()
         {
             var userBook = fixture.Create<UserBook>();
-            userBook.UserId = Guid.NewGuid();
+            userBook.UserId = Guid.NewGuid().ToString();
             var listings = fixture.CreateMany<Listing>();
             foreach (var listing in listings)
             {

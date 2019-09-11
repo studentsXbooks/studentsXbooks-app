@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using sXb_service.Models;
+using sXb_service.Models.ViewModels;
 using sXb_service.Repos.Interfaces;
 using sXb_service.ViewModels;
 
@@ -14,12 +17,14 @@ namespace sXb_service.Controllers
     [ApiController]
     public class ListingsController : ControllerBase
     {
+        private readonly UserManager<User> _userManager;
         private IMapper _mapper;
         private IListingRepo _iRepo;
 
-        public ListingsController(IListingRepo iRepo, IMapper mapper)
+        public ListingsController(IListingRepo iRepo, UserManager<User> userManager, IMapper mapper)
         {
             _iRepo = iRepo;
+            _userManager = userManager;
             _mapper = mapper;
         }
 
@@ -105,17 +110,16 @@ namespace sXb_service.Controllers
             }
         }
 
-        [HttpGet("user/{userId}")]
-        public async Task<IActionResult> GetUsersListings(Guid userId)
+        [HttpGet("user")]
+        public async Task<IActionResult> GetUsersListings()
         {
-            var listings = await _iRepo.ByUser(userId);
-            List<ListingViewModel> vmList = new List<ListingViewModel>();
-            foreach(var listing in listings)
+            var user = await _userManager.GetUserAsync(User);
+            if(user != null)
             {
-                var vm = _mapper.Map<ListingViewModel>(listing);
-                vmList.Add(vm);
+                var listings = await _iRepo.ByUser(user.Id);
+                return Ok(listings.Select(x => _mapper.Map<ListingDetailsViewModel>(x)));
             }
-            return Ok(vmList);
+            return NotFound();
         }
     }
 }

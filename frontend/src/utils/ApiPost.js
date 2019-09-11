@@ -1,7 +1,9 @@
-import BaseUrl from "./BaseUrl";
+// @flow
+
+const BaseUrl = process.env.REACT_APP_BACKEND;
 
 // TODO: Should this be stateless?
-function ApiPost(url: string, creds: boolean, json) {
+function ApiPost(url, creds, json) {
   return fetch(BaseUrl + url, {
     method: "POST",
     credentials: creds ? "include" : "omit",

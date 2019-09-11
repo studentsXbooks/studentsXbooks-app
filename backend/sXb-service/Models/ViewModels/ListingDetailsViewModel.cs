@@ -1,17 +1,15 @@
-﻿using sXb_service.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace sXb_service.ViewModels
+namespace sXb_service.Models.ViewModels
 {
-    public class ListingViewModel
+    public class ListingDetailsViewModel
     {
         public Guid Id { get; set; }
 
-        public UserBook UserBook { get; set; }
+        public string Title { get; set; }
 
         public Guid UserBookId { get; set; }
 

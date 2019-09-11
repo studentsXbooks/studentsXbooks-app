@@ -13,17 +13,17 @@ namespace sXb_service.Repos.Base
         protected TxtXContext _db;
         private bool _disposed = false;
 
-        public BaseRepo()
+        protected BaseRepo()
         {
             _db = new TxtXContext();
         }
 
-        public BaseRepo(TxtXContext context)
+        protected BaseRepo(TxtXContext context)
         {
             _db = context;
         }
 
-        public BaseRepo(DbContextOptions options)
+        protected BaseRepo(DbContextOptions options)
         {
             _db = new TxtXContext(options);
         }
@@ -37,7 +37,7 @@ namespace sXb_service.Repos.Base
         protected virtual void Dispose(bool disposing)
         {
             if (_disposed) return;
-            if(disposing)
+            if (disposing)
             {
                 //Free any other managed objects here
             }
@@ -51,19 +51,20 @@ namespace sXb_service.Repos.Base
             {
                 return _db.SaveChanges();
             }
-            catch(DbUpdateConcurrencyException ex)
+            catch (DbUpdateConcurrencyException ex)
             {
-                Console.WriteLine(ex.Message);
+                //A concurrency error occurred
                 throw;
             }
-            catch(RetryLimitExceededException ex)
+            catch (RetryLimitExceededException ex)
             {
-                Console.WriteLine(ex.Message);
+                //_dbResiliency retry limit exceeded
+                //logger.Error("Maximum retry limit reached.", ex);
                 throw;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                //logger.Error("Error occurred.", ex);
                 throw;
             }
         }

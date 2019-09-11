@@ -13,12 +13,12 @@ namespace sXb_service.Repos
 {
     public class UserRepo : IUserRepo
     {
-        public readonly Context Db;
+        public readonly TxtXContext Db;
         public DbSet<User> Table { get; }
 
-        public UserRepo(DbContextOptions<Context> options)
+        public UserRepo(DbContextOptions<TxtXContext> options)
         {
-            Db = new Context(options);
+            Db = new TxtXContext(options);
             Table = Db.Set<User>();
         }
 

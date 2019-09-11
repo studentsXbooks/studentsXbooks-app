@@ -56,7 +56,8 @@ namespace sXb_service.Controllers
         [HttpGet("name")]
         public async Task<IActionResult>GetUsername()
         {
-            return Ok(new { username = (await _userManager.GetUserAsync(HttpContext.User)).UserName });
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            return Ok(new { username = user.UserName });
         }
         
         [HttpPut("{id}")]
