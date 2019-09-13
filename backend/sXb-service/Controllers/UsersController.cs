@@ -74,7 +74,7 @@ namespace sXb_service.Controllers {
         }
 
         [HttpPost ("new")]
-        public async Task<IActionResult> Create ([FromBody] RegisterViewModel newUser) {
+        public async Task<IActionResult> Register ([FromBody] RegisterViewModel newUser) {
 
             User user = new User ();
             if (newUser.Username != null)
@@ -91,14 +91,10 @@ namespace sXb_service.Controllers {
 
             if (result.Succeeded) {
 
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync (user);
-                var callbackUrl = Url.Page (
-                    "/emailconfirmed",
-                    pageHandler : null,
-                    values : new { userId = user.Id, code = code },
-                    protocol : Request.Scheme);
+                string code = await _userManager.GenerateEmailConfirmationTokenAsync (user);
+
                 await _emailSender.SendEmailAsync (user.Email, "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    $"Please confirm your account by <a href='/emailconfirmed?userId={user.Id}&code={code}'>clicking here</a>.");
 
                 // Uncomment for registration w/o email confirmation.
                 //await _signInManager.SignInAsync(user, isPersistent: false);
