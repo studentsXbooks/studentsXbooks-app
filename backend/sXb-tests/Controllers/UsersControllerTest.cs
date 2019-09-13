@@ -25,5 +25,23 @@ namespace sXb_tests.Controllers {
 
             //Then
         }
+
+        [Fact]
+        public void Register_SendEmailThrowsError_Returns400 () {
+
+        }
+
+        [Fact]
+        public async Task EmailConfirm_NewUserValidToken_ReturnRedirectAndUserAccountConfirmIsTrueAndCookieReturned () {
+            // 1. Retrieve cookie & userId from registration process.
+            // 2. Insert cookie & id into code query param. 
+
+            string cookie = "";
+            string id = "";
+            string url = $"/api/users/new?userId={id}&code={cookie}";
+            var client = _factory.CreateClient ();
+            var response = await client.GetAsync (url);
+            Assert.Equal (HttpStatusCode.Redirect, response.StatusCode);
+        }
     }
 }

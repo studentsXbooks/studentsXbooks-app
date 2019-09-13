@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -8,11 +9,13 @@ using AutoFixture.AutoMoq;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using Newtonsoft.Json;
 using sXb_service;
 using sXb_service.Helpers;
 using sXb_service.Models;
 using sXb_service.Models.ViewModels;
+using sXb_service.Services;
 using Xunit;
 
 namespace sXb_tests.Integration {
@@ -23,11 +26,12 @@ namespace sXb_tests.Integration {
         public UsersController (WebApplicationFactory<Startup> factory) {
             _factory = factory;
             fixture = new Fixture ().Customize (new AutoMoqCustomization ());
+            fixture.Customize<RegisterViewModel> ((ob) => ob.With (x => x.Email, $"{Guid.NewGuid()}@wvup.edu").With (x => x.Password, "Develop@90"));
         }
 
         [Fact]
         public async Task Register_HappyPath_ShouldReturn201 () {
-            string url = "api/users/new";
+            string url = "/api/users/new";
             var client = _factory.CreateClient ();
 
             var newUser = fixture.Create<RegisterViewModel> ();
@@ -40,12 +44,13 @@ namespace sXb_tests.Integration {
 
         [Fact]
         public async Task Register_NonEduAddress_ShouldReturn400 () {
-            string url = "api/users/new";
+            string url = "/api/users/new";
             var client = _factory.CreateClient ();
 
             var newUser = fixture.Create<RegisterViewModel> ();
             newUser.Email = "email@hotmail.com";
             var response = await client.PostAsJsonAsync<RegisterViewModel> (url, newUser);
+
             var errorMessage = await response.Content.ReadAsAsync<ErrorMessage> ();
             Assert.Equal (HttpStatusCode.BadRequest, response.StatusCode);
             Assert.NotNull (errorMessage.Message);
@@ -53,55 +58,117 @@ namespace sXb_tests.Integration {
 
         [Fact]
         public async Task Register_UserNameTaken_ShouldReturn400 () {
+            string url = "/api/users/new";
+            var client = _factory.CreateClient ();
 
+            var newUser = fixture.Create<RegisterViewModel> ();
+            newUser.Username = "TestUser";
+            var response = await client.PostAsJsonAsync<RegisterViewModel> (url, newUser);
+
+            var errorMessage = await response.Content.ReadAsAsync<ErrorMessage> ();
+            Assert.Equal (HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.NotNull (errorMessage.Message);
         }
 
         [Theory]
         [InlineData ("as")]
+        [InlineData ("teqwe")]
+        [InlineData ("1")]
+        [InlineData ("")]
         public async Task Register_PasswordWeak_ShouldReturn400 (string password) {
+            string url = "/api/users/new";
+            var client = _factory.CreateClient ();
 
+            var newUser = fixture.Create<RegisterViewModel> ();
+            newUser.Password = password;
+            var response = await client.PostAsJsonAsync<RegisterViewModel> (url, newUser);
+
+            var errorMessage = await response.Content.ReadAsAsync<ErrorMessage> ();
+            Assert.Equal (HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.NotNull (errorMessage.Message);
         }
 
         [Fact]
-        public async Task Register_AccountAlreadyExists_ShouldReturn400 () {
+        public async Task Register_AlreadyRegisteredEmail_ShouldReturn400 () {
+            string url = "/api/users/new";
+            var client = _factory.CreateClient ();
 
+            var newUser = fixture.Create<RegisterViewModel> ();
+
+            newUser.Email = "test@wvup.edu";
+            var response = await client.PostAsJsonAsync<RegisterViewModel> (url, newUser);
+
+            var errorMessage = await response.Content.ReadAsAsync<ErrorMessage> ();
+            Assert.Equal (HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.NotNull (errorMessage.Message);
         }
 
         [Theory]
         [InlineData ("", "", "")]
+        [InlineData ("", "Develop@90", "")]
+        [InlineData ("newUsername", "Develop@90", "")]
+        [InlineData ("", "Develop@90", "newUser@wvup.edu")]
+        [InlineData ("", "", "newUser@wvup.edu")]
+        [InlineData ("newUsername", "", "")]
         public async Task Register_BadVM_ShouldReturn400 (string username, string password, string email) {
+            string url = "/api/users/new";
+            var client = _factory.CreateClient ();
 
+            var newUser = new RegisterViewModel () {
+                Username = username,
+                Password = password,
+                Email = email
+            };
+            var response = await client.PostAsJsonAsync<RegisterViewModel> (url, newUser);
+
+            var errorMessage = await response.Content.ReadAsAsync<ErrorMessage> ();
+            Assert.Equal (HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.NotNull (errorMessage.Message);
         }
 
         [Fact]
-        public async Task Register_EmailConfirmThrowsError_ShouldReturn400 () {
+        public async Task EmailConfirm_InvalidToken_Return400WithNoCookie () {
+            string url = "/api/users/new?userId=asfasdf&code=123123";
+            var client = _factory.CreateClient ();
 
-        }
-
-        [Fact]
-        public async Task EmailConfirm_NewUserValidToken_Return200AndUserAccountConfirmIsTrueAndCookieReturned () {
-
-        }
-
-        [Fact]
-        public async Task EmailConfirm_InvalidToken_Return400 () {
-
+            var response = await client.GetAsync (url);
+            Assert.Equal (HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Null (response.Headers.GetValues ("AspnetIdentityCookie"));
         }
 
         [Fact]
         public async Task GetUserName_CallerHasCookie_Return200WithUserName () {
+            string url = "/api/users/name";
+            var client = _factory.CreateClient ();
+            await client.PostAsJsonAsync<LoginViewModel> ("/api/users/", new LoginViewModel () {
+                Email = "test@wvup.edu",
+                    Password = "Develop@90"
+            });
 
+            var response = await client.GetAsync (url);
+            var username = await response.Content.ReadAsAsync<User> ();
+            Assert.Equal (HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal (username.UserName, "TestUser");
         }
 
         [Fact]
         public async Task GetUserName_CallerHasNoCookie_Return400 () {
+            string url = "/api/users/name";
+            var client = _factory.CreateClient ();
 
+            var response = await client.GetAsync (url);
+            Assert.Equal (HttpStatusCode.BadRequest, response.StatusCode);
         }
 
         [Fact]
         public async Task GetUserName_InvalidCookie_Return400 () {
+            string url = "/api/users/name";
+            var client = _factory.CreateClient ();
+            var request = new HttpRequestMessage (HttpMethod.Get, url);
+            request.Headers.Add ("Cookie", "AspnetIdentityCookie=Whutever;");
 
+            var response = await client.SendAsync (request);
+            Assert.Equal (HttpStatusCode.BadRequest, response.StatusCode);
         }
-
     }
 }
