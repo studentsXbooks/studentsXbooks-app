@@ -24,33 +24,34 @@ namespace sXb_tests.Integration {
             fixture = new Fixture ().Customize (new AutoMoqCustomization ());
         }
 
-        [Theory]
-        [InlineData ("/api/listings")]
-        [InlineData ("/api/listings/b55146c3-dfef-4854-b2c6-a657fdd44e5d")]
-        public async Task Get_EndpointsReturnSuccessAndCorrectContentType (string url) {
-            // Arrange
-            var client = _factory.CreateClient ();
+        [Fact]
+        public async Task GetUsersListing_CallerHasCookie_Return200WithAPageOfListingVMs () {
 
-            // Act
-            var response = await client.GetAsync (url);
-
-            // Assert
-            response.EnsureSuccessStatusCode (); // Status Code 200-299
-            Assert.Equal ("application/json; charset=utf-8",
-                response.Content.Headers.ContentType.ToString ());
         }
 
         [Fact]
-        public async Task Post_EndpointReturnCreatedAndCorrectContentType () {
-            var listing = fixture.Create<ListingViewModel> ();
-            var client = _factory.CreateClient ();
-            var listingJson = JsonConvert.SerializeObject (listing);
+        public async Task GetUsersListing_CallerHasCookieAndNoPageData_Return200WithAPageOfNoData () {
 
-            var body = new StringContent (listingJson, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync ("/api/listings", body);
+        }
 
-            response.EnsureSuccessStatusCode ();
-            Assert.Equal (HttpStatusCode.Created, response.StatusCode);
+        [Fact]
+        public async Task GetUsersListing_CallerHasNoCookie_Return400 () {
+
+        }
+
+        [Fact]
+        public async Task GetUsersListing_InvalidCookie_Return400 () {
+
+        }
+
+        [Fact]
+        public async Task GetListingDetail_IdExists_Return200WithListingDetailVM () {
+
+        }
+
+        [Fact]
+        public async Task GetListingDetail_IdNotFound_Return400 () {
+
         }
     }
 }
