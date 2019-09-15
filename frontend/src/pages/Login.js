@@ -1,55 +1,77 @@
 // @flow
 
 import React, { useState } from "react";
+import {
+  TextField,
+  Button,
+  Card,
+  CardHeader,
+  CardContent,
+  CardActions,
+  Grid,
+  Typography
+} from "@material-ui/core";
 import { ApiPost } from "../utils";
+import FullHeightGrid from "../ui/FullHeightGrid";
 
-type Props = {
-  email: string
-  //,
-  //children : any
-};
-
-const Login = (prop: Props) => {
-  const [email, setEmail] = useState("@wvup.edu");
-  const [password, setPassword] = useState();
+const Login = ({ navigate }: Object) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   return (
-    <div>
-      <h1>Login</h1>
-
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          e.persist();
-          ApiPost("users", true, { email, password }).then(
-            // Redirect to Login success message window.
-            res => (window.location.href = "/login-success")
-          );
-        }}
-      >
-        <label htmlFor="Email">Email</label>
-        <input
-          type="text"
-          value={email}
-          onChange={e => {
-            setEmail(e.target.value);
-          }}
-          id="Email"
-          name="Email"
-        />
-        <br />
-        <label htmlFor="Password">Password</label>
-        <input
-          type="password"
-          onChange={e => {
-            setPassword(e.target.value);
-          }}
-          id="Password"
-          name="Password"
-        />
-        <br />
-        <input type="submit" value="Submit" />
-      </form>
-    </div>
+    <FullHeightGrid container alignItems="center" justify="center">
+      <Grid item xs={9} sm={6} lg={3}>
+        <Card component="article" raised>
+          <form
+            onSubmit={e => {
+              e.preventDefault();
+              ApiPost("users", true, { email, password })
+                .then(() => {
+                  navigate("/login-success");
+                })
+                .catch(console.log);
+            }}
+            method="POST"
+          >
+            <CardHeader
+              title={
+                <Typography variant="h3" align="center">
+                  Login
+                </Typography>
+              }
+            />
+            <CardContent>
+              <TextField
+                id="email"
+                label="Email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                fullWidth
+              />
+              <br />
+              <TextField
+                id="password"
+                label="Password"
+                type="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                fullWidth
+              />
+              <br />
+            </CardContent>
+            <CardActions>
+              <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                type="submit"
+              >
+                Submit
+              </Button>
+            </CardActions>
+          </form>
+        </Card>
+      </Grid>
+    </FullHeightGrid>
   );
 };
 

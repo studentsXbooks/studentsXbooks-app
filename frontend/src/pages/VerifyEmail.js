@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 const VerifyEmail = () => {
   const email = new URL(window.location).searchParams.get("email");
