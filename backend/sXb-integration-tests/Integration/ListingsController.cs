@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -10,11 +11,14 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using sXb_service;
+using sXb_service.Helpers;
 using sXb_service.Models;
+using sXb_service.Models.ViewModels;
 using sXb_service.ViewModels;
 using Xunit;
 
-namespace sXb_tests.Integration {
+namespace sXb_tests.Integration
+{
     public class ListingsController : IClassFixture<WebApplicationFactory<Startup>> {
         private readonly WebApplicationFactory<Startup> _factory;
         private IFixture fixture;
@@ -24,33 +28,58 @@ namespace sXb_tests.Integration {
             fixture = new Fixture ().Customize (new AutoMoqCustomization ());
         }
 
-        [Theory]
-        [InlineData ("/api/listings")]
-        [InlineData ("/api/listings/b55146c3-dfef-4854-b2c6-a657fdd44e5d")]
-        public async Task Get_EndpointsReturnSuccessAndCorrectContentType (string url) {
-            // Arrange
-            var client = _factory.CreateClient ();
+        [Fact]
+        public async Task GetUsersListing_CallerHasCookie_Return200WithAPageOfListingVMs()
+        {           
+            string listingsByUserUrl = "/api/listings/user";
+            var client = _factory.CreateClient();
+            await client.PostAsJsonAsync<LoginViewModel>("/api/users/", new LoginViewModel()
+            {
+                Email = "test@wvup.edu",
+                Password = "Develop@90"
+            });
 
-            // Act
-            var response = await client.GetAsync (url);
+            var response = await client.GetAsync(listingsByUserUrl);
+            var listings = await response.Content.ReadAsAsync<Paging<Listing>>();
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(2, listings.Data.Count());
+        }
+         
+        [Fact]
+        public async Task GetUsersListing_CallerHasCookieAndNoPageData_Return200WithAPageOfNoData()
+        {
+            string listingsByUserUrl = "/api/listings/user";
+            var client = _factory.CreateClient();
+            await client.PostAsJsonAsync<LoginViewModel>("/api/users/", new LoginViewModel()
+            {
+                Email = "nolistingsuser@wvup.edu",
+                Password = "Develop@90"
+            });
 
-            // Assert
-            response.EnsureSuccessStatusCode (); // Status Code 200-299
-            Assert.Equal ("application/json; charset=utf-8",
-                response.Content.Headers.ContentType.ToString ());
+            var response = await client.GetAsync(listingsByUserUrl);
+            var listings = await response.Content.ReadAsAsync<Paging<Listing>>();
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Empty(listings.Data);
+        }
+       
+        [Fact]
+        public async Task GetListingDetail_IdExists_Return200WithListingDetailVM()
+        {
+            var listing = fixture.Create<ListingViewModel>();
+            var client = _factory.CreateClient();
+            var response = await client.GetAsync("/api/listings/b55146c3-dfef-4854-b2c6-a657fdd44e5d");
+
+            response.EnsureSuccessStatusCode();
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
         [Fact]
-        public async Task Post_EndpointReturnCreatedAndCorrectContentType () {
-            var listing = fixture.Create<ListingViewModel> ();
-            var client = _factory.CreateClient ();
-            var listingJson = JsonConvert.SerializeObject (listing);
+        public async Task GetListingDetail_IdNotFound_Return400()
+        {
+            var client = _factory.CreateClient();
+            var response = await client.GetAsync("/api/listings/1");
 
-            var body = new StringContent (listingJson, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync ("/api/listings", body);
-
-            response.EnsureSuccessStatusCode ();
-            Assert.Equal (HttpStatusCode.Created, response.StatusCode);
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
     }
 }
