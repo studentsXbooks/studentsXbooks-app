@@ -11,8 +11,6 @@ namespace sXb_service.ViewModels
     {
         public Guid Id { get; set; }
 
-        public UserBook UserBook { get; set; }
-
         public Guid UserBookId { get; set; }
 
         public decimal Price { get; set; }

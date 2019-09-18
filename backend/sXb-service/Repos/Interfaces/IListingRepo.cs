@@ -13,6 +13,6 @@ namespace sXb_service.Repos.Interfaces
 
         Task<Listing> Update(Listing listing);
 
-        Task<IEnumerable<Listing>> ByUser(string userId);
+        //Task<IEnumerable<Listing>> ByUser(string userId);
     }
 }

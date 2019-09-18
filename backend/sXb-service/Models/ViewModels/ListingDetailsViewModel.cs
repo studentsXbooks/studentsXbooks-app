@@ -11,18 +11,12 @@ namespace sXb_service.Models.ViewModels
 
         public string Title { get; set; }
 
-        public Guid UserBookId { get; set; }
+        public Author Author { get; set; }
 
         public decimal Price { get; set; }
-
-        public bool Sold { get; set; }
-
-        public bool Deleted { get; set; }
-
-        public string Author { get; set; }
-
+        
         public string ISBN { get; set; }
 
-        public string ImageURL { get; set; }
+        public Condition Condition { get; set; }
     }
 }

@@ -52,14 +52,14 @@ namespace sXb_service.Repos
             return listing;
         }
 
-        public async Task<IEnumerable<Listing>> ByUser(string userId)
-        {
-            if (_db.Listings.Any(x => x.UserBook.UserId == userId))
-            {
-                return await _db.Listings.Where(e => e.UserBook.UserId == userId).Include(e => e.UserBook.Book).ToListAsync();
-            }
-            return null;
-        }
+        //public async Task<IEnumerable<Listing>> ByUser(string userId)
+        //{
+        //    if (_db.Listings.Any(x => x.UserBook.UserId == userId))
+        //    {
+        //        return await _db.Listings.Where(e => e.UserBook.UserId == userId).Include(e => e.UserBook.Book).ToListAsync();
+        //    }
+        //    return null;
+        //}
 
     }
 }

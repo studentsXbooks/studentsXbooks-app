@@ -10,15 +10,27 @@ namespace sXb_service.Models
     {
         public Guid Id { get; set; }
 
-        [ForeignKey(nameof(UserBookId))]
-        public UserBook UserBook { get; set; }
+        [ForeignKey(nameof(BookId))]
+        public Book Book { get; set; }
 
-        public Guid UserBookId { get; set; }
+        public Guid BookId { get; set; }
+
+        [ForeignKey(nameof(UserId))]
+        public User User { get; set; }
+
+        public string UserId { get; set; }
 
         public decimal Price { get; set; }
-        
-        public bool Sold { get; set; }
 
-        public bool Deleted { get; set; }
+        public Condition Condition { get; set; }
+    }
+
+    public enum Condition
+    {
+        New,
+        LikeNew,
+        Good,
+        Fair,
+        Poor
     }
 }

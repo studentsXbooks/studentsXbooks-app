@@ -1,15 +1,10 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using AutoFixture;
 using AutoFixture.AutoMoq;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 using sXb_service;
 using sXb_service.Helpers;
 using sXb_service.Models;
@@ -80,6 +75,46 @@ namespace sXb_tests.Integration
             var response = await client.GetAsync("/api/listings/1");
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task Create_ValidListingDetail_Returns201WithModel()
+        {
+            string url = "/api/listings/";
+            var client = _factory.CreateClient();
+            var newListing = fixture.Create<ListingDetailsViewModel>();
+            var response = await client.PostAsJsonAsync(url, newListing);
+
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        }
+
+        [Theory]
+        [InlineData("This title is way too long and the test should fail because of it because it is really long and it can only be 256 characters but it is longer than that and so it should return a bad request instead of working because this won't work because it is too long and this is a good test so it should not work", "FirstName", "LastName", "middleName", "9780746062760", 4.99, Condition.Fair)]
+        [InlineData("", "FirstName", "LastName", "middleName", "9780746062760", 4.99, Condition.Good)]
+        [InlineData("Normal Length Title", "", "LastName", "middleName", "9780746062760", 4.99, Condition.Fair)]
+        [InlineData("Normal Length Title", "FirstName", "", "middleName", "9780746062760", 4.99, Condition.Fair)]
+        [InlineData("Normal Length Title", "FirstName", "LastName", "", "9780746062760", 4.99, Condition.Fair)]
+        [InlineData("Normal Length Title", "FirstName", "LastName", "MiddleName", "978746062760", 4.99, Condition.Fair)]
+        [InlineData("Normal Length Title", "FirstName", "LastName", "MiddleName", "978746062760", -4.99, Condition.Fair)]
+        public async Task Create_InvalidListingDetail_Return400(string title, string firstName, string lastName, string middleName, string isbn, decimal price, 
+            Condition condition)
+        {
+            string url = "/api/listings/";
+            var client = _factory.CreateClient();
+
+            var newListing = new ListingDetailsViewModel()
+            {
+                Author = new Author { FirstName = firstName, LastName = lastName, MiddleName = middleName },
+                Title = title,
+                ISBN = isbn,
+                Price = price,
+                Condition = condition
+            };
+            var response = await client.PostAsJsonAsync<ListingDetailsViewModel>(url, newListing);
+
+            var errorMessage = await response.Content.ReadAsAsync<ErrorMessage>();
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.NotNull(errorMessage.Message);
         }
     }
 }

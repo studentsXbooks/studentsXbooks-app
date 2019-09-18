@@ -61,7 +61,6 @@ namespace sXb_service
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<IListingRepo, ListingRepo>();
             services.AddScoped<IBookRepo, BookRepo>();
-            services.AddScoped<IUserBookRepo, UserBookRepo>();
             services.AddScoped<IUserRepo, UserRepo>();
                        
             services.Configure<IdentityOptions>(options =>

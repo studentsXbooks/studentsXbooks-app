@@ -112,16 +112,16 @@ namespace sXb_service.Controllers
             }
         }
 
-        [HttpGet("user")]
-        public async Task<IActionResult> GetUsersListings()
-        {
-            var user = await _userManager.GetUserAsync(User);
-            if(user != null)
-            {
-                var listings = await _iRepo.ByUser(user.Id);
-                return Ok(listings.Select(x => _mapper.Map<ListingDetailsViewModel>(x)));
-            }
-            return NotFound();
-        }
+        //[HttpGet("user")]
+        //public async Task<IActionResult> GetUsersListings()
+        //{
+        //    var user = await _userManager.GetUserAsync(User);
+        //    if(user != null)
+        //    {
+        //        var listings = await _iRepo.ByUser(user.Id);
+        //        return Ok(listings.Select(x => _mapper.Map<ListingDetailsViewModel>(x)));
+        //    }
+        //    return NotFound();
+        //}
     }
 }

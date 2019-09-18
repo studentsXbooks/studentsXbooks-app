@@ -6,17 +6,19 @@ using System.Threading.Tasks;
 
 namespace sXb_service.Models
 {
-    public class Book 
+    public class Author
     {
         public Guid Id { get; set; }
 
-        public string Title { get; set; }
+        public string FirstName { get; set; }
 
-        public string ISBN10 { get; set; }
-        
-        public string Description { get; set; }
+        public string LastName { get; set; }
 
-        [InverseProperty(nameof(BookAuthor.Book))]
+        public string MiddleName { get; set; } 
+
+        public string FullName { get => $"{FirstName } {MiddleName[0]} {LastName}"; }
+
+        [InverseProperty(nameof(BookAuthor.Author))]
         public List<BookAuthor> BookAuthors { get; set; } = new List<BookAuthor>();
     }
 }
