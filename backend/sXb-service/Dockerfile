@@ -14,5 +14,4 @@ FROM mcr.microsoft.com/dotnet/core/aspnet:2.2
 EXPOSE 80
 WORKDIR /app
 COPY --from=build-env /app/out .
-COPY --from=build-env /app/SampleData ./SampleData
 ENTRYPOINT ["dotnet", "sXb-service.dll"]
