@@ -14,5 +14,7 @@ namespace sXb_service.Repos.Interfaces
         int Update(User user, bool persists = true);
         string FindIdByName(string first, string last);
         string GetUsernameByEmail(string email);
+        bool UsernameExists(string username);
+        bool EmailExists(string email);
     }
 }

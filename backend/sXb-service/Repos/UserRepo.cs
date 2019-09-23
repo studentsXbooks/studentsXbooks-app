@@ -106,5 +106,16 @@ namespace sXb_service.Repos
            ).First();
             return user.UserName;
         }
+        public bool UsernameExists(string username)
+        {
+            int count = Table.Where(e => e.UserName.ToLower().Equals(username.ToLower())).Count();
+            
+            return count > 0 ? true : false;
+        }
+        public bool EmailExists(string email)
+        {
+            int count = Table.Where(e => e.Email.ToLower().Equals(email.ToLower())).Count();
+            return count > 0 ? true : false;
+        }
     }
 }

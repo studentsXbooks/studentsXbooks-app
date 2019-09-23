@@ -44,7 +44,16 @@ namespace sXb_service {
             services.AddDbContext<TxtXContext> (options =>
                 options.UseSqlServer (Configuration["Db:Connection"]));
 
-            services.AddIdentity<User, IdentityRole> (config => { config.SignIn.RequireConfirmedEmail = true; })
+            services.AddIdentity<User, IdentityRole> (options => {
+                options.SignIn.RequireConfirmedEmail = true;
+                // Password settings
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = false;
+                options.Password.RequiredUniqueChars = 6;
+            })
                 .AddEntityFrameworkStores<TxtXContext> ()
                 .AddDefaultTokenProviders ();
 
@@ -55,13 +64,7 @@ namespace sXb_service {
             services.AddScoped<IUserRepo, UserRepo> ();
 
             services.Configure<IdentityOptions> (options => {
-                // Password settings
-                options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 8;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = true;
-                options.Password.RequireLowercase = false;
-                options.Password.RequiredUniqueChars = 6;
+                
 
                 // Lockout settings
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes (30);

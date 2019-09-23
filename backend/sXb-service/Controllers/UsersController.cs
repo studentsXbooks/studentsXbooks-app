@@ -9,6 +9,8 @@ using sXb_service.Models;
 using sXb_service.Models.ViewModels;
 using sXb_service.Repos.Interfaces;
 using sXb_service.Services;
+using System.Text.RegularExpressions;
+using sXb_service.Helpers;
 
 namespace sXb_service.Controllers {
     [Route ("api/[controller]")]
@@ -38,8 +40,8 @@ namespace sXb_service.Controllers {
         }
 
         [HttpGet ("{id}")]
-        public IActionResult Get (string id) {
-            var item = Repo.Get (id);
+        public async Task<IActionResult> GetUserById (string id) {
+            User item = await Repo.Get (id);
             if (item == null) {
                 return NotFound ();
             }
@@ -47,8 +49,13 @@ namespace sXb_service.Controllers {
         }
 
         [HttpGet ("name")]
-        public async Task<IActionResult> GetUsername () {
+        public async Task<IActionResult> GetUsername ()
+        {
             var user = await _userManager.GetUserAsync (HttpContext.User);
+            if (user == null)
+            {
+                return BadRequest(new ErrorMessage("No cookie found for user."));
+            }
             return Ok (new { username = user.UserName });
         }
 
@@ -77,16 +84,42 @@ namespace sXb_service.Controllers {
         public async Task<IActionResult> Register ([FromBody] RegisterViewModel newUser) {
 
             User user = new User ();
-            if (newUser.Username != null)
+
+            
+
+            if (newUser.Password == null)
+            {
+                return BadRequest(new ErrorMessage("Password cannot be empty."));
+            }
+
+            if (newUser.Username != null )
                 user.UserName = newUser.Username;
             else
                 return BadRequest ();
 
-            if (newUser.Email != null)
+            // Validate: username doesn't already exist.
+            if( Repo.UsernameExists( newUser.Username ) )
+            {
+                return BadRequest(new ErrorMessage("Username already taken!"));
+            }
+
+            if (newUser.Email != null )
                 user.Email = newUser.Email;
             else
-                return BadRequest ();
+                return BadRequest();
 
+            // Validate: .edu email address.
+            if (!Regex.Match(newUser.Email, ".+@.+[.]edu").Success)
+            {
+                return BadRequest(new ErrorMessage("Invalid email address: Not an edu email address."));
+            }
+            // Validate: email doesn't already exist.
+            if ( Repo.EmailExists( newUser.Email ) )
+            {
+                return BadRequest(new ErrorMessage("Email already exists!"));
+            }
+
+            // Now, create user.
             var result = await _userManager.CreateAsync (user, newUser.Password);
 
             if (result.Succeeded) {
@@ -99,7 +132,7 @@ namespace sXb_service.Controllers {
                 // Uncomment for registration w/o email confirmation.
                 //await _signInManager.SignInAsync(user, isPersistent: false);
 
-                return Created ($"api/User/Get/{user.Id}", user);
+                return Created ($"api/users/{user.Id}", new { Id = user.Id, Code = code } );
             } else {
                 foreach (var error in result.Errors) {
                     ModelState.AddModelError (string.Empty, error.Description);
@@ -109,16 +142,18 @@ namespace sXb_service.Controllers {
             return NotFound ();
         }
 
-        [HttpGet ("new")]
+        [HttpGet("new")]
         [AllowAnonymous]
-        public async Task<IActionResult> ConfirmEmail ([FromQuery] string userId, [FromQuery] string code) {
+        public async Task<IActionResult> ConfirmEmail([FromQuery] string userId, [FromQuery] string code) {
             if (userId == null || code == null) {
-                return NotFound ();
+                return NotFound();
             }
             User user = await _userManager.FindByIdAsync (userId);
 
             if (user == null) {
-                throw new ApplicationException ($"Unable to load user with ID '{userId}'.");
+
+                //throw new ApplicationException ($"Unable to load user with ID '{userId}'.");
+                return BadRequest();
             }
             var result = await _userManager.ConfirmEmailAsync (user, code);
 
@@ -162,7 +197,18 @@ namespace sXb_service.Controllers {
             }
 
             // If execution got this far, something failed, redisplay the form.
-            return RedirectToAction (nameof (GetAll));
+            return RedirectToAction (nameof (GetId));
+        }
+        [HttpGet("id")]
+        //[Authorize]
+        public async Task<IActionResult> GetId()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user == null)
+            {
+                return BadRequest(new ErrorMessage("No cookie found for user."));
+            }
+            return Ok(new { Id = user.Id });
         }
 
         [HttpPost ("logout")]
