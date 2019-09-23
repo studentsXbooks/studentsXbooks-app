@@ -29,7 +29,7 @@ namespace sXb_service
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-        }        
+        }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -50,10 +50,10 @@ namespace sXb_service
             services.AddDbContext<TxtXContext>(options =>
               options.UseSqlServer(Configuration["Db:Connection"]));
 
-            
 
-            services.AddIdentity<User, IdentityRole>( config =>
-                { config.SignIn.RequireConfirmedEmail = true; }
+
+            services.AddIdentity<User, IdentityRole>(config =>
+               { config.SignIn.RequireConfirmedEmail = true; }
             )
                 .AddEntityFrameworkStores<TxtXContext>()
                 .AddDefaultTokenProviders();
@@ -63,7 +63,7 @@ namespace sXb_service
             services.AddScoped<IBookRepo, BookRepo>();
             services.AddScoped<IUserBookRepo, UserBookRepo>();
             services.AddScoped<IUserRepo, UserRepo>();
-                       
+
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings
@@ -88,16 +88,16 @@ namespace sXb_service
                 // Cookie settings
                 options.Cookie.HttpOnly = true;
                 options.Cookie.Expiration = TimeSpan.FromDays(150);
-                // If the LoginPath isn't set, ASP.NET Core defaults 
+                // If the LoginPath isn't set, ASP.NET Core defaults
                 // the path to /Account/Login.
                 options.LoginPath = "/Account/Login";
-                // If the AccessDeniedPath isn't set, ASP.NET Core defaults 
+                // If the AccessDeniedPath isn't set, ASP.NET Core defaults
                 // the path to /Account/AccessDenied.
                 options.AccessDeniedPath = "/Account/AccessDenied";
                 options.SlidingExpiration = true;
             });
 
-            
+
             // requires
             // using Microsoft.AspNetCore.Identity.UI.Services;
             services.AddTransient<IEmailSender, EmailSender>();
@@ -118,10 +118,11 @@ namespace sXb_service
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
             }
 
-            app.UseStaticFiles();
+
+            app.UseHttpsRedirection();
 
             app.UseCors(AllowAnywhere);
 

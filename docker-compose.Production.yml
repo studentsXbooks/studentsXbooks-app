@@ -7,8 +7,10 @@ services:
       - sxb-db
     ports:
       - "80:80"
+      - "443:443"
     environment:
       ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_HTTPS_PORT: 443
     env_file:
       - .env
     restart: always
