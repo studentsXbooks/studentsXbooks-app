@@ -63,8 +63,11 @@ namespace sXb_service
             services.AddScoped<IListingRepo, ListingRepo>();
             services.AddScoped<IBookRepo, BookRepo>();
             services.AddScoped<IUserRepo, UserRepo>();
+<<<<<<< HEAD
             services.AddScoped<IAuthorRepo, AuthorRepo>();
             services.AddScoped<IBookAuthorRepo, BookAuthorRepo>();
+=======
+>>>>>>> master
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -90,10 +93,10 @@ namespace sXb_service
                 // Cookie settings
                 options.Cookie.HttpOnly = true;
                 options.Cookie.Expiration = TimeSpan.FromDays(150);
-                // If the LoginPath isn't set, ASP.NET Core defaults 
+                // If the LoginPath isn't set, ASP.NET Core defaults
                 // the path to /Account/Login.
                 options.LoginPath = "/Account/Login";
-                // If the AccessDeniedPath isn't set, ASP.NET Core defaults 
+                // If the AccessDeniedPath isn't set, ASP.NET Core defaults
                 // the path to /Account/AccessDenied.
                 options.AccessDeniedPath = "/Account/AccessDenied";
                 options.SlidingExpiration = true;
@@ -129,10 +132,11 @@ namespace sXb_service
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
             }
 
-            app.UseStaticFiles();
+
+            app.UseHttpsRedirection();
 
             app.UseCors(AllowAnywhere);
 

@@ -1,64 +1,93 @@
 // @flow
 
 import React, { useState } from "react";
+import {
+  TextField,
+  Button,
+  Card,
+  CardHeader,
+  CardContent,
+  CardActions,
+  Grid,
+  Typography
+} from "@material-ui/core";
+import FullHeightGrid from "../ui/FullHeightGrid";
 import { ApiPost } from "../utils";
 
-const Register = () => {
-  const [username, setUsername] = useState();
+const Register = ({ navigate }: Object) => {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState();
+  const [password, setPassword] = useState("");
+
   return (
-    <div>
-      <h1>Register</h1>
-
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          e.persist();
-          ApiPost("users/new", false, { username, email, password }).then(
-            res =>
-              // After registering, show verify email page.
-              (window.location.href = "/verify-email?email=" + email)
-          );
-        }}
-      >
-        <label htmlFor="Username">Username</label>
-        <input
-          type="text"
-          onChange={e => {
-            setUsername(e.target.value);
-          }}
-          id="Username"
-          name="Username"
-        />
-        {/* TODO: Regex to validate email with edu address. */}
-        <br />
-        <label htmlFor="Email">Email</label>
-        <input
-          type="text"
-          value={email}
-          placeholder="must be '.edu' address"
-          onChange={e => {
-            setEmail(e.target.value);
-          }}
-          id="Email"
-          name="Email"
-        />
-        <br />
-
-        <label htmlFor="Password">Password</label>
-        <input
-          type="password"
-          onChange={e => {
-            setPassword(e.target.value);
-          }}
-          id="Password"
-          name="Password"
-        />
-        <br />
-        <input type="submit" value="Submit" />
-      </form>
-    </div>
+    <FullHeightGrid container alignItems="center" justify="center">
+      <Grid item xs={9} sm={6} lg={3}>
+        <Card component="article" raised>
+          <form
+            onSubmit={e => {
+              e.preventDefault();
+              ApiPost("users/new", false, { username, email, password })
+                .then(() => {
+                  navigate(`/verify-email?email=${email}`);
+                })
+                .catch(console.log);
+            }}
+            method="POST"
+          >
+            <CardHeader
+              title={
+                <Typography variant="h3" align="center">
+                  Registration
+                </Typography>
+              }
+            />
+            <CardContent>
+              <TextField
+                id="userName"
+                label="UserName"
+                value={username}
+                onChange={e => {
+                  setUsername(e.target.value);
+                }}
+                fullWidth
+              />
+              <br />
+              <TextField
+                id="email"
+                label="Email"
+                value={email}
+                onChange={e => {
+                  setEmail(e.target.value);
+                }}
+                fullWidth
+              />
+              <br />
+              <TextField
+                id="password"
+                label="Password"
+                type="password"
+                value={password}
+                onChange={e => {
+                  setPassword(e.target.value);
+                }}
+                fullWidth
+              />
+              <br />
+            </CardContent>
+            <CardActions>
+              <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                type="submit"
+              >
+                Submit
+              </Button>
+            </CardActions>
+          </form>
+        </Card>
+      </Grid>
+    </FullHeightGrid>
   );
 };
 

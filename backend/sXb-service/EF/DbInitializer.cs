@@ -35,11 +35,13 @@ namespace sXb_service.EF
 
         private static void SeedData(TxtXContext context)
         {
+
             string books = File.ReadAllText(@"./SampleData/dbo.Books.data.sql");
             string authors = File.ReadAllText(@"./SampleData/dbo.Authors.data.sql");
             string bookAuthors = File.ReadAllText(@"./SampleData/dbo.BookAuthors.data.sql");
             string listings = File.ReadAllText(@"./SampleData/dbo.Listings.data.sql");
             string users = File.ReadAllText(@"./SampleData/dbo.AspNetUsers.data.sql");
+
 
 
             context.Database.ExecuteSqlCommand(books);

@@ -19,10 +19,12 @@ services:
     depends_on:
       - sxb-db
     ports:
-      - "8080:80"
+      - "5000:80"
+      - "5001:443"
     environment:
       DB:connectionString: "Server=sxb-db;Database=sxb;User Id=SA;Password=Develop@90"
       ASPNETCORE_ENVIRONMENT: DEVELOPMENT
+      ASPNETCORE_HTTPS_PORT: 5001
 
   sxb-db:
     image: microsoft/mssql-server-linux
