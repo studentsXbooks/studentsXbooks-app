@@ -1,18 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
-using sXb_service.Models;
 
 namespace sXb_service.Repos.Base
 {
-    public interface IRepo<T> where T : new()
+    public interface IRepo<T>
     {
-        Task<bool> Exist(Guid id);
-
-        Task<T> Find(Guid id);
+        IEnumerable<T> GetAll(Expression<Func<T, Boolean>> function);
 
         IEnumerable<T> GetAll();
 
-        Task<T> Remove(Guid id);
+        Task<bool> Exist(Expression<Func<T, Boolean>> function);
+
+        Task<T> Find(Expression<Func<T, Boolean>> function);
+
+        Task<T> Create(T t);
+
+        Task<T> Update(T t);
+
+        Task<T> Remove(Expression<Func<T, Boolean>> function);
+
+        Task<IEnumerable<T>> RemoveAll(Expression<Func<T, Boolean>> function);
     }
 }

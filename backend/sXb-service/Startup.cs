@@ -18,6 +18,7 @@ using sXb_service.Repos;
 using sXb_service.Repos.Interfaces;
 using sXb_service.Models;
 using sXb_service.Services;
+using Newtonsoft.Json;
 
 namespace sXb_service
 {
@@ -29,7 +30,7 @@ namespace sXb_service
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-        }        
+        }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -50,10 +51,10 @@ namespace sXb_service
             services.AddDbContext<TxtXContext>(options =>
               options.UseSqlServer(Configuration["Db:Connection"]));
 
-            
 
-            services.AddIdentity<User, IdentityRole>( config =>
-                { config.SignIn.RequireConfirmedEmail = true; }
+
+            services.AddIdentity<User, IdentityRole>(config =>
+               { config.SignIn.RequireConfirmedEmail = true; }
             )
                 .AddEntityFrameworkStores<TxtXContext>()
                 .AddDefaultTokenProviders();
@@ -62,7 +63,9 @@ namespace sXb_service
             services.AddScoped<IListingRepo, ListingRepo>();
             services.AddScoped<IBookRepo, BookRepo>();
             services.AddScoped<IUserRepo, UserRepo>();
-                       
+            services.AddScoped<IAuthorRepo, AuthorRepo>();
+            services.AddScoped<IBookAuthorRepo, BookAuthorRepo>();
+
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings
@@ -105,11 +108,12 @@ namespace sXb_service
                 };
             });
 
-            // requires
-            // using Microsoft.AspNetCore.Identity.UI.Services;
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
         }
 

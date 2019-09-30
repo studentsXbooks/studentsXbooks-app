@@ -10,12 +10,16 @@ namespace sXb_service.Helpers
         public int Skip { get; }
         public int Take { get; }
 
-        public Paging(int skip, int take, IEnumerable<T> allData)
+        public Paging(int page, int take, IEnumerable<T> allData)
         {
-            this.Skip = skip;
+            this.Skip = page * take - take;
             this.Take = take;
-            this.Data = allData.Skip(skip).Take(take);
+            this.Data = allData.Skip(this.Skip).Take(this.Take);
             this.TotalDataCount = allData.Count();
+        }
+
+        public Paging(int page, IEnumerable<T> allData) : this(page, 20, allData)
+        {
         }
 
         public int TotalDataCount { get; }

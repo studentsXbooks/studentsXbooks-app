@@ -1,12 +1,16 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AutoFixture;
 using AutoFixture.AutoMoq;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Testing;
 using sXb_service;
 using sXb_service.Helpers;
+using sXb_service.Helpers.ModelValidation;
 using sXb_service.Models;
 using sXb_service.Models.ViewModels;
 using sXb_service.ViewModels;
@@ -14,18 +18,20 @@ using Xunit;
 
 namespace sXb_tests.Integration
 {
-    public class ListingsController : IClassFixture<WebApplicationFactory<Startup>> {
+    public class ListingsController : IClassFixture<WebApplicationFactory<Startup>>
+    {
         private readonly WebApplicationFactory<Startup> _factory;
         private IFixture fixture;
 
-        public ListingsController (WebApplicationFactory<Startup> factory) {
+        public ListingsController(WebApplicationFactory<Startup> factory)
+        {
             _factory = factory;
-            fixture = new Fixture ().Customize (new AutoMoqCustomization ());
+            fixture = new Fixture().Customize(new AutoMoqCustomization());
         }
 
         [Fact]
         public async Task GetUsersListing_CallerHasCookie_Return200WithAPageOfListingVMs()
-        {           
+        {
             string listingsByUserUrl = "/api/listings/user";
             var client = _factory.CreateClient();
             await client.PostAsJsonAsync<LoginViewModel>("/api/users/", new LoginViewModel()
@@ -39,7 +45,7 @@ namespace sXb_tests.Integration
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Equal(2, listings.Data.Count());
         }
-         
+
         [Fact]
         public async Task GetUsersListing_CallerHasCookieAndNoPageData_Return200WithAPageOfNoData()
         {
@@ -56,7 +62,7 @@ namespace sXb_tests.Integration
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Empty(listings.Data);
         }
-       
+
         [Fact]
         public async Task GetListingDetail_IdExists_Return200WithListingDetailVM()
         {
@@ -83,6 +89,7 @@ namespace sXb_tests.Integration
             string url = "/api/listings/";
             var client = _factory.CreateClient();
             var newListing = fixture.Create<ListingDetailsViewModel>();
+            newListing.UserId = "1234";
             var response = await client.PostAsJsonAsync(url, newListing);
 
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -96,7 +103,7 @@ namespace sXb_tests.Integration
         [InlineData("Normal Length Title", "FirstName", "LastName", "", "9780746062760", 4.99, Condition.Fair)]
         [InlineData("Normal Length Title", "FirstName", "LastName", "MiddleName", "978746062760", 4.99, Condition.Fair)]
         [InlineData("Normal Length Title", "FirstName", "LastName", "MiddleName", "978746062760", -4.99, Condition.Fair)]
-        public async Task Create_InvalidListingDetail_Return400(string title, string firstName, string lastName, string middleName, string isbn, decimal price, 
+        public async Task Create_InvalidListingDetail_Return400(string title, string firstName, string lastName, string middleName, string isbn, decimal price,
             Condition condition)
         {
             string url = "/api/listings/";
@@ -104,17 +111,19 @@ namespace sXb_tests.Integration
 
             var newListing = new ListingDetailsViewModel()
             {
-                Author = new Author { FirstName = firstName, LastName = lastName, MiddleName = middleName },
+                FirstName = firstName,
+                LastName = lastName,
+                MiddleName = middleName,
                 Title = title,
-                ISBN = isbn,
+                ISBN10 = isbn,
                 Price = price,
                 Condition = condition
             };
             var response = await client.PostAsJsonAsync<ListingDetailsViewModel>(url, newListing);
 
-            var errorMessage = await response.Content.ReadAsAsync<ErrorMessage>();
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-            Assert.NotNull(errorMessage.Message);
+            var errorMessage = await response.Content.ReadAsAsync<ValidationResultModel>();
+            Assert.Equal(HttpStatusCode.UnprocessableEntity, response.StatusCode);
+            Assert.NotNull(errorMessage);
         }
     }
 }

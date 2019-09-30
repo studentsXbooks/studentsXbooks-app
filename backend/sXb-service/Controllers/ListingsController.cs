@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using sXb_service.Helpers;
+using sXb_service.Helpers.ModelValidation;
 using sXb_service.Models;
 using sXb_service.Models.ViewModels;
 using sXb_service.Repos.Interfaces;
@@ -15,27 +18,38 @@ using sXb_service.ViewModels;
 namespace sXb_service.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [ValidateModel]
     public class ListingsController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
         private IMapper _mapper;
         private IListingRepo _iRepo;
+        private IBookRepo _iBookRepo;
+        private IAuthorRepo _iAuthorRepo;
+        private IBookAuthorRepo _iBookAuthorRepo;
 
-        public ListingsController(IListingRepo iRepo, UserManager<User> userManager, IMapper mapper)
+        public ListingsController(IListingRepo iRepo, IBookRepo iBookRepo, IAuthorRepo iAuthorRepo, IBookAuthorRepo iBookAuthorRepo, UserManager<User> userManager, IMapper mapper)
         {
             _iRepo = iRepo;
+            _iBookRepo = iBookRepo;
+            _iAuthorRepo = iAuthorRepo;
+            _iBookAuthorRepo = iBookAuthorRepo;
             _userManager = userManager;
             _mapper = mapper;
         }
 
+
         [HttpGet]
-        public IActionResult GetListings() => Ok(_iRepo.GetAll());
+        public IActionResult GetListings([FromQuery] int page = 1)
+        {
+            var pageResult = new Paging<Listing>(page, _iRepo.GetAll());
+            return Ok(pageResult);
+        }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetListing([FromRoute] Guid id)
         {
-            var listing = await _iRepo.Find(id);
+            var listing = await _iRepo.Find(x => x.Id == id);
 
             if (listing == null)
             {
@@ -45,83 +59,51 @@ namespace sXb_service.Controllers
             return Ok(listing);
         }
 
-        [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ListingViewModel listingViewModel)
+        public async Task<IActionResult> Create([FromBody] ListingDetailsViewModel listingDetailsViewModel)
         {
-            if (!ModelState.IsValid)
+            var book = _mapper.Map<Book>(listingDetailsViewModel);
+            var author = _mapper.Map<Author>(listingDetailsViewModel);
+            var listing = _mapper.Map<Listing>(listingDetailsViewModel);
+
+            if (!await _iBookRepo.Exist(x => x.ISBN10 == book.ISBN10))
             {
-                return BadRequest(ModelState);
+                if (!await _iAuthorRepo.Exist(x => x.FullName == author.FullName))
+                {
+                    await _iAuthorRepo.Create(author);
+                    await _iBookRepo.Create(book);
+
+                    var bookAuthor = new BookAuthor()
+                    {
+                        AuthorId = author.Id,
+                        BookId = book.Id
+                    };
+                    await _iBookAuthorRepo.Create(bookAuthor);
+                }
+            }
+            else
+            {
+                book = await _iBookRepo.Find(x => x.ISBN10 == book.ISBN10);
             }
 
-            var listing = _mapper.Map<Listing>(listingViewModel);
+            listing.BookId = book.Id;
+            await _iRepo.Create(listing);
 
-            await _iRepo.Add(listing);
             return Created("GetListing", new { id = listing.Id });
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] ListingViewModel listingViewModel)
+
+        [HttpGet("user")]
+        [Authorize]
+        public async Task<IActionResult> GetUsersListings(int page)
         {
-            if (!ModelState.IsValid)
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
             {
-                return BadRequest(ModelState);
+                var listings = _iRepo.GetAll(x => x.UserId == user.Id);
+                return Ok(listings.Select(x => _mapper.Map<ListingDetailsViewModel>(x)));
             }
-
-            if (id != listingViewModel.Id)
-            {
-                return BadRequest();
-            }
-            var listing = _mapper.Map<Listing>(listingViewModel);
-            try
-            {
-                var result = await _iRepo.Update(listing);
-                return Ok(result);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!await _iRepo.Exist(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            return NotFound();
         }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Remove([FromRoute] Guid id)
-        {
-            try
-            {
-                var result = await _iRepo.Remove(id);
-                return Ok(result);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!await _iRepo.Exist(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-        }
-
-        //[HttpGet("user")]
-        //public async Task<IActionResult> GetUsersListings()
-        //{
-        //    var user = await _userManager.GetUserAsync(User);
-        //    if(user != null)
-        //    {
-        //        var listings = await _iRepo.ByUser(user.Id);
-        //        return Ok(listings.Select(x => _mapper.Map<ListingDetailsViewModel>(x)));
-        //    }
-        //    return NotFound();
-        //}
     }
 }

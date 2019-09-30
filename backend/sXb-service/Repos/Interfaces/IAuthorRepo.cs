@@ -1,4 +1,4 @@
-﻿using sXb_service.Models;
+using sXb_service.Models;
 using sXb_service.Repos.Base;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace sXb_service.Repos.Interfaces
 {
-    public interface IBookRepo : IRepo<Book>
+    public interface IAuthorRepo : IRepo<Author>
     {
 
     }

@@ -11,7 +11,7 @@ import {
   VerifyEmail,
   UserListing
 } from "./pages";
-import { ApiGet, ApiPost } from "./utils";
+import { ApiGet } from "./utils";
 
 export default () => (
   // TODO: Clean up Router structure by groups.
@@ -60,10 +60,4 @@ const Username = () => {
       )}
     </>
   );
-};
-
-const Logout = () => {
-  ApiPost("users/logout", true, {})
-    .then(res => console.log(res))
-    .then(redirec => (window.location.href = "/Home"));
 };
