@@ -1,5 +1,4 @@
 // @flow
-
 import React from "react";
 import { Router } from "@reach/router";
 import {
@@ -9,39 +8,22 @@ import {
   LoginSuccess,
   EmailConfirmed,
   VerifyEmail,
-  UserListing
+  UserListing,
+  CreateListing
 } from "./pages";
-import { ApiGet } from "./utils";
+import Layout from "./Layout";
 
-const Layout = ({ children }) => (
-  <div>
-    <Link to="/">Home</Link>
-    <Link to="/login">Login</Link>
-    <Link to="/register">Register</Link>
-    <Link to="/logout">Logout</Link>
-    <Username />
-    {children}
-  </div>
+export default () => (
+  <Router>
+    <Layout path="/">
+      <Home default />
+      <Login path="login" />
+      <Register path="register" />
+      <LoginSuccess path="login-success" />
+      <EmailConfirmed path="email-confirmed" />
+      <VerifyEmail path="verify-email" />
+      <UserListing path="user/listings" />
+      <CreateListing path="listing/new" />
+    </Layout>
+  </Router>
 );
-
-// TODO: Only call api when cookie is present.
-const Username = () => {
-  const [username, setUsername] = useState();
-  useEffect(() => {
-    ApiGet("users/name", true).then(json => {
-      const { username } = json;
-      setUsername(username);
-    });
-  });
-
-  return (
-    <>
-      {username && (
-        <div>
-          <span>{username}</span>
-          <Link to="/user/listings">My Listings</Link>
-        </div>
-      )}
-    </>
-  );
-};
