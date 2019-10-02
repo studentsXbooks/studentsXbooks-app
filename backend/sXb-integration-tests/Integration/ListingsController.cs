@@ -41,9 +41,9 @@ namespace sXb_tests.Integration
             });
 
             var response = await client.GetAsync(listingsByUserUrl);
-            var listings = await response.Content.ReadAsAsync<Paging<Listing>>();
+            var listings = await response.Content.ReadAsAsync<List<ListingDetailsViewModel>>();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal(2, listings.Data.Count());
+            Assert.Equal(2, listings.Count());
         }
 
         [Fact]
@@ -68,19 +68,19 @@ namespace sXb_tests.Integration
         {
             var listing = fixture.Create<ListingViewModel>();
             var client = _factory.CreateClient();
-            var response = await client.GetAsync("/api/listings/b55146c3-dfef-4854-b2c6-a657fdd44e5d");
+            var response = await client.GetAsync("/api/listings/a059efc3-a4ec-4abf-946a-84194b2e0a00");
 
             response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
         [Fact]
-        public async Task GetListingDetail_IdNotFound_Return400()
+        public async Task GetListingDetail_IdNotFound_Return404()
         {
             var client = _factory.CreateClient();
-            var response = await client.GetAsync("/api/listings/1");
+            var response = await client.GetAsync("/api/listings/81c92cf8-d6c2-4b10-ad00-3eaac26d9b92");
 
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
         [Fact]
@@ -89,6 +89,13 @@ namespace sXb_tests.Integration
             string url = "/api/listings/";
             var client = _factory.CreateClient();
             var newListing = fixture.Create<ListingDetailsViewModel>();
+            newListing.Description = "Short book description";
+            newListing.FirstName = "Author";
+            newListing.MiddleName = "B";
+            newListing.LastName = "BookWriter";
+            newListing.ISBN10 = "1082148938";
+            newListing.Price = 5.99m;
+            newListing.Title = "Short Title";
             newListing.UserId = "1234";
             var response = await client.PostAsJsonAsync(url, newListing);
 

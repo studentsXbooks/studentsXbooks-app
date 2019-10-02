@@ -100,8 +100,9 @@ namespace sXb_service.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user != null)
             {
-                var listings = _iRepo.GetAll(x => x.UserId == user.Id);
-                return Ok(listings.Select(x => _mapper.Map<ListingDetailsViewModel>(x)));
+                var pageResult = new Paging<Listing>(page, _iRepo.GetAll(x => x.UserId == user.Id));
+                var listings = pageResult.Data.Select(x => _mapper.Map<ListingDetailsViewModel>(x));
+                return Ok(listings);
             }
             return NotFound();
         }

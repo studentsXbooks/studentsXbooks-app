@@ -34,7 +34,27 @@ namespace sXb_service.Helpers {
                 .ForMember(dest => dest.UserId, opts =>
                     opts.MapFrom(src => src.UserId));
 
-            CreateMap<Listing, ListingViewModel> ();
+            CreateMap<Listing, ListingDetailsViewModel>()
+                .ForMember(dest => dest.Id, opts =>
+                  opts.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Title, opts =>
+                  opts.MapFrom(src => src.Book.Title))
+                .ForMember(dest => dest.ISBN10, opts =>
+                  opts.MapFrom(src => src.Book.ISBN10))
+                .ForMember(dest => dest.Description, opts =>
+                  opts.MapFrom(src => src.Book.Description))
+                .ForMember(dest => dest.FirstName, opts =>
+                  opts.MapFrom(src => src.Book.BookAuthors.FirstOrDefault().Author.FirstName))
+                .ForMember(dest => dest.LastName, opts =>
+                  opts.MapFrom(src => src.Book.BookAuthors.FirstOrDefault().Author.LastName))
+                .ForMember(dest => dest.MiddleName, opts =>
+                  opts.MapFrom(src => src.Book.BookAuthors.FirstOrDefault().Author.MiddleName))
+                .ForMember(dest => dest.UserId, opts =>
+                  opts.MapFrom(src => src.UserId))
+                .ForMember(dest => dest.Price, opts =>
+                  opts.MapFrom(src => src.Price))
+                .ForMember(dest => dest.Condition, opts =>
+                  opts.MapFrom(src => src.Condition));
             CreateMap<ListingViewModel, Listing> ();
             //CreateMap<UserBook, UserBookViewModel>();
             //CreateMap<UserBookViewModel, UserBook>();
