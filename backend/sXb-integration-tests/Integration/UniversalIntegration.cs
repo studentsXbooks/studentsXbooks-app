@@ -12,6 +12,7 @@ using Xunit;
 
 namespace sXb_integration_tests.Integration
 {
+    [Collection("Integration")]
     public class UniversalIntegration : IClassFixture<WebApplicationFactory<Startup>>
     {
         private readonly WebApplicationFactory<Startup> _factory;

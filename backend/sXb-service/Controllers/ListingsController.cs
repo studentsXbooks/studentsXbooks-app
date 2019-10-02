@@ -19,6 +19,7 @@ namespace sXb_service.Controllers
 {
     [Route("api/[controller]")]
     [ValidateModel]
+    [Authorize]
     public class ListingsController : ControllerBase
     {
         private readonly UserManager<User> _userManager;

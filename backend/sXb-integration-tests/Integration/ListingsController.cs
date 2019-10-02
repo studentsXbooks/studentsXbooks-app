@@ -18,6 +18,7 @@ using Xunit;
 
 namespace sXb_tests.Integration
 {
+    [Collection("Integration")]
     public class ListingsController : IClassFixture<WebApplicationFactory<Startup>>
     {
         private readonly WebApplicationFactory<Startup> _factory;
@@ -58,9 +59,9 @@ namespace sXb_tests.Integration
             });
 
             var response = await client.GetAsync(listingsByUserUrl);
-            var listings = await response.Content.ReadAsAsync<Paging<Listing>>();
+            var listings = await response.Content.ReadAsAsync<List<ListingDetailsViewModel>>();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Empty(listings.Data);
+            Assert.Empty(listings);
         }
 
         [Fact]
