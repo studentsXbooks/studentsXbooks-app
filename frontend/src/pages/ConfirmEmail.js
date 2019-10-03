@@ -9,8 +9,11 @@ const ConfirmEmail = () => {
     successCode = res.status;
     console.log(successCode);
   });
+  setTimeout(() => {
+    window.location.href = "/login";
+  }, 5000);
   if (successCode === 200) {
   }
-  return <h1>{successCode}</h1>;
+  return <h1>Email Confirmed!</h1>;
 };
 export default ConfirmEmail;

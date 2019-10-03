@@ -62,6 +62,7 @@ namespace sXb_service {
             services.AddScoped<IUserBookRepo, UserBookRepo>();
             services.AddScoped<IUserRepo, UserRepo>();
 
+
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings
@@ -71,9 +72,15 @@ namespace sXb_service {
                 options.Password.RequireUppercase = true;
                 options.Password.RequireLowercase = false;
                 options.Password.RequiredUniqueChars = 6;
-            })
-                .AddEntityFrameworkStores<TxtXContext> ()
-                .AddDefaultTokenProviders ();
+
+                // Lockout settings
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                options.Lockout.MaxFailedAccessAttempts = 10;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings
+                options.User.RequireUniqueEmail = true;
+            });
 
             services.AddAutoMapper (typeof (Startup));
             services.AddScoped<IListingRepo, ListingRepo> ();
