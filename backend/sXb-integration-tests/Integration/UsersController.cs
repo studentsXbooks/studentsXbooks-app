@@ -42,7 +42,7 @@ namespace sXb_tests.Integration {
             string url = "/api/users/new";
             var client = _factory.CreateClient ();
 
-            var newUser = fixture.Create<RegisterViewModel> ();
+            var newUser = fixture.Create<RegisterViewModel>();
             var response = await client.PostAsJsonAsync<RegisterViewModel> (url, newUser);
 
             Assert.Equal (HttpStatusCode.Created, response.StatusCode);
@@ -174,7 +174,7 @@ namespace sXb_tests.Integration {
 
         [Fact]
         public async Task EmailConfirm_InvalidToken_Return400WithNoCookie () {
-            string url = "/api/users/new?userId=asfasdf&code=123123";
+            string url = "/api/users/confirm-email?userId=asfasdf&code=123123";
             var client = _factory.CreateClient ();
 
             HttpResponseMessage response = await client.GetAsync(url);
@@ -219,7 +219,7 @@ namespace sXb_tests.Integration {
             Assert.Equal (HttpStatusCode.BadRequest, response.StatusCode);
         }
         [Fact]
-        public async Task EmailConfirm_NewUserValidToken_ReturnRedirectAndUserAccountConfirmIsTrueAndCookieReturned()
+        public async Task EmailConfirm_NewUserValidToken_ReturnOkAndUserAccountConfirmIsTrueAndCookieReturned()
         {
             // 1. Retrieve cookie & userId from registration process.
             // 2. Insert cookie & id into code query param.
@@ -235,19 +235,30 @@ namespace sXb_tests.Integration {
             };
             var response = await client.PostAsJsonAsync<RegisterViewModel>(url, newUser);
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-;
+
             var data = await response.Content.ReadAsAsync<EmailConfirmViewModel>();
-            output.WriteLine("ID : " + data.Id);
-            output.WriteLine("Code : " + data.Code);
+
+            // ID points to correct User
+            User userById = await (await client.GetAsync($"/api/users/{data.Id}")).Content.ReadAsAsync<User>();
+            Assert.Equal(userById.Id, data.Id);
+
+            // Email points to correct ID
+            string id = await (await client.GetAsync($"/api/users/find-id-by-email/{newUser.Email}")).Content.ReadAsStringAsync();
+            Assert.Equal(data.Id, id);
+
+            // Username points to correct ID
+            id = await (await client.GetAsync($"/api/users/find-id-by-username/{newUser.Username}")).Content.ReadAsStringAsync();
+            Assert.Equal(data.Id, id);
+
+            //output.WriteLine("ID : " + data.Id);
+            //output.WriteLine("Code : " + data.Code);
             //response.RequestMessage.Headers.GetCookies()[0].Cookies[0].Value;
 
-            url = $"/api/users/new?userId={data.Id}&code={data.Code}";
-
+            url = $"/api/users/confirm-email?userId={data.Id}&code={data.Code}";
             response = await client.GetAsync(url);
+
             // SXB-FRONT.COM:3000/Email-confirmed may be outside of xunit's reach.
-            Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
-
-
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
     }
 }

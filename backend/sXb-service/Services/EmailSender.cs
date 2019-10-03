@@ -2,6 +2,10 @@
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using System.Net;
+using System.Net.Mail;
+using System;
+using Microsoft.Extensions.Configuration;
 
 namespace sXb_service.Services
 {
@@ -9,35 +13,40 @@ namespace sXb_service.Services
     // For more details see https://go.microsoft.com/fwlink/?LinkID=532713
     public class EmailSender : IEmailSender
     {
-        public EmailSender(IOptions<AuthMessageSenderOptions> optionsAccessor)
+        public IConfiguration Configuration { get; }
+        public EmailSender(IOptions<AuthMessageSenderOptions> optionsAccessor, IConfiguration configuration)
         {
             Options = optionsAccessor.Value;
+            Configuration = configuration;
         }
 
         public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
 
-        public Task SendEmailAsync(string email, string subject, string message)
+        public void SendEmailAsync(string email, string subject, string message)
         {
-            return Execute(Options.SendGridKey, subject, message, email);
+            Execute(subject, message, email);
         }
 
-        public Task Execute(string apiKey, string subject, string message, string email)
+        public void Execute(string subject, string body, string email)
         {
-            var client = new SendGridClient(apiKey);
-            var msg = new SendGridMessage()
+            string senderEmail = Configuration["SMTP:address"];
+            using (var message = new MailMessage())
             {
-                From = new EmailAddress("joe@contoso.com", "Joe Smith"),
-                Subject = subject,
-                PlainTextContent = message,
-                HtmlContent = message
-            };
-            msg.AddTo(new EmailAddress(email));
-
-            // Disable click tracking.
-            // See https://sendgrid.com/docs/User_Guide/Settings/tracking.html
-            msg.SetClickTracking(false, false);
-
-            return client.SendEmailAsync(msg);
+                message.To.Add(new MailAddress(email));
+                message.From = new MailAddress(senderEmail);
+                message.Subject = subject;
+                message.Body = body;
+                message.IsBodyHtml = true;
+                using (var client = new SmtpClient("smtp.gmail.com"))
+                {
+                    
+                    string password = Configuration["SMTP:password"];
+                    client.Port = 587;
+                    client.Credentials = new NetworkCredential(senderEmail, password);
+                    client.EnableSsl = true;
+                    client.Send(message);
+                }
+            }
         }
     }
 }

@@ -9,7 +9,8 @@ import {
   LoginSuccess,
   EmailConfirmed,
   VerifyEmail,
-  UserListing
+  UserListing,
+  ConfirmEmail
 } from "./pages";
 import { ApiGet, ApiPost } from "./utils";
 
@@ -25,6 +26,7 @@ export default () => (
       <EmailConfirmed path="email-confirmed" />
       <VerifyEmail path="verify-email" />
       <UserListing path="user/listings" />
+      <ConfirmEmail path="confirm-email" />
     </Layout>
   </Router>
 );

@@ -8,6 +8,7 @@ using AutoFixture.AutoMoq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -28,11 +29,17 @@ namespace sXb_tests.Controllers {
         IUserRepo userRepo;
         UserManager<User> userManager;
         SignInManager<User> signInManager;
+        IConfiguration Configuration;
 
         public UsersControllerTest () {
             fixture = new Fixture ().Customize (new AutoMoqCustomization ());
             userRepo = new Mock<IUserRepo> ().Object;
             //userManager = new Mock<UserManager<User>> ().Object;
+            Configuration = new Mock<IConfiguration>().Object;
+            //var configurationSection = new Mock<IConfigurationSection>();
+            //configurationSection.Setup(a => a.Value).Returns("");
+
+            //configuration.Setup(a => a.GetSection("TestValueKey")).Returns(configurationSection.Object);
 
             var userManagerMock = new Mock<UserManager<User>> (
                 new Mock<IUserStore<User>> ().Object,
@@ -64,9 +71,11 @@ namespace sXb_tests.Controllers {
         [Fact]
         public async Task Register_EmailConfirmAsync_CalledOnce () {
             var emailSender = new Mock<IEmailSender> ();
-            emailSender.Setup (mock => mock.SendEmailAsync (It.IsAny<string> (), It.IsAny<string> (), It.IsAny<string> ())).Returns (Task.CompletedTask);
-            usersController = new UsersController (userRepo, userManager, signInManager, emailSender.Object);
+            emailSender.Setup (mock => mock.SendEmailAsync (It.IsAny<string> (), It.IsAny<string> (), It.IsAny<string> ()));
+            usersController = new UsersController (userRepo, userManager, signInManager, emailSender.Object, Configuration);
             var newUser = fixture.Create<RegisterViewModel> ();
+
+            newUser.Email = "jswann1@wvup.edu";
 
             await usersController.Register (newUser);
 
@@ -76,8 +85,8 @@ namespace sXb_tests.Controllers {
         [Fact]
         public async Task Register_SendEmailThrowsError_Returns400 () {
             var emailSender = new Mock<IEmailSender> ();
-            emailSender.Setup (mock => mock.SendEmailAsync (It.IsAny<string> (), It.IsAny<string> (), It.IsAny<string> ())).ThrowsAsync (new Exception ());
-            usersController = new UsersController (userRepo, userManager, signInManager, emailSender.Object);
+            emailSender.Setup (mock => mock.SendEmailAsync (It.IsAny<string> (), It.IsAny<string> (), It.IsAny<string> ()));
+            usersController = new UsersController (userRepo, userManager, signInManager, emailSender.Object, Configuration);
             var newUser = fixture.Create<RegisterViewModel> ();
 
             var result = await usersController.Register (newUser);

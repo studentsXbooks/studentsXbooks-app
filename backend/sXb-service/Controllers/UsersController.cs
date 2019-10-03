@@ -11,9 +11,11 @@ using sXb_service.Repos.Interfaces;
 using sXb_service.Services;
 using System.Text.RegularExpressions;
 using sXb_service.Helpers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace sXb_service.Controllers {
-    [Route ("api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UsersController : Controller {
 
@@ -21,33 +23,54 @@ namespace sXb_service.Controllers {
         private readonly SignInManager<User> _signInManager;
         private readonly IEmailSender _emailSender;
         private IUserRepo Repo { get; set; }
+        public IConfiguration Configuration { get; }
 
-        public UsersController (IUserRepo repo,
+        public UsersController(IUserRepo repo,
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            IEmailSender emailSender) {
+            IEmailSender emailSender, IConfiguration configuration) {
             Repo = repo;
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            Configuration = configuration;
         }
 
         //http://localhost:40001/api/[controller]/
         [HttpGet]
-        public IActionResult GetAll () {
-            IEnumerable<User> data = Repo.GetAll ();
-            return data == null ? (IActionResult) NotFound () : new ObjectResult (data);
+        public IActionResult GetAll() {
+            IEnumerable<User> data = Repo.GetAll();
+            return data == null ? (IActionResult)NotFound() : new ObjectResult(data);
         }
 
-        [HttpGet ("{id}")]
-        public async Task<IActionResult> GetUserById (string id) {
-            User item = await Repo.Get (id);
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUserById(string id) {
+            User item = await Repo.Get(id);
             if (item == null) {
-                return NotFound ();
+                return NotFound();
             }
-            return Json (item);
+            return Json(item);
         }
-
+        [HttpGet("find-id-by-email/{email}")]
+        public async Task<IActionResult> FindIdByEmail(string email)
+        {
+            string id = await Repo.FindIdByEmail(email);
+            if (id == null)
+            {
+                return NotFound();
+            }
+            return Ok(id);
+        }
+        [HttpGet("find-id-by-username/{username}")]
+        public async Task<IActionResult> FindIdByUsername( string username)
+        {
+            string id = await Repo.FindIdByUsername(username);
+            if (id == null)
+            {
+                return NotFound();
+            }
+            return Ok(id);
+        }
         [HttpGet ("name")]
         public async Task<IActionResult> GetUsername ()
         {
@@ -98,7 +121,7 @@ namespace sXb_service.Controllers {
                 return BadRequest ();
 
             // Validate: username doesn't already exist.
-            if( Repo.UsernameExists( newUser.Username ) )
+            if( await Repo.UsernameExists( newUser.Username ) )
             {
                 return BadRequest(new ErrorMessage("Username already taken!"));
             }
@@ -114,7 +137,7 @@ namespace sXb_service.Controllers {
                 return BadRequest(new ErrorMessage("Invalid email address: Not an edu email address."));
             }
             // Validate: email doesn't already exist.
-            if ( Repo.EmailExists( newUser.Email ) )
+            if ( await Repo.EmailExists( newUser.Email ) )
             {
                 return BadRequest(new ErrorMessage("Email already exists!"));
             }
@@ -126,8 +149,9 @@ namespace sXb_service.Controllers {
 
                 string code = await _userManager.GenerateEmailConfirmationTokenAsync (user);
 
-                await _emailSender.SendEmailAsync (user.Email, "Confirm your email",
-                    $"Please confirm your account by <a href='/emailconfirmed?userId={user.Id}&code={code}'>clicking here</a>.");
+                string frontendUrl = Configuration["Domain:sXb-frontend"];
+                _emailSender.SendEmailAsync ("jswann1@wvup.edu", "Confirm your email",
+                    $"Please confirm your account by <a href='{frontendUrl}/confirm-email?id={user.Id}&code={code}'>clicking here</a>.");
 
                 // Uncomment for registration w/o email confirmation.
                 //await _signInManager.SignInAsync(user, isPersistent: false);
@@ -142,13 +166,13 @@ namespace sXb_service.Controllers {
             return NotFound ();
         }
 
-        [HttpGet("new")]
+        [HttpGet("confirm-email")]
         [AllowAnonymous]
-        public async Task<IActionResult> ConfirmEmail([FromQuery] string userId, [FromQuery] string code) {
-            if (userId == null || code == null) {
+        public async Task<IActionResult> ConfirmEmail([FromQuery] string id, [FromQuery] string code) {
+            if (id == null || code == null) {
                 return NotFound();
             }
-            User user = await _userManager.FindByIdAsync (userId);
+            User user = await _userManager.FindByIdAsync (id);
 
             if (user == null) {
 
@@ -156,22 +180,19 @@ namespace sXb_service.Controllers {
                 return BadRequest();
             }
             var result = await _userManager.ConfirmEmailAsync (user, code);
-
-            // TODO: This is a literal url string. Get root url from user secrets.
-            return Redirect ("http://sxb-front.com:3000/email-confirmed");
-
+            return Ok();
         }
 
         [HttpGet ("Search/{keyword}")]
-        public IActionResult Search (string keyword) {
+        public async Task<IActionResult> Search (string keyword) {
             var users = Repo.FindUsers (keyword);
             return Ok (users);
         }
 
         // TODO: Pattern mat
         [HttpGet ("{first}/{last}")]
-        public IActionResult FindIdByName (string first, string last) {
-            string data = Repo.FindIdByName (first, last);
+        public async Task<IActionResult> FindIdByName (string first, string last) {
+            string data = await Repo.FindIdByName (first, last);
             return data == null ? (IActionResult) NotFound () : new ObjectResult (data);
         }
 
@@ -185,7 +206,7 @@ namespace sXb_service.Controllers {
             if (ModelState.IsValid) {
                 // Gets username because login uses username.
                 // TODO: Implement custom login method that uses email instead.
-                string username = Repo.GetUsernameByEmail (model.Email);
+                string username = await Repo.GetUsernameByEmail (model.Email);
                 // This does not count login failures towards account lockout
                 // To enable password failures to trigger account lockout,
                 // set lockoutOnFailure: true
