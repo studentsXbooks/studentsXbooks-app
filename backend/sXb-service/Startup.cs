@@ -28,24 +28,42 @@ namespace sXb_service {
             Configuration = configuration;
         }
 
-        public void ConfigureServices (IServiceCollection services) {
 
-            services.AddCors (options => {
-                options.AddPolicy (AllowAnywhere,
-                    builder => {
-                        builder.WithOrigins (Configuration["Domain:sXb-frontend"])
-                            .AllowAnyHeader ()
-                            .WithExposedHeaders ("*")
-                            .AllowCredentials ()
-                            .AllowAnyMethod ();
-                    });
-            });
+        public void ConfigureServices(IServiceCollection services)
+        {
 
-            services.AddDbContext<TxtXContext> (options =>
-                options.UseSqlServer (Configuration["Db:Connection"]));
+            services.AddCors(options =>
+           {
+               options.AddPolicy(AllowAnywhere,
+                   builder =>
+                   {
+                       builder.WithOrigins(Configuration["Domain:sXb-frontend"])
+                       .AllowAnyHeader()
+                       .WithExposedHeaders("*")
+                       .AllowCredentials()
+                       .AllowAnyMethod();
+                   });
+           });
 
-            services.AddIdentity<User, IdentityRole> (options => {
-                options.SignIn.RequireConfirmedEmail = true;
+            services.AddDbContext<TxtXContext>(options =>
+              options.UseSqlServer(Configuration["Db:Connection"]));
+
+
+
+            services.AddIdentity<User, IdentityRole>(config =>
+               { config.SignIn.RequireConfirmedEmail = true; }
+            )
+                .AddEntityFrameworkStores<TxtXContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddAutoMapper(typeof(Startup));
+            services.AddScoped<IListingRepo, ListingRepo>();
+            services.AddScoped<IBookRepo, BookRepo>();
+            services.AddScoped<IUserBookRepo, UserBookRepo>();
+            services.AddScoped<IUserRepo, UserRepo>();
+
+            services.Configure<IdentityOptions>(options =>
+            {
                 // Password settings
                 options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 8;
@@ -78,11 +96,11 @@ namespace sXb_service {
             services.ConfigureApplicationCookie (options => {
                 // Cookie settings
                 options.Cookie.HttpOnly = true;
-                options.Cookie.Expiration = TimeSpan.FromDays (150);
-                // If the LoginPath isn't set, ASP.NET Core defaults 
+                options.Cookie.Expiration = TimeSpan.FromDays(150);
+                // If the LoginPath isn't set, ASP.NET Core defaults
                 // the path to /Account/Login.
                 options.LoginPath = "/Account/Login";
-                // If the AccessDeniedPath isn't set, ASP.NET Core defaults 
+                // If the AccessDeniedPath isn't set, ASP.NET Core defaults
                 // the path to /Account/AccessDenied.
                 options.AccessDeniedPath = "/Account/AccessDenied";
                 options.SlidingExpiration = true;
@@ -97,17 +115,22 @@ namespace sXb_service {
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure (IApplicationBuilder app, IHostingEnvironment env, TxtXContext context) {
-            if (env.IsDevelopment ()) {
-                DbInitializer.InitializeData (context);
-                app.UseDeveloperExceptionPage ();
-                app.UseBrowserLink ();
-                app.UseDatabaseErrorPage ();
-            } else {
-                app.UseExceptionHandler ("/Home/Error");
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, TxtXContext context)
+        {
+            if (env.IsDevelopment())
+            {
+                DbInitializer.InitializeData(context);
+                app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
+                app.UseDatabaseErrorPage();
+            }
+            else
+            {
+                app.UseHsts();
             }
 
-            app.UseStaticFiles ();
+
+            app.UseHttpsRedirection();
 
             app.UseCors (AllowAnywhere);
 
