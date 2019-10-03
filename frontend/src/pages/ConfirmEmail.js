@@ -13,7 +13,9 @@ const ConfirmEmail = () => {
     window.location.href = "/login";
   }, 5000);
   if (successCode === 200) {
+    return <h1>Email Confirmed!</h1>;
+  } else {
+    return <h1>Email not confirmed!</h1>;
   }
-  return <h1>Email Confirmed!</h1>;
 };
 export default ConfirmEmail;
