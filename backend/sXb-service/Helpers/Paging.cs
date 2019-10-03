@@ -7,8 +7,13 @@ namespace sXb_service.Helpers
 {
     public class Paging<T>
     {
-        public int Skip { get; }
-        public int Take { get; }
+        public int Skip { get; set; }
+        public int Take { get; set; }
+
+        public Paging()
+        {
+
+        }
 
         public Paging(int page, int take, IEnumerable<T> allData)
         {
@@ -22,7 +27,7 @@ namespace sXb_service.Helpers
         {
         }
 
-        public int TotalDataCount { get; }
+        public int TotalDataCount { get; set; }
         public int TotalPages => (int)Math.Ceiling((decimal)TotalDataCount / PageSize);
 
         public int PageSize => Take;
@@ -32,6 +37,6 @@ namespace sXb_service.Helpers
 
         public int CurrentPage => Skip < Take ? 1 : Skip / Take + 1;
 
-        public IEnumerable<T> Data { get; }
+        public IEnumerable<T> Data { get; set; }
     }
 }

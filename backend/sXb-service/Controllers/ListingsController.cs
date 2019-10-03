@@ -39,7 +39,7 @@ namespace sXb_service.Controllers
             _mapper = mapper;
         }
 
-
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult GetListings([FromQuery] int page = 1)
         {
@@ -47,6 +47,7 @@ namespace sXb_service.Controllers
             return Ok(pageResult);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetListing([FromRoute] Guid id)
         {
@@ -95,15 +96,13 @@ namespace sXb_service.Controllers
 
 
         [HttpGet("user")]
-        [Authorize]
         public async Task<IActionResult> GetUsersListings(int page)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user != null)
             {
-                var pageResult = new Paging<Listing>(page, _iRepo.GetAll(x => x.UserId == user.Id));
-                var listings = pageResult.Data.Select(x => _mapper.Map<ListingDetailsViewModel>(x));
-                return Ok(listings);
+                var pageResult = new Paging<ListingPreviewViewModel>(page, _iRepo.GetAll(x => x.UserId == user.Id).Select(x => _mapper.Map<ListingPreviewViewModel>(x)));
+                return Ok(pageResult);
             }
             return NotFound();
         }

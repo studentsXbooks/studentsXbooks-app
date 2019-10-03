@@ -34,6 +34,18 @@ namespace sXb_service.Helpers {
                 .ForMember(dest => dest.UserId, opts =>
                     opts.MapFrom(src => src.UserId));
 
+            CreateMap<Listing, ListingPreviewViewModel>()
+               .ForMember(dest => dest.Id, opts =>
+                 opts.MapFrom(src => src.Id))
+               .ForMember(dest => dest.Title, opts =>
+                 opts.MapFrom(src => src.Book.Title))
+               .ForMember(dest => dest.Price, opts =>
+                 opts.MapFrom(src => src.Price))
+               .ForMember(dest => dest.Condition, opts =>
+                 opts.MapFrom(src => src.Condition))
+                .ForMember(dest => dest.Authors, opts =>
+                opts.MapFrom(src => src.Book.BookAuthors.Select(x => x.Author.FullName)));
+
             CreateMap<Listing, ListingDetailsViewModel>()
                 .ForMember(dest => dest.Id, opts =>
                   opts.MapFrom(src => src.Id))

@@ -42,9 +42,9 @@ namespace sXb_tests.Integration
             });
 
             var response = await client.GetAsync(listingsByUserUrl);
-            var listings = await response.Content.ReadAsAsync<List<ListingDetailsViewModel>>();
+            var listings = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>>();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal(2, listings.Count());
+            Assert.NotNull(listings);
         }
 
         [Fact]
@@ -59,9 +59,9 @@ namespace sXb_tests.Integration
             });
 
             var response = await client.GetAsync(listingsByUserUrl);
-            var listings = await response.Content.ReadAsAsync<List<ListingDetailsViewModel>>();
+            var listings = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>>();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Empty(listings);
+            Assert.Empty(listings.Data);
         }
 
         [Fact]
@@ -69,6 +69,7 @@ namespace sXb_tests.Integration
         {
             var listing = fixture.Create<ListingViewModel>();
             var client = _factory.CreateClient();
+           
             var response = await client.GetAsync("/api/listings/a059efc3-a4ec-4abf-946a-84194b2e0a00");
 
             response.EnsureSuccessStatusCode();
@@ -79,6 +80,7 @@ namespace sXb_tests.Integration
         public async Task GetListingDetail_IdNotFound_Return404()
         {
             var client = _factory.CreateClient();
+        
             var response = await client.GetAsync("/api/listings/81c92cf8-d6c2-4b10-ad00-3eaac26d9b92");
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -89,6 +91,11 @@ namespace sXb_tests.Integration
         {
             string url = "/api/listings/";
             var client = _factory.CreateClient();
+            await client.PostAsJsonAsync<LoginViewModel>("/api/users/", new LoginViewModel()
+            {
+                Email = "test@wvup.edu",
+                Password = "Develop@90"
+            });
             var newListing = fixture.Create<ListingDetailsViewModel>();
             newListing.Description = "Short book description";
             newListing.FirstName = "Author";
@@ -116,6 +123,12 @@ namespace sXb_tests.Integration
         {
             string url = "/api/listings/";
             var client = _factory.CreateClient();
+
+            await client.PostAsJsonAsync<LoginViewModel>("/api/users/", new LoginViewModel()
+            {
+                Email = "test@wvup.edu",
+                Password = "Develop@90"
+            });
 
             var newListing = new ListingDetailsViewModel()
             {
