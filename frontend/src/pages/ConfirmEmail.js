@@ -1,21 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ApiGet } from "../utils";
 
 const ConfirmEmail = () => {
+  const [accountConfirmed, setAccountConfirmed] = useState();
   const id = new URL(window.location).searchParams.get("id");
   const code = new URL(window.location).searchParams.get("code");
-  var successCode = "";
-  ApiGet("users/confirm-email?id=" + id + "&code=" + code, true).then(res => {
-    successCode = res.status;
-    console.log(successCode);
-  });
-  setTimeout(() => {
-    window.location.href = "/login";
-  }, 5000);
-  if (successCode === 200) {
-    return <h1>Email Confirmed!</h1>;
-  } else {
-    return <h1>Email not confirmed!</h1>;
-  }
+
+  useEffect(() => {
+    ApiGet(
+      `users/confirm-email?id=${id}&code=${encodeURIComponent(code)}`
+    ).then(() => {
+      setAccountConfirmed(true);
+    });
+  }, []);
+
+  return (
+    <div>
+      {accountConfirmed && <h1>Account Confirmed</h1>}
+      {!accountConfirmed && <h1>Error confirming account</h1>}
+    </div>
+  );
 };
 export default ConfirmEmail;

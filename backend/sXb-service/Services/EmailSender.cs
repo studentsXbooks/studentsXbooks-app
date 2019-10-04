@@ -1,10 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
 using Microsoft.Extensions.Options;
-using SendGrid;
-using SendGrid.Helpers.Mail;
 using System.Net;
 using System.Net.Mail;
-using System;
 using Microsoft.Extensions.Configuration;
 
 namespace sXb_service.Services
@@ -29,7 +26,7 @@ namespace sXb_service.Services
 
         public void Execute(string subject, string body, string email)
         {
-            string senderEmail = Configuration["SMTP:address"];
+            string senderEmail = Configuration["SMTP:sendAddress"];
             using (var message = new MailMessage())
             {
                 message.To.Add(new MailAddress(email));
@@ -37,12 +34,12 @@ namespace sXb_service.Services
                 message.Subject = subject;
                 message.Body = body;
                 message.IsBodyHtml = true;
-                using (var client = new SmtpClient("smtp.gmail.com"))
+                using (var client = new SmtpClient(Configuration["SMTP:host"]))
                 {
-                    
+                    string username = Configuration["SMTP:username"];
                     string password = Configuration["SMTP:password"];
-                    client.Port = 587;
-                    client.Credentials = new NetworkCredential(senderEmail, password);
+                    client.Port = Convert.ToInt32(Configuration["SMTP:port"]);
+                    client.Credentials = new NetworkCredential(username, password);
                     client.EnableSsl = true;
                     client.Send(message);
                 }
