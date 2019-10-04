@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;
 using Microsoft.Extensions.Configuration;
+using sXb_service.Helpers;
 
 namespace sXb_service.Services
 {
@@ -26,19 +27,19 @@ namespace sXb_service.Services
 
         public void Execute(string subject, string body, string email)
         {
-            string senderEmail = Configuration["SMTP:sendAddress"];
+            var smtpConfig = Configuration.GetSection("SMTP").Get<SMTPConfig>();
             using (var message = new MailMessage())
             {
                 message.To.Add(new MailAddress(email));
-                message.From = new MailAddress(senderEmail);
+                message.From = new MailAddress(smtpConfig.sendAddress);
                 message.Subject = subject;
                 message.Body = body;
                 message.IsBodyHtml = true;
-                using (var client = new SmtpClient(Configuration["SMTP:host"]))
+                using (var client = new SmtpClient(smtpConfig.Host))
                 {
-                    string username = Configuration["SMTP:username"];
-                    string password = Configuration["SMTP:password"];
-                    client.Port = Convert.ToInt32(Configuration["SMTP:port"]);
+                    string username = smtpConfig.Username;
+                    string password = smtpConfig.Password;
+                    client.Port = smtpConfig.Port;
                     client.Credentials = new NetworkCredential(username, password);
                     client.EnableSsl = true;
                     client.Send(message);
