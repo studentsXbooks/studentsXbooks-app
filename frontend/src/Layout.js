@@ -61,7 +61,8 @@ const UserInfoOrLoginRegistration = () => {
   return (
     <div>
       <span>{username}</span>
-      <Link to="/user/listings">My Listings</Link>
+      <Link to="/user/listings"> My Listings</Link>
+      <Link to="/listing/new"> New Listing</Link>
     </div>
   );
 };

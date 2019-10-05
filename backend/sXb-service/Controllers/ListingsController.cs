@@ -61,6 +61,7 @@ namespace sXb_service.Controllers
             return Ok(listing);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ListingDetailsViewModel listingDetailsViewModel)
         {
@@ -89,6 +90,8 @@ namespace sXb_service.Controllers
             }
 
             listing.BookId = book.Id;
+            var user = await _userManager.GetUserAsync(User);
+            listing.UserId = user.Id;
             await _iRepo.Create(listing);
 
             return Created("GetListing", new { id = listing.Id });
