@@ -9,7 +9,7 @@ services:
       - sxb-db
     environment:
       Db:Connection: "Server=sxb-db;Database=sxb;User Id=SA;Password=Develop@90"
-      Domain:sXb-frontend: "Just Doesn't need to be empty"
+      Cors:AllowedDomains:0: "Just Doesn't need to be empty"
   sxb-db:
     image: microsoft/mssql-server-linux
     environment:
