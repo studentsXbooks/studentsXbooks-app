@@ -96,7 +96,7 @@ namespace sXb_service.Controllers
 
 
         [HttpGet("user")]
-        public async Task<IActionResult> GetUsersListings(int page)
+        public async Task<IActionResult> GetUsersListings(int page = 1)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user != null)
