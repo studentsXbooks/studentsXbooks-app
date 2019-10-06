@@ -103,7 +103,7 @@ namespace sXb_service.Controllers {
             return RedirectToAction ("GetAll");
         }
 
-        [HttpPost ("new")]
+        [HttpPost ("register")]
         public async Task<IActionResult> Register ([FromBody] RegisterViewModel newUser) {
 
             User user = new User ();
@@ -206,19 +206,26 @@ namespace sXb_service.Controllers {
             if (ModelState.IsValid) {
                 // Gets username because login uses username.
                 // TODO: Implement custom login method that uses email instead.
-                string username = await Repo.GetUsernameByEmail (model.Email);
+                string username = null;
+                try
+                {
+                    username = await Repo.GetUsernameByEmail(model.Email);
+                } catch(Exception ex)
+                {
+                    return NotFound();
+                }
                 // This does not count login failures towards account lockout
                 // To enable password failures to trigger account lockout,
                 // set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync (username, model.Password, model.RememberMe, lockoutOnFailure : false);
                 if (result.Succeeded) {
 
-                    return RedirectToLocal (returnUrl);
+                    return Ok();
                 }
             }
 
             // If execution got this far, something failed, redisplay the form.
-            return RedirectToAction (nameof (GetId));
+            return NotFound();
         }
         [HttpGet("id")]
         //[Authorize]
@@ -238,15 +245,6 @@ namespace sXb_service.Controllers {
             await _signInManager.SignOutAsync ();
 
             return Ok ("Logout complete!");
-        }
-
-        private IActionResult RedirectToLocal (string returnUrl) {
-            if (Url.IsLocalUrl (returnUrl)) {
-                return Redirect (returnUrl);
-            } else {
-                // Questionable to return all records.
-                return RedirectToAction (nameof (GetAll));
-            }
         }
     }
 }

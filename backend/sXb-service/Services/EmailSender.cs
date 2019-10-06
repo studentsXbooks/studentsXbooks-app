@@ -39,7 +39,6 @@ namespace sXb_service.Services
                 message.IsBodyHtml = true;
                 using (var client = new SmtpClient("smtp.gmail.com"))
                 {
-                    
                     string password = Configuration["SMTP:password"];
                     client.Port = 587;
                     client.Credentials = new NetworkCredential(senderEmail, password);
