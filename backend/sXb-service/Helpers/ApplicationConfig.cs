@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Linq;
 
 namespace sXb_service.Helpers
 {
@@ -9,7 +9,10 @@ namespace sXb_service.Helpers
 
     public class CorsConfig
     {
-        public string[] AllowedDomains { get; set; }
+        public string FrontendDomain { get; set; }
+        public string[] AllowedDomains { get; set; } = new string[0];
+
+        public string[] AllDomains => AllowedDomains.Append(FrontendDomain).ToArray();
     }
 
     public class SMTPConfig

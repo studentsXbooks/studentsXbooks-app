@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using sXb_service.EF;
 using sXb_service.Helpers;
 using sXb_service.Models;
@@ -43,7 +37,7 @@ namespace sXb_service
                options.AddPolicy(AllowAnywhere,
                    builder =>
                    {
-                       builder.WithOrigins(corsConfig.AllowedDomains)
+                       builder.WithOrigins(corsConfig.AllDomains)
                        .AllowAnyHeader()
                        .WithExposedHeaders("*")
                        .AllowCredentials()
@@ -120,8 +114,6 @@ namespace sXb_service
                 options.SlidingExpiration = true;
             });
 
-            // requires
-            // using Microsoft.AspNetCore.Identity.UI.Services;
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -144,7 +136,7 @@ namespace sXb_service
             }
 
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseCors(AllowAnywhere);
 

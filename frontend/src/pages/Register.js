@@ -26,7 +26,7 @@ const Register = ({ navigate }: Object) => {
           <form
             onSubmit={e => {
               e.preventDefault();
-              ApiPost("users/new", false, { username, email, password })
+              ApiPost("users/register", false, { username, email, password })
                 .then(() => {
                   navigate(`/verify-email?email=${email}`);
                 })
