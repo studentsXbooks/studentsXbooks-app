@@ -14,30 +14,36 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using sXb_service.EF;
+using sXb_service.Helpers;
 using sXb_service.Models;
 using sXb_service.Repos;
 using sXb_service.Repos.Interfaces;
 using sXb_service.Services;
 
-namespace sXb_service {
-    public class Startup {
+namespace sXb_service
+{
+    public class Startup
+    {
         readonly string AllowAnywhere = "_AllowAnywhere";
         public IConfiguration Configuration { get; }
 
-        public Startup (IConfiguration configuration) {
+        public Startup(IConfiguration configuration)
+        {
             Configuration = configuration;
         }
 
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var databaseConfig = Configuration.GetSection("Db").Get<DatabaseConfig>();
+            var corsConfig = Configuration.GetSection("Cors").Get<CorsConfig>();
 
             services.AddCors(options =>
            {
                options.AddPolicy(AllowAnywhere,
                    builder =>
                    {
-                       builder.WithOrigins(Configuration["Domain:sXb-frontend"])
+                       builder.WithOrigins(corsConfig.AllowedDomains)
                        .AllowAnyHeader()
                        .WithExposedHeaders("*")
                        .AllowCredentials()
@@ -46,14 +52,13 @@ namespace sXb_service {
            });
 
             services.AddDbContext<TxtXContext>(options =>
-              options.UseSqlServer(Configuration["Db:Connection"]));
+              options.UseSqlServer(databaseConfig.Connection));
 
 
 
             services.AddIdentity<User, IdentityRole>(config =>
                { config.SignIn.RequireConfirmedEmail = true; }
-            )
-                .AddEntityFrameworkStores<TxtXContext>()
+            ).AddEntityFrameworkStores<TxtXContext>()
                 .AddDefaultTokenProviders();
 
             services.AddAutoMapper(typeof(Startup));
@@ -82,17 +87,18 @@ namespace sXb_service {
                 options.User.RequireUniqueEmail = true;
             });
 
-            services.AddAutoMapper (typeof (Startup));
-            services.AddScoped<IListingRepo, ListingRepo> ();
-            services.AddScoped<IBookRepo, BookRepo> ();
-            services.AddScoped<IUserBookRepo, UserBookRepo> ();
-            services.AddScoped<IUserRepo, UserRepo> ();
+            services.AddAutoMapper(typeof(Startup));
+            services.AddScoped<IListingRepo, ListingRepo>();
+            services.AddScoped<IBookRepo, BookRepo>();
+            services.AddScoped<IUserBookRepo, UserBookRepo>();
+            services.AddScoped<IUserRepo, UserRepo>();
 
-            services.Configure<IdentityOptions> (options => {
-                
+            services.Configure<IdentityOptions>(options =>
+            {
+
 
                 // Lockout settings
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes (30);
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
                 options.Lockout.MaxFailedAccessAttempts = 10;
                 options.Lockout.AllowedForNewUsers = true;
 
@@ -100,7 +106,8 @@ namespace sXb_service {
                 options.User.RequireUniqueEmail = true;
             });
 
-            services.ConfigureApplicationCookie (options => {
+            services.ConfigureApplicationCookie(options =>
+            {
                 // Cookie settings
                 options.Cookie.HttpOnly = true;
                 options.Cookie.Expiration = TimeSpan.FromDays(150);
@@ -115,9 +122,9 @@ namespace sXb_service {
 
             // requires
             // using Microsoft.AspNetCore.Identity.UI.Services;
-            services.AddTransient<IEmailSender, EmailSender> ();
-            services.Configure<AuthMessageSenderOptions> (Configuration);
-            services.AddMvc ().SetCompatibilityVersion (CompatibilityVersion.Version_2_2);
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
         }
 
@@ -139,11 +146,11 @@ namespace sXb_service {
 
             //app.UseHttpsRedirection();
 
-            app.UseCors (AllowAnywhere);
+            app.UseCors(AllowAnywhere);
 
-            app.UseAuthentication ();
+            app.UseAuthentication();
 
-            app.UseMvc ();
+            app.UseMvc();
 
         }
     }
