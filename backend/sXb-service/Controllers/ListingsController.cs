@@ -61,7 +61,6 @@ namespace sXb_service.Controllers
             return Ok(listing);
         }
 
-        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ListingDetailsViewModel listingDetailsViewModel)
         {
