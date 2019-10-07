@@ -5,6 +5,7 @@ import LoginSuccess from "./LoginSuccess";
 import EmailConfirmed from "./EmailConfirmed";
 import VerifyEmail from "./VerifyEmail";
 import UserListing from "./UserListings";
+import ConfirmEmail from "./ConfirmEmail";
 
 export {
   Home,
@@ -13,5 +14,6 @@ export {
   LoginSuccess,
   EmailConfirmed,
   VerifyEmail,
-  UserListing
+  UserListing,
+  ConfirmEmail
 };
