@@ -69,7 +69,7 @@ namespace sXb_tests.Integration
         {
             var listing = fixture.Create<ListingViewModel>();
             var client = _factory.CreateClient();
-           
+
             var response = await client.GetAsync("/api/listings/a059efc3-a4ec-4abf-946a-84194b2e0a00");
 
             response.EnsureSuccessStatusCode();
@@ -80,7 +80,7 @@ namespace sXb_tests.Integration
         public async Task GetListingDetail_IdNotFound_Return404()
         {
             var client = _factory.CreateClient();
-        
+
             var response = await client.GetAsync("/api/listings/81c92cf8-d6c2-4b10-ad00-3eaac26d9b92");
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -116,7 +116,7 @@ namespace sXb_tests.Integration
         [InlineData("Normal Length Title", "", "LastName", "middleName", "9780746062760", 4.99, Condition.Fair)]
         [InlineData("Normal Length Title", "FirstName", "", "middleName", "9780746062760", 4.99, Condition.Fair)]
         [InlineData("Normal Length Title", "FirstName", "LastName", "", "9780746062760", 4.99, Condition.Fair)]
-        [InlineData("Normal Length Title", "FirstName", "LastName", "MiddleName", "978746062760", 4.99, Condition.Fair)]
+        [InlineData("Normal Length Title", "FirstName", "LastName", "MiddleName", "978746062760", 4.99, Condition.Fair)] // Should fail cause ISBN10 not valid
         [InlineData("Normal Length Title", "FirstName", "LastName", "MiddleName", "978746062760", -4.99, Condition.Fair)]
         public async Task Create_InvalidListingDetail_Return400(string title, string firstName, string lastName, string middleName, string isbn, decimal price,
             Condition condition)
