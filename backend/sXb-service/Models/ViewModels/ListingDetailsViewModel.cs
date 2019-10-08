@@ -1,5 +1,6 @@
 ﻿using sXb_service.Helpers.ModelValidation;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace sXb_service.Models.ViewModels
