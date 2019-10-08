@@ -96,7 +96,7 @@ namespace sXb_tests.Integration
                 Email = "test@wvup.edu",
                 Password = "Develop@90"
             });
-            var newListing = fixture.Create<ListingDetailsViewModel>();
+            var newListing = fixture.Create<CreateListingViewModel>();
             newListing.Description = "Short book description";
             newListing.FirstName = "Author";
             newListing.MiddleName = "B";
@@ -130,7 +130,7 @@ namespace sXb_tests.Integration
                 Password = "Develop@90"
             });
 
-            var newListing = new ListingDetailsViewModel()
+            var newListing = new CreateListingViewModel()
             {
                 FirstName = firstName,
                 LastName = lastName,
@@ -140,7 +140,7 @@ namespace sXb_tests.Integration
                 Price = price,
                 Condition = condition
             };
-            var response = await client.PostAsJsonAsync<ListingDetailsViewModel>(url, newListing);
+            var response = await client.PostAsJsonAsync<CreateListingViewModel>(url, newListing);
 
             var errorMessage = await response.Content.ReadAsAsync<ValidationResultModel>();
             Assert.Equal(HttpStatusCode.UnprocessableEntity, response.StatusCode);

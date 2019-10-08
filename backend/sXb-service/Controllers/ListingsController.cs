@@ -58,16 +58,17 @@ namespace sXb_service.Controllers
                 return NotFound();
             }
 
-            return Ok(listing);
+            var details = _mapper.Map<ListingDetailsViewModel>(listing);
+            return Ok(details);
         }
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ListingDetailsViewModel listingDetailsViewModel)
+        public async Task<IActionResult> Create([FromBody] CreateListingViewModel createListingViewModel)
         {
-            var book = _mapper.Map<Book>(listingDetailsViewModel);
-            var author = _mapper.Map<Author>(listingDetailsViewModel);
-            var listing = _mapper.Map<Listing>(listingDetailsViewModel);
+            var book = _mapper.Map<Book>(createListingViewModel);
+            var author = _mapper.Map<Author>(createListingViewModel);
+            var listing = _mapper.Map<Listing>(createListingViewModel);
 
             if (!await _iBookRepo.Exist(x => x.ISBN10 == book.ISBN10))
             {
