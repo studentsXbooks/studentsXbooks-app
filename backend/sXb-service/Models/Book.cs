@@ -1,20 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using sXb_service.Helpers.ModelValidation;
 
 namespace sXb_service.Models
 {
-    public class Book 
+    public class Book
     {
+        [Key]
         public Guid Id { get; set; }
 
         public string Title { get; set; }
 
-        public string Author { get; set; }
+        [ISBNValidation(ISBNType = ISBNTypes.ISBN10)]
+        public string ISBN10 { get; set; }
 
-        public string ISBN { get; set; }
+        public string Description { get; set; }
 
-        public string ImageURL { get; set; }
+        [InverseProperty(nameof(BookAuthor.Book))]
+        public List<BookAuthor> BookAuthors { get; set; } = new List<BookAuthor>();
+
     }
 }

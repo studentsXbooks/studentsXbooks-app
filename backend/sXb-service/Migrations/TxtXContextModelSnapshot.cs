@@ -185,16 +185,30 @@ namespace sXb_service.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("sXb_service.Models.Author", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("LastName");
+
+                    b.Property<string>("MiddleName");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Authors");
+                });
+
             modelBuilder.Entity("sXb_service.Models.Book", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Author");
+                    b.Property<string>("Description");
 
-                    b.Property<string>("ISBN");
-
-                    b.Property<string>("ImageURL");
+                    b.Property<string>("ISBN10");
 
                     b.Property<string>("Title");
 
@@ -203,27 +217,20 @@ namespace sXb_service.Migrations
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("sXb_service.Models.Listing", b =>
+            modelBuilder.Entity("sXb_service.Models.BookAuthor", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<Guid>("BookId");
 
-                    b.Property<bool>("Deleted");
+                    b.Property<Guid>("AuthorId");
 
-                    b.Property<decimal>("Price");
+                    b.HasKey("BookId", "AuthorId");
 
-                    b.Property<bool>("Sold");
+                    b.HasAlternateKey("AuthorId", "BookId");
 
-                    b.Property<Guid>("UserBookId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserBookId");
-
-                    b.ToTable("Listings");
+                    b.ToTable("BookAuthors");
                 });
 
-            modelBuilder.Entity("sXb_service.Models.UserBook", b =>
+            modelBuilder.Entity("sXb_service.Models.Listing", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -232,13 +239,17 @@ namespace sXb_service.Migrations
 
                     b.Property<int>("Condition");
 
+                    b.Property<decimal>("Price");
+
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("UserBooks");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Listings");
                 });
 
             modelBuilder.Entity("sXb_service.Models.User", b =>
@@ -303,20 +314,29 @@ namespace sXb_service.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("sXb_service.Models.Listing", b =>
+            modelBuilder.Entity("sXb_service.Models.BookAuthor", b =>
                 {
-                    b.HasOne("sXb_service.Models.UserBook", "UserBook")
-                        .WithMany()
-                        .HasForeignKey("UserBookId")
+                    b.HasOne("sXb_service.Models.Author", "Author")
+                        .WithMany("BookAuthors")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("sXb_service.Models.Book", "Book")
+                        .WithMany("BookAuthors")
+                        .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("sXb_service.Models.UserBook", b =>
+            modelBuilder.Entity("sXb_service.Models.Listing", b =>
                 {
                     b.HasOne("sXb_service.Models.Book", "Book")
                         .WithMany()
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("sXb_service.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

@@ -13,9 +13,11 @@ namespace sXb_service.EF
     {
         public DbSet<Book> Books { get; set; }
 
+        public DbSet<Author> Authors { get; set; }
+
         public DbSet<Listing> Listings { get; set; }
 
-        public DbSet<UserBook> UserBooks { get; set; }
+        public DbSet<BookAuthor> BookAuthors { get; set; }
 
         public DbSet<User> User { get; set; }
 
@@ -44,6 +46,7 @@ namespace sXb_service.EF
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<BookAuthor>().HasKey(key => new { key.BookId, key.AuthorId });
         }
     }
 }

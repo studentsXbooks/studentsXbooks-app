@@ -9,10 +9,6 @@ namespace sXb_service.Repos.Interfaces
 {
     public interface IListingRepo : IRepo<Listing>
     {
-        Task<Listing> Add(Listing listing);
 
-        Task<Listing> Update(Listing listing);
-
-        Task<IEnumerable<Listing>> ByUser(string userId);
     }
 }

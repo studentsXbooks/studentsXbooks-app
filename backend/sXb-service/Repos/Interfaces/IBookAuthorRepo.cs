@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace sXb_service.Repos.Interfaces
 {
-    public interface IBookRepo : IRepo<Book>
+    public interface IBookAuthorRepo  : IRepo<BookAuthor>
     {
-
     }
 }

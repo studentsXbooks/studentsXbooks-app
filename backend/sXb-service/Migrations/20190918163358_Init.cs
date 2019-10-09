@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace sXb_service.Migrations
 {
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,14 +52,27 @@ namespace sXb_service.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Authors",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    MiddleName = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Authors", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Books",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Title = table.Column<string>(nullable: true),
-                    Author = table.Column<string>(nullable: true),
-                    ISBN = table.Column<string>(nullable: true),
-                    ImageURL = table.Column<string>(nullable: true)
+                    ISBN10 = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -173,19 +186,24 @@ namespace sXb_service.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserBooks",
+                name: "BookAuthors",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<string>(nullable: true),
                     BookId = table.Column<Guid>(nullable: false),
-                    Condition = table.Column<int>(nullable: false)
+                    AuthorId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserBooks", x => x.Id);
+                    table.PrimaryKey("PK_BookAuthors", x => new { x.BookId, x.AuthorId });
+                    table.UniqueConstraint("AK_BookAuthors_AuthorId_BookId", x => new { x.AuthorId, x.BookId });
                     table.ForeignKey(
-                        name: "FK_UserBooks_Books_BookId",
+                        name: "FK_BookAuthors_Authors_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "Authors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BookAuthors_Books_BookId",
                         column: x => x.BookId,
                         principalTable: "Books",
                         principalColumn: "Id",
@@ -197,20 +215,26 @@ namespace sXb_service.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    UserBookId = table.Column<Guid>(nullable: false),
+                    BookId = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
                     Price = table.Column<decimal>(nullable: false),
-                    Sold = table.Column<bool>(nullable: false),
-                    Deleted = table.Column<bool>(nullable: false)
+                    Condition = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Listings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Listings_UserBooks_UserBookId",
-                        column: x => x.UserBookId,
-                        principalTable: "UserBooks",
+                        name: "FK_Listings_Books_BookId",
+                        column: x => x.BookId,
+                        principalTable: "Books",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Listings_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -253,14 +277,14 @@ namespace sXb_service.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Listings_UserBookId",
+                name: "IX_Listings_BookId",
                 table: "Listings",
-                column: "UserBookId");
+                column: "BookId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserBooks_BookId",
-                table: "UserBooks",
-                column: "BookId");
+                name: "IX_Listings_UserId",
+                table: "Listings",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -281,19 +305,22 @@ namespace sXb_service.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "BookAuthors");
+
+            migrationBuilder.DropTable(
                 name: "Listings");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "UserBooks");
+                name: "Authors");
 
             migrationBuilder.DropTable(
                 name: "Books");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

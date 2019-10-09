@@ -13,6 +13,8 @@ using sXb_service.Models;
 using sXb_service.Repos;
 using sXb_service.Repos.Interfaces;
 using sXb_service.Services;
+using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace sXb_service
 {
@@ -59,9 +61,9 @@ namespace sXb_service
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<IListingRepo, ListingRepo>();
             services.AddScoped<IBookRepo, BookRepo>();
-            services.AddScoped<IUserBookRepo, UserBookRepo>();
             services.AddScoped<IUserRepo, UserRepo>();
-
+            services.AddScoped<IAuthorRepo, AuthorRepo>();
+            services.AddScoped<IBookAuthorRepo, BookAuthorRepo>();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -82,16 +84,8 @@ namespace sXb_service
                 options.User.RequireUniqueEmail = true;
             });
 
-            services.AddAutoMapper(typeof(Startup));
-            services.AddScoped<IListingRepo, ListingRepo>();
-            services.AddScoped<IBookRepo, BookRepo>();
-            services.AddScoped<IUserBookRepo, UserBookRepo>();
-            services.AddScoped<IUserRepo, UserRepo>();
-
             services.Configure<IdentityOptions>(options =>
             {
-
-
                 // Lockout settings
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
                 options.Lockout.MaxFailedAccessAttempts = 10;
@@ -115,9 +109,23 @@ namespace sXb_service
                 options.SlidingExpiration = true;
             });
 
+            //required
+            // return 401 instead of not found when user is not logged in
+            services.ConfigureApplicationCookie(options =>
+         {
+             options.Events.OnRedirectToLogin = context =>
+             {
+                 context.Response.StatusCode = 401;
+                 return Task.CompletedTask;
+             };
+         });
+
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
         }
 
