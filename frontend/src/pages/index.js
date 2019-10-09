@@ -7,6 +7,7 @@ import VerifyEmail from "./VerifyEmail";
 import UserListing from "./UserListings";
 import CreateListing from "./CreateListing";
 import ListingDetails from "./ListingDetails";
+import ConfirmEmail from "./ConfirmEmail";
 
 export {
   Home,
@@ -17,5 +18,6 @@ export {
   VerifyEmail,
   UserListing,
   CreateListing,
-  ListingDetails
+  ListingDetails,
+  ConfirmEmail
 };

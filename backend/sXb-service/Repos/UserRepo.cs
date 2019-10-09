@@ -58,7 +58,7 @@ namespace sXb_service.Repos
             }
         }
 
-        public IEnumerable<User> FindUsers(string keyword)
+        public async Task<IEnumerable<User>> FindUsers(string keyword)
         {
             IEnumerable<User> results = Table
                 .Where(e =>
@@ -83,7 +83,7 @@ namespace sXb_service.Repos
             return await Table.FindAsync(id);
         }
 
-        public int Update(User user, bool persist = true )
+        public async Task<int> Update(User user, bool persist = true )
         {
             //user.ConcurrencyStamp = System.Guid.NewGuid().ToString();
             user.ConcurrencyStamp = Table.AsNoTracking()
@@ -92,19 +92,42 @@ namespace sXb_service.Repos
             Table.Update(user);
             return persist ? SaveChanges() : 0;
         }
-        public string FindIdByName(string first, string last)
+        public async Task<string> FindIdByName(string first, string last)
         {
             User user = Table.Where(e =>
                             e.FirstName.ToLower().Equals(first.ToLower()) ||
                             e.LastName.ToLower().Equals(last.ToLower())).First();
             return user.Id;
         }
-        public string GetUsernameByEmail(string email)
+        public async Task<string> FindIdByEmail(string email)
+        {
+            User user = Table.Where(e =>
+                            e.Email.ToLower().Equals(email.ToLower())).First();
+            return user.Id;
+        }
+        public async Task<string> FindIdByUsername(string username)
+        {
+            User user = Table.Where(e =>
+                            e.UserName.ToLower().Equals(username.ToLower())).First();
+            return user.Id;
+        }
+        public async Task<string> GetUsernameByEmail(string email)
         {
             User user = Table.Where(e =>
            e.Email.ToLower().Equals(email.ToLower())
            ).First();
             return user.UserName;
+        }
+        public async Task<bool> UsernameExists(string username)
+        {
+            int count = Table.Where(e => e.UserName.ToLower().Equals(username.ToLower())).Count();
+            
+            return count > 0 ? true : false;
+        }
+        public async Task<bool> EmailExists(string email)
+        {
+            int count = Table.Where(e => e.Email.ToLower().Equals(email.ToLower())).Count();
+            return count > 0 ? true : false;
         }
     }
 }

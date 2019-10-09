@@ -10,7 +10,8 @@ import {
   VerifyEmail,
   UserListing,
   CreateListing,
-  ListingDetails
+  ListingDetails,
+  ConfirmEmail
 } from "./pages";
 import Layout from "./Layout";
 
@@ -27,6 +28,7 @@ export default () => (
       <UserListing path="user/listings/:pageId" />
       <CreateListing path="listing/new" />
       <ListingDetails path="listing/:id" />
+      <ConfirmEmail path="confirm-email" />
     </Layout>
   </Router>
 );
