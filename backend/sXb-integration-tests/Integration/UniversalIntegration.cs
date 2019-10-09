@@ -35,7 +35,7 @@ namespace sXb_integration_tests.Integration
         }
 
         [Theory]
-        [InlineData("api/listings/user")]
+        [InlineData("api/listings/user/1")]
         public async Task GetUser_NotLoggedIn_Return401(string api)
         {
             var client = _factory.CreateClient();

@@ -23,7 +23,8 @@ export default () => (
       <LoginSuccess path="login-success" />
       <EmailConfirmed path="email-confirmed" />
       <VerifyEmail path="verify-email" />
-      <UserListing path="user/listings" />
+      <UserListing path="user/listings/" />
+      <UserListing path="user/listings/:pageId" />
       <CreateListing path="listing/new" />
       <ListingDetails path="listing/:id" />
     </Layout>

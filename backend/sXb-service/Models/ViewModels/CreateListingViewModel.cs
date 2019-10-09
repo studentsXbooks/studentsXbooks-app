@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using sXb_service.Helpers.ModelValidation;
 
 namespace sXb_service.Models.ViewModels
 {
@@ -12,6 +13,8 @@ namespace sXb_service.Models.ViewModels
 
         [StringLength(265, MinimumLength = 1, ErrorMessage = "Title must be between 1 and 256 characters")]
         public string Title { get; set; }
+
+        [ISBNValidation(ISBNType = ISBNTypes.ISBN10)]
 
         public string ISBN10 { get; set; }
 

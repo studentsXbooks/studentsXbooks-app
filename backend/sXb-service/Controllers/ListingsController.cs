@@ -59,6 +59,7 @@ namespace sXb_service.Controllers
             }
 
             var details = _mapper.Map<ListingDetailsViewModel>(listing);
+
             return Ok(details);
         }
 
@@ -98,7 +99,7 @@ namespace sXb_service.Controllers
         }
 
 
-        [HttpGet("user")]
+        [HttpGet("user/{page}")]
         public async Task<IActionResult> GetUsersListings(int page = 1)
         {
             var user = await _userManager.GetUserAsync(User);

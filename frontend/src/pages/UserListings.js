@@ -6,16 +6,19 @@ import {
   Card,
   CardHeader,
   CardContent,
-  Typography
+  Typography,
+  Button,
+  List,
+  ListItem
 } from "@material-ui/core";
 
 // Need paging, and need listing details page
-const UserListing = () => {
+const UserListing = ({ pageId = 1, navigate }) => {
   const [page, setPage] = useState();
 
   useEffect(() => {
-    ApiGet("listings/user", true).then(setPage);
-  }, []);
+    ApiGet(`listings/user/${pageId}`, true).then(setPage);
+  }, [pageId]);
 
   return (
     <Grid container spacing={3}>
@@ -24,6 +27,27 @@ const UserListing = () => {
         page.data.map(listing => (
           <ListingCard listing={listing} key={listing.id} />
         ))}
+      <List>
+        <ListItem>
+          <Button
+            onClick={() => navigate(`/user/listings/${Number(pageId) - 1} `)}
+            disabled={page && !page.hasPrev}
+          >
+            Prev
+          </Button>
+        </ListItem>
+        <ListItem>
+          <Typography>{page && page.currentPage}</Typography>
+        </ListItem>
+        <ListItem>
+          <Button
+            onClick={() => navigate(`/user/listings/${Number(pageId) + 1} `)}
+            disabled={page && !page.hasNext}
+          >
+            Next
+          </Button>
+        </ListItem>
+      </List>
     </Grid>
   );
 };

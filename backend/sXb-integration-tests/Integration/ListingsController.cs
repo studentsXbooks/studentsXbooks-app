@@ -33,7 +33,24 @@ namespace sXb_tests.Integration
         [Fact]
         public async Task GetUsersListing_CallerHasCookie_Return200WithAPageOfListingVMs()
         {
-            string listingsByUserUrl = "/api/listings/user";
+            string listingsByUserUrl = "/api/listings/user/1";
+            var client = _factory.CreateClient();
+            await client.PostAsJsonAsync<LoginViewModel>("/api/users/", new LoginViewModel()
+            {
+                Email = "test@wvup.edu",
+                Password = "Develop@90"
+            });
+
+            var response = await client.GetAsync(listingsByUserUrl);
+            var listings = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>>();
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.NotNull(listings);
+        }
+
+        [Fact]
+        public async Task GetUsersListing_CallerHasCookieAndPageTwo_Return200WithAPageOfListingVMs()
+        {
+            string listingsByUserUrl = "/api/listings/user/2";
             var client = _factory.CreateClient();
             await client.PostAsJsonAsync<LoginViewModel>("/api/users/", new LoginViewModel()
             {
@@ -50,7 +67,7 @@ namespace sXb_tests.Integration
         [Fact]
         public async Task GetUsersListing_CallerHasCookieAndNoPageData_Return200WithAPageOfNoData()
         {
-            string listingsByUserUrl = "/api/listings/user";
+            string listingsByUserUrl = "/api/listings/user/1";
             var client = _factory.CreateClient();
             await client.PostAsJsonAsync<LoginViewModel>("/api/users/", new LoginViewModel()
             {

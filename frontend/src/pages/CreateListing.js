@@ -2,13 +2,38 @@ import React, { useEffect, useState } from "react";
 import { ApiPost, ApiGet } from "../utils";
 import { Formik, Form, Field } from "formik";
 import { Icon, Button } from "@material-ui/core";
+import * as Yup from "yup";
+
+const listingSchema = Yup.object().shape({
+  condition: Yup.number().required()
+});
+
+const Conditions = props => {
+  const [conditions, setConditions] = useState();
+  useEffect(() => {
+    ApiGet(`conditions`, true).then(setConditions);
+  }, []);
+  return (
+    <>
+      <option style={{ display: "none" }}>Book Condition</option>
+      {conditions &&
+        conditions.map(({ value, name }) => (
+          <option value={value} key={value}>
+            {name}
+          </option>
+        ))}
+    </>
+  );
+};
 
 const CreateListing = ({ navigate }) => {
   return (
     <>
       <h1>New Listing</h1>
       <p>Enter book details to create new listing</p>
+
       <Formik
+        validationSchema={listingSchema}
         initialValues={{
           title: "",
           description: "",
@@ -61,6 +86,9 @@ const CreateListing = ({ navigate }) => {
               placeholder="Price"
               required
             />
+            <Field id="condition" name="condition" component="select">
+              <Conditions />
+            </Field>
             <h3>Author</h3>
             <Field
               id="firstName"

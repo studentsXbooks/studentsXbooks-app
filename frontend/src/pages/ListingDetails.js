@@ -20,7 +20,7 @@ const ListingDetails = ({ id }) => {
             <Typography variant="h2">{listing.title}</Typography>
             <Typography variant="h4">{listing.description}</Typography>
             <Typography variant="h4">{listing.authors}</Typography>
-            <Typography variant="h4">ISBN: {listing.isbN10}</Typography>
+            <Typography variant="h4">ISBN: {listing.isbn10}</Typography>
             <Typography variant="h4">{listing.condition}</Typography>
             <Typography variant="h4">{listing.price}</Typography>
           </Grid>
