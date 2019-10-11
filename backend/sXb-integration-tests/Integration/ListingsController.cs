@@ -147,5 +147,321 @@ namespace sXb_tests.Integration {
             Assert.Equal (HttpStatusCode.UnprocessableEntity, response.StatusCode);
             Assert.NotNull (errorMessage);
         }
+        [Theory]
+        [InlineData("Rowling")]
+        [InlineData("Joanne+K+Rowling")]
+        [InlineData("Foster+Wallace")]
+        [InlineData("Melville")]
+        [InlineData("Row")]
+        public async Task Search_TermIsAnAuthor_Returns200WithPagingWithDataContaingSameAuthor(string query)
+        {
+            string url = $"/api/listings/search?q={query}";
+            var client = _factory.CreateClient();
+
+            var response = await client.GetAsync(url);
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>>();
+
+
+
+            // Log count of authors reccurence.
+            Dictionary<string, int> authorDict = new Dictionary<string, int>();
+            
+
+            foreach( ListingPreviewViewModel vm in content.Data)
+            {
+                foreach( string author in vm.Authors)
+                {
+                    // if it's a new author initiate with the count of 1
+                    int countOfAuthor = 0;
+                    try
+                    {
+                        countOfAuthor = ++authorDict[author];
+                        if(authorDict[author] > 0 )
+                        {
+                            authorDict[author] = countOfAuthor;
+                        }
+                    }
+                    catch(KeyNotFoundException ex)
+                    {
+                        authorDict.Add(author, 1);
+                    }
+                }
+            }
+            bool sameAuthor = false;
+            int total;
+            
+            if (content.TotalRecords > content.PageSize)
+            {
+                total = content.PageSize;
+            }
+            else
+            {
+                total = content.TotalRecords;
+            }
+            for ( int i = 0; i < authorDict.Count; i++)
+            {
+
+                
+                // If the authors reccurence is the same as total records count,
+                // that means, that at least one author reccurs in all records.
+                if( authorDict.ElementAt(i).Value == total )
+                {
+                    sameAuthor = true;
+                    break;
+                }
+            }
+
+            if (content.TotalRecords > 0)
+                Assert.True(sameAuthor);
+            else
+                Assert.False(sameAuthor);
+
+        }
+        [Theory]
+        [InlineData("harry+potter")]
+        [InlineData("infinite+jest")]
+        [InlineData("har")]
+        [InlineData("moby")]
+        public async Task Search_TermIsATitle_Returns200WithPagingWithDataContainingSameTitle(string query)
+        {
+            string url = $"/api/listings/search?q={query}";
+            var client = _factory.CreateClient();
+
+            var response = await client.GetAsync(url);
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>>();
+
+            // Log count of authors reccurence.
+            Dictionary<string, int> authorDict = new Dictionary<string, int>();
+
+            foreach (ListingPreviewViewModel vm in content.Data)
+            {
+                foreach (string author in vm.Authors)
+                {
+                    // if it's a new author initiate with the count of 1
+                    int countOfAuthor = 0;
+                    try
+                    {
+                        countOfAuthor = ++authorDict[author];
+                        if (authorDict[author] > 0)
+                        {
+                            authorDict[author] = countOfAuthor;
+                        }
+                    }
+                    catch (KeyNotFoundException ex)
+                    {
+                        authorDict.Add(author, 1);
+                    }
+                }
+            }
+            bool sameAuthor = false;
+            int total;
+            if (content.TotalRecords > content.PageSize)
+            {
+                total = content.PageSize;
+            }
+            else
+            {
+                total = content.TotalRecords;
+            }
+            for (int i = 0; i < authorDict.Count; i++)
+            {
+                // If the authors reccurence is the same as total records count,
+                // that means, that at least one author reccurs in all records.
+                if (authorDict.ElementAt(i).Value == total)
+                {
+                    sameAuthor = true;
+                    break;
+                }
+            }
+
+            if (content.TotalRecords > 0)
+                Assert.True(sameAuthor);
+            else
+                Assert.False(sameAuthor);
+        }
+        [Theory]
+        [InlineData("9781976530739")]
+        [InlineData("123456789")]
+        [InlineData("123")]
+        public async Task Search_TermIsAnISBN_Returns200WithPagingWithDataContainingSameISBN(string query)
+        {
+            string url = $"/api/listings/search?q={query}";
+            var client = _factory.CreateClient();
+
+            var response = await client.GetAsync(url);
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>>();
+
+            // Log count of authors reccurence.
+            Dictionary<string, int> authorDict = new Dictionary<string, int>();
+
+            foreach (ListingPreviewViewModel vm in content.Data)
+            {
+                foreach (string author in vm.Authors)
+                {
+                    // if it's a new author initiate with the count of 1
+                    int countOfAuthor = 0;
+                    try
+                    {
+                        countOfAuthor = ++authorDict[author];
+                        if (authorDict[author] > 0)
+                        {
+                            authorDict[author] = countOfAuthor;
+                        }
+                    }
+                    catch (KeyNotFoundException ex)
+                    {
+                        authorDict.Add(author, 1);
+                    }
+                }
+            }
+            bool sameAuthor = false;
+            int total;
+            if (content.TotalRecords > content.PageSize)
+            {
+                total = content.PageSize;
+            }
+            else
+            {
+                total = content.TotalRecords;
+            }
+            for (int i = 0; i < authorDict.Count; i++)
+            {
+                // If the authors reccurence is the same as total records count,
+                // that means, that at least one author reccurs in all records.
+                if (authorDict.ElementAt(i).Value == total)
+                {
+                    sameAuthor = true;
+                    break;
+                }
+            }
+
+            if (content.TotalRecords > 0)
+                Assert.True(sameAuthor);
+            else
+                Assert.False(sameAuthor);
+        }
+        [Theory]
+        [InlineData("9781976530739")]
+        [InlineData("harry+potter")]
+        [InlineData("Joanne+K+Rowling")]
+        public async Task Search_TermIs_X__Returns200WithPagingWithDataContaining_X_InAuthorOrTitleOrISBN(string query)
+        {
+            string url = $"/api/listings/search?q={query}";
+            var client = _factory.CreateClient();
+
+            var response = await client.GetAsync(url);
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>>();
+
+            // Log count of authors reccurence.
+            Dictionary<string, int> authorDict = new Dictionary<string, int>();
+
+            foreach (ListingPreviewViewModel vm in content.Data)
+            {
+                foreach (string author in vm.Authors)
+                {
+                    // if it's a new author initiate with the count of 1
+                    int countOfAuthor = 0;
+                    try
+                    {
+                        countOfAuthor = ++authorDict[author];
+                        if (authorDict[author] > 0)
+                        {
+                            authorDict[author] = countOfAuthor;
+                        }
+                    }
+                    catch (KeyNotFoundException ex)
+                    {
+                        authorDict.Add(author, 1);
+                    }
+                }
+            }
+            bool sameAuthor = false;
+            int total;
+            if (content.TotalRecords > content.PageSize)
+            {
+                total = content.PageSize;
+            }
+            else
+            {
+                total = content.TotalRecords;
+            }
+            for (int i = 0; i < authorDict.Count; i++)
+            {
+                // If the authors reccurence is the same as total records count,
+                // that means, that at least one author reccurs in all records.
+                if (authorDict.ElementAt(i).Value == total)
+                {
+                    sameAuthor = true;
+                    break;
+                }
+            }
+
+            if (content.TotalRecords > 0)
+                Assert.True(sameAuthor);
+            else
+                Assert.False(sameAuthor);
+        }
+        [Theory]
+        [InlineData("infinite+jest")]
+        [InlineData("infinite")]
+        public async Task Search_TermHasManyPages_Returns200NextIsTrue(string query)
+        {
+            string url = $"/api/listings/search?q={query}";
+            var client = _factory.CreateClient();
+
+            var response = await client.GetAsync(url);
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>>();
+
+            Assert.True(content.HasNext);
+        }
+        [Theory]
+        [InlineData("9781976530739")]
+        [InlineData("harry+potter")]
+        [InlineData("Joanne+K+Rowling")]
+        public async Task Search_TermHasOnePage_Returns200NextIsFalse(string query)
+        {
+            string url = $"/api/listings/search?q={query}";
+            var client = _factory.CreateClient();
+
+            var response = await client.GetAsync(url);
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>>();
+
+            Assert.False(content.HasNext);
+        }
+        [Theory]
+        [InlineData("123")]
+        [InlineData("har")]
+        [InlineData("joan")]
+        public async Task Search_TermHasNoMatches_Returns200PageWithNoDataPrevIsFalseAndNextIsFalse(string query)
+        {
+            string url = $"/api/listings/search?q={query}";
+            var client = _factory.CreateClient();
+
+            var response = await client.GetAsync(url);
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>>();
+
+            Assert.Equal(0, content.TotalRecords);
+        }
     }
 }

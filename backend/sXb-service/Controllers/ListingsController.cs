@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -61,6 +62,45 @@ namespace sXb_service.Controllers
             var details = _mapper.Map<ListingDetailsViewModel>(listing);
 
             return Ok(details);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("search")]
+        public async Task<IActionResult> Search([FromQuery] string q,
+            [FromQuery] int page = 1)
+        {
+            string query = q.Replace('+', ' ');
+            Regex rx = new Regex(@"\b" + query + @"\b", RegexOptions.IgnoreCase);
+
+            List<Guid> ids = new List<Guid>();
+            foreach( Listing lis in _iRepo.GetAll())
+            {
+                foreach(BookAuthor bookauthor in lis.Book.BookAuthors)
+                {
+                    if( rx.IsMatch( bookauthor.Author.FullName ) )
+                    {
+                        ids.Add(lis.Id);
+                    }
+                    else if( rx.IsMatch(bookauthor.Author.FirstName + " " + bookauthor.Author.LastName) )
+                    {
+                        ids.Add(lis.Id);
+                    }
+                }
+            }
+            // Search compatible with Title, Author, ISBN
+            var listing = new Paging<ListingPreviewViewModel>(page,
+                _iRepo.GetAll(x => rx.IsMatch(x.Book.Title) || rx.IsMatch(x.Book.ISBN10) ||ids.Contains(x.Id) )
+                .Select(x =>
+                _mapper.Map<ListingPreviewViewModel>(x)));
+
+            if (listing == null)
+            {
+                return NotFound();
+            }
+
+            //var details = _mapper.Map<ListingDetailsViewModel>(listing);
+            
+            return Ok(listing);
         }
 
         [HttpPost]

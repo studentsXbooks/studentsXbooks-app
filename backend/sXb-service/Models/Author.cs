@@ -16,9 +16,10 @@ namespace sXb_service.Models
 
         public string LastName { get; set; }
 
-        public string MiddleName { get; set; } 
 
-        public string FullName { get => $"{FirstName } {MiddleName[0]} {LastName}"; }
+        public string MiddleName { get; set; }
+
+        public string FullName { get => FirstName + (String.IsNullOrEmpty(MiddleName) ? " " :   " " + MiddleName[0].ToString() + " " )+ LastName; }
 
         [InverseProperty(nameof(BookAuthor.Author))]
         public List<BookAuthor> BookAuthors { get; set; } = new List<BookAuthor>();
