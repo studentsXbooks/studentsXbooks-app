@@ -64,4 +64,4 @@ typings/
 */**/.vs/
 */**/.vscode/
 */**/.atom/
-/.vscode/
+.vscode/
