@@ -155,7 +155,7 @@ namespace sXb_tests.Integration {
         [InlineData("Row")]
         public async Task Search_TermIsAnAuthor_Returns200WithPagingWithDataContaingSameAuthor(string query)
         {
-            string url = $"/api/listings/search?q={query}";
+            string url = $"/api/listings/search/{query}/1";
             var client = _factory.CreateClient();
 
             var response = await client.GetAsync(url);
@@ -227,7 +227,7 @@ namespace sXb_tests.Integration {
         [InlineData("moby")]
         public async Task Search_TermIsATitle_Returns200WithPagingWithDataContainingSameTitle(string query)
         {
-            string url = $"/api/listings/search?q={query}";
+            string url = $"/api/listings/search/{query}/1";
             var client = _factory.CreateClient();
 
             var response = await client.GetAsync(url);
@@ -291,7 +291,7 @@ namespace sXb_tests.Integration {
         [InlineData("123")]
         public async Task Search_TermIsAnISBN_Returns200WithPagingWithDataContainingSameISBN(string query)
         {
-            string url = $"/api/listings/search?q={query}";
+            string url = $"/api/listings/search/{query}/1";
             var client = _factory.CreateClient();
 
             var response = await client.GetAsync(url);
@@ -355,7 +355,7 @@ namespace sXb_tests.Integration {
         [InlineData("Joanne+K+Rowling")]
         public async Task Search_TermIs_X__Returns200WithPagingWithDataContaining_X_InAuthorOrTitleOrISBN(string query)
         {
-            string url = $"/api/listings/search?q={query}";
+            string url = $"/api/listings/search/{query}/1";
             var client = _factory.CreateClient();
 
             var response = await client.GetAsync(url);
@@ -418,7 +418,7 @@ namespace sXb_tests.Integration {
         [InlineData("infinite")]
         public async Task Search_TermHasManyPages_Returns200NextIsTrue(string query)
         {
-            string url = $"/api/listings/search?q={query}";
+            string url = $"/api/listings/search/{query}/1";
             var client = _factory.CreateClient();
 
             var response = await client.GetAsync(url);
@@ -435,7 +435,7 @@ namespace sXb_tests.Integration {
         [InlineData("Joanne+K+Rowling")]
         public async Task Search_TermHasOnePage_Returns200NextIsFalse(string query)
         {
-            string url = $"/api/listings/search?q={query}";
+            string url = $"/api/listings/search/{query}/1";
             var client = _factory.CreateClient();
 
             var response = await client.GetAsync(url);
@@ -452,7 +452,7 @@ namespace sXb_tests.Integration {
         [InlineData("joan")]
         public async Task Search_TermHasNoMatches_Returns200PageWithNoDataPrevIsFalseAndNextIsFalse(string query)
         {
-            string url = $"/api/listings/search?q={query}";
+            string url = $"/api/listings/search/{query}/1";
             var client = _factory.CreateClient();
 
             var response = await client.GetAsync(url);

@@ -65,11 +65,11 @@ namespace sXb_service.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("search")]
-        public async Task<IActionResult> Search([FromQuery] string q,
-            [FromQuery] int page = 1)
+        [HttpGet("search/{term}/{page}")]
+        public async Task<IActionResult> Search([FromRoute] string term,
+            [FromRoute] int page = 1)
         {
-            string query = q.Replace('+', ' ');
+            string query = term.Replace('+', ' ');
             Regex rx = new Regex(@"\b" + query + @"\b", RegexOptions.IgnoreCase);
 
             List<Guid> ids = new List<Guid>();

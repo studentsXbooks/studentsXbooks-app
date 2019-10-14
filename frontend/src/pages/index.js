@@ -8,6 +8,7 @@ import UserListing from "./UserListings";
 import CreateListing from "./CreateListing";
 import ListingDetails from "./ListingDetails";
 import ConfirmEmail from "./ConfirmEmail";
+import Search from "./Search";
 
 export {
   Home,
@@ -19,5 +20,6 @@ export {
   UserListing,
   CreateListing,
   ListingDetails,
-  ConfirmEmail
+  ConfirmEmail,
+  Search
 };

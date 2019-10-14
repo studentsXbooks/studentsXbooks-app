@@ -40,7 +40,8 @@ namespace sXb_service
                options.AddPolicy(AllowAnywhere,
                    builder =>
                    {
-                       builder.WithOrigins(corsConfig.AllDomains)
+                                  builder.WithOrigins(corsConfig.AllDomains)
+                        //builder.WithOrigins("http://sxb-front.com:3000")
                        .AllowAnyHeader()
                        .WithExposedHeaders("*")
                        .AllowCredentials()
