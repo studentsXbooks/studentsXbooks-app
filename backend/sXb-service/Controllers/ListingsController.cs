@@ -72,24 +72,9 @@ namespace sXb_service.Controllers
             string query = term.Replace('+', ' ');
             Regex rx = new Regex(@"\b" + query + @"\b", RegexOptions.IgnoreCase);
 
-            List<Guid> ids = new List<Guid>();
-            foreach( Listing lis in _iRepo.GetAll())
-            {
-                foreach(BookAuthor bookauthor in lis.Book.BookAuthors)
-                {
-                    if( rx.IsMatch( bookauthor.Author.FullName ) )
-                    {
-                        ids.Add(lis.Id);
-                    }
-                    else if( rx.IsMatch(bookauthor.Author.FirstName + " " + bookauthor.Author.LastName) )
-                    {
-                        ids.Add(lis.Id);
-                    }
-                }
-            }
             // Search compatible with Title, Author, ISBN
             var listing = new Paging<ListingPreviewViewModel>(page,
-                _iRepo.GetAll(x => rx.IsMatch(x.Book.Title) || rx.IsMatch(x.Book.ISBN10) ||ids.Contains(x.Id) )
+                _iRepo.GetAll(x => rx.IsMatch(x.Book.Title) || rx.IsMatch(x.Book.ISBN10) || x.Book.BookAuthors.Any(y => rx.IsMatch(y.Author.FullName)))
                 .Select(x =>
                 _mapper.Map<ListingPreviewViewModel>(x)));
 
