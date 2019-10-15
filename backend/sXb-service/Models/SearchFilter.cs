@@ -3,8 +3,8 @@ namespace sXb_service.Models
 {
     public class SearchFilter
     {
-        public SearchFilter()
-        {
-        }
+        public Condition Condition { get; set; }
+        public int MinPrice { get; set; }
+        public int MaxPrice { get; set; }
     }
 }
