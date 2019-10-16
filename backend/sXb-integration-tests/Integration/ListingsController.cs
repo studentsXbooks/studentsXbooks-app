@@ -273,22 +273,5 @@ namespace sXb_tests.Integration {
             Assert.False (content.HasNext);
             Assert.False (content.HasPrev);
         }
-        public async Task SearchFilter_NoConditions_Return200_and_ResultsHaveAnyCondition()
-        {
-
-        }
-        public async Task SearchFilter_OneConditionSelected_Returns200_and_AllResultsMatchCondition ()
-        { }
-        public async Task SearchFilter_TwoConditionsSelected_Return200_and_AllResultsMatchACondition ()
-        { }
-        public async Task SearchFilter_MinPriceIs5_Return200_and_AllResultsPricesAreEqualToOrAboveMinPrice ()
-        { }
-        public async Task SearchFilter_MaxPriceIs10_Return200_and_AllResultsPricesAreEqualToOrBelowMaxzPricxe()
-        { }
-        public async Task SearchFilter_FilterOnAll_Return200_and_AllResultsMatchFilter()
-        { }
-
-
-
     }
 }
