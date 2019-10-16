@@ -42,8 +42,6 @@ namespace sXb_service.EF
             string listings = File.ReadAllText(@"./SampleData/dbo.Listings.data.sql");
             string users = File.ReadAllText(@"./SampleData/dbo.AspNetUsers.data.sql");
 
-
-
             context.Database.ExecuteSqlCommand(books);
             context.Database.ExecuteSqlCommand(authors);
             context.Database.ExecuteSqlCommand(bookAuthors);

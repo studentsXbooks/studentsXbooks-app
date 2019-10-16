@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -63,6 +64,29 @@ namespace sXb_service.Controllers
             return Ok(details);
         }
 
+        [AllowAnonymous]
+        [HttpGet("search/{term}/{page}")]
+        public async Task<IActionResult> Search([FromRoute] string term,
+            [FromRoute] int page = 1)
+        {
+            string query = term.Replace('+', ' ');
+            Regex rx = new Regex(@"\b" + query + @"\b", RegexOptions.IgnoreCase);
+
+            // Search compatible with Title, Author, ISBN
+            var listing = new Paging<ListingPreviewViewModel>(page,
+                _iRepo.GetAll(x => rx.IsMatch(x.Book.Title) || rx.IsMatch(x.Book.ISBN10) || x.Book.BookAuthors.Any(y => rx.IsMatch(y.Author.FullName) || x.Book.BookAuthors.Any(z => rx.IsMatch(z.Author.FirstName + " " + z.Author.LastName ))))
+                .Select(x =>
+                _mapper.Map<ListingPreviewViewModel>(x)));
+
+            if (listing == null)
+            {
+                return NotFound();
+            }
+
+            //var details = _mapper.Map<ListingDetailsViewModel>(listing);
+            
+            return Ok(listing);
+        }
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateListingViewModel createListingViewModel)
         {

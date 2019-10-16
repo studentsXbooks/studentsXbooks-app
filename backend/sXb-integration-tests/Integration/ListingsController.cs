@@ -147,5 +147,131 @@ namespace sXb_tests.Integration {
             Assert.Equal (HttpStatusCode.UnprocessableEntity, response.StatusCode);
             Assert.NotNull (errorMessage);
         }
+
+        [Theory]
+        [InlineData ("Rowling")]
+        [InlineData ("Joanne k rowling")]
+        [InlineData ("foster wallace")]
+        [InlineData ("melville")]
+        public async Task Search_TermIsAnAuthor_Returns200WithPagingWithDataContaingSameAuthor (string term) {
+
+            string url = $"/api/listings/search/{term}/1";
+            var client = _factory.CreateClient ();
+
+            var response = await client.GetAsync (url);
+
+            Assert.Equal (HttpStatusCode.OK, response.StatusCode);
+
+            Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>> ();
+
+            var isSameAuthor = content.Data.All (x => x.Authors.Any (a => a.ToLower ().Contains (term.ToLower ())));
+            Assert.True (isSameAuthor);
+        }
+
+        [Theory]
+        [InlineData ("harry potter")]
+        [InlineData ("infinite jest")]
+        [InlineData ("moby")]
+        public async Task Search_TermIsATitle_Returns200WithPagingWithDataContainingSameTitle (string term) {
+            string url = $"/api/listings/search/{term}/1";
+            var client = _factory.CreateClient ();
+
+            var response = await client.GetAsync (url);
+
+            Assert.Equal (HttpStatusCode.OK, response.StatusCode);
+
+            Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>> ();
+
+            var isSameTitle = content.Data.All (x => x.Title.ToLower ().Contains (term));
+            Assert.True (isSameTitle);
+        }
+
+        [Theory]
+        [InlineData ("9781976530739")]
+        [InlineData ("123456789")]
+        [InlineData ("123")]
+        public async Task Search_TermIsAnISBN_Returns200WithPagingWithDataContainingSameISBN (string term) {
+            string url = $"/api/listings/search/{term}/1";
+            var client = _factory.CreateClient ();
+
+            var response = await client.GetAsync (url);
+
+            Assert.Equal (HttpStatusCode.OK, response.StatusCode);
+
+            Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>> ();
+
+            var isSameISBN = content.Data.All (x => x.ISBN10.Contains (term));
+            Assert.True (isSameISBN);
+        }
+
+        [Theory]
+        [InlineData ("9781976530739")]
+        [InlineData ("harry potter")]
+        [InlineData ("Joanne K Rowling")]
+        public async Task Search_TermIs_X__Returns200WithPagingWithDataContaining_X_InAuthorOrTitleOrISBN (string term) {
+            string url = $"/api/listings/search/{term}/1";
+            var client = _factory.CreateClient ();
+
+            var response = await client.GetAsync (url);
+
+            Assert.Equal (HttpStatusCode.OK, response.StatusCode);
+
+            Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>> ();
+
+            var isSameX = content.Data.All (x => x.ISBN10.Contains (term) || x.Title.ToLower ().Contains (term) || x.Authors.Any (y => y.ToLower ().Contains (term.ToLower ())));
+            Assert.True (isSameX);
+        }
+
+        [Theory]
+        [InlineData ("infinite+jest")]
+        [InlineData ("infinite")]
+        public async Task Search_TermHasManyPages_Returns200NextIsTrue (string query) {
+            string url = $"/api/listings/search/{query}/1";
+            var client = _factory.CreateClient ();
+
+            var response = await client.GetAsync (url);
+
+            Assert.Equal (HttpStatusCode.OK, response.StatusCode);
+
+            Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>> ();
+
+            Assert.True (content.HasNext);
+        }
+
+        [Theory]
+        [InlineData ("9781976530739")]
+        [InlineData ("harry+potter")]
+        [InlineData ("Joanne+K+Rowling")]
+        public async Task Search_TermHasOnePage_Returns200NextIsFalse (string query) {
+            string url = $"/api/listings/search/{query}/1";
+            var client = _factory.CreateClient ();
+
+            var response = await client.GetAsync (url);
+
+            Assert.Equal (HttpStatusCode.OK, response.StatusCode);
+
+            Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>> ();
+
+            Assert.False (content.HasNext);
+        }
+
+        [Theory]
+        [InlineData ("123")]
+        [InlineData ("har")]
+        [InlineData ("joan")]
+        public async Task Search_TermHasNoMatches_Returns200PageWithNoDataPrevIsFalseAndNextIsFalse (string query) {
+            string url = $"/api/listings/search/{query}/1";
+            var client = _factory.CreateClient ();
+
+            var response = await client.GetAsync (url);
+
+            Assert.Equal (HttpStatusCode.OK, response.StatusCode);
+
+            Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>> ();
+
+            Assert.Equal (0, content.TotalRecords);
+            Assert.False (content.HasNext);
+            Assert.False (content.HasPrev);
+        }
     }
 }
