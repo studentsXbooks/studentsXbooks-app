@@ -6,6 +6,9 @@
 
 [lints]
 
+# Stops flow from failing in ci pipeline
+# https://github.com/flowtype/flow-bin/issues/138
 [options]
+server.max_workers=4
 
 [strict]
