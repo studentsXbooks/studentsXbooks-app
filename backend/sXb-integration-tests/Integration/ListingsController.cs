@@ -273,5 +273,132 @@ namespace sXb_tests.Integration {
             Assert.False (content.HasNext);
             Assert.False (content.HasPrev);
         }
+
+
+
+
+
+        [Fact]
+        public async Task SearchFilter_NoConditions_Return200_and_ResultsHaveAnyCondition()
+        {
+            SearchFilter sfilter = new SearchFilter();
+            string url = $"/api/listings/search/infinite+jest/1";
+            var client = _factory.CreateClient();
+
+            var response = await client.PostAsJsonAsync<SearchFilter>(url, sfilter);
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>>();
+
+            bool isAnyCondition = content.Data.All(x => x.Condition == Condition.New || x.Condition == Condition.LikeNew || x.Condition == Condition.Good || x.Condition == Condition.Fair || x.Condition == Condition.Poor);
+
+            Assert.True(isAnyCondition);
+        }
+        [Fact]
+        public async Task SearchFilter_OneConditionSelected_Returns200_and_AllResultsMatchCondition()
+        {
+            SearchFilter sfilter = new SearchFilter();
+            sfilter.Conditions = new Condition[]
+            {
+                Condition.Good
+            };
+            string url = $"/api/listings/search/infinite+jest/1";
+            var client = _factory.CreateClient();
+
+            var response = await client.PostAsJsonAsync<SearchFilter>(url, sfilter);
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>>();
+
+            bool isOneCondition = content.Data.All(x => x.Condition == Condition.Good);
+
+            Assert.True(isOneCondition);
+        }
+        [Fact]
+        public async Task SearchFilter_TwoConditionsSelected_Return200_and_AllResultsMatchACondition()
+        {
+            SearchFilter sfilter = new SearchFilter();
+            sfilter.Conditions = new Condition[]
+            {
+                Condition.Good,
+                Condition.Fair
+            };
+            string url = $"/api/listings/search/infinite+jest/1";
+            var client = _factory.CreateClient();
+
+            var response = await client.PostAsJsonAsync<SearchFilter>(url, sfilter);
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>>();
+
+            bool isTwoConditions = content.Data.All(x => x.Condition == sfilter.Conditions[0] || x.Condition == sfilter.Conditions[1]);
+
+            Assert.True(isTwoConditions);
+        }
+        [Fact]
+        public async Task SearchFilter_MinPriceIs5_Return200_and_AllResultsPricesAreEqualToOrAboveMinPrice()
+        {
+            SearchFilter sfilter = new SearchFilter();
+            sfilter.MinPrice = 5;
+
+            string url = $"/api/listings/search/infinite+jest/1";
+            var client = _factory.CreateClient();
+
+            var response = await client.PostAsJsonAsync<SearchFilter>(url, sfilter);
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>>();
+
+            bool isAboveMinPrice = content.Data.All(x => x.Price >= sfilter.MinPrice);
+
+            Assert.True(isAboveMinPrice);
+        }
+        [Fact]
+        public async Task SearchFilter_MaxPriceIs10_Return200_and_AllResultsPricesAreEqualToOrBelowMaxzPricxe()
+        {
+            SearchFilter sfilter = new SearchFilter();
+            sfilter.MaxPrice = 10;
+
+            string url = $"/api/listings/search/infinite+jest/1";
+            var client = _factory.CreateClient();
+
+            var response = await client.PostAsJsonAsync<SearchFilter>(url, sfilter);
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>>();
+
+            bool isBelowMaxPrice = content.Data.All(x => x.Price <= sfilter.MaxPrice);
+
+            Assert.True(isBelowMaxPrice);
+        }
+        [Fact]
+        public async Task SearchFilter_FilterOnAll_Return200_and_AllResultsMatchFilter()
+        {
+            SearchFilter sfilter = new SearchFilter();
+            sfilter.Conditions = new Condition[]
+            {
+                Condition.Good, Condition.Fair
+            };
+            sfilter.MinPrice = 25;
+            sfilter.MaxPrice = 50;
+
+            string url = $"/api/listings/search/infinite+jest/1";
+            var client = _factory.CreateClient();
+
+            var response = await client.PostAsJsonAsync<SearchFilter>(url, sfilter);
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>>();
+
+            bool isPerfectMatch = content.Data.All(x => x.Price >= sfilter.MinPrice && x.Price <= sfilter.MaxPrice && (x.Condition == sfilter.Conditions[0] || x.Condition == sfilter.Conditions[1]));
+
+            Assert.True(isPerfectMatch);
+        }
     }
 }
