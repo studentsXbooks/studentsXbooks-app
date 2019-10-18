@@ -18,6 +18,8 @@ namespace sXb_service.Models
         [DataType(DataType.Text), MaxLength(128)]
         public string LastName { get; set; }
 
+        public string StripeUserId { get; set; }
+
         [DataType(DataType.Text)]
         public string PicturePath { get; set; }
     }
