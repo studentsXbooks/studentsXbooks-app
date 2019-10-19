@@ -9,6 +9,7 @@ import CreateListing from "./CreateListing";
 import ListingDetails from "./ListingDetails";
 import ConfirmEmail from "./ConfirmEmail";
 import Search from "./Search";
+import SearchFilter from "./SearchFilter";
 
 export {
   Home,
@@ -21,5 +22,6 @@ export {
   CreateListing,
   ListingDetails,
   ConfirmEmail,
-  Search
+  Search,
+  SearchFilter
 };

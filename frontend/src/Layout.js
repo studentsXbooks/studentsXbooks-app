@@ -105,7 +105,7 @@ export default ({ children, navigate }) => {
           method="POST"
           onSubmit={e => {
             e.preventDefault();
-            navigate(`/search/${search}`);
+            navigate(`/search-filter/${search}/1`);
           }}
         >
           <InputBase

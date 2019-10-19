@@ -66,7 +66,7 @@ namespace sXb_service.Controllers
 
         [AllowAnonymous]
         [HttpGet("search/{term}/{page}")]
-        public Task<IActionResult> Search([FromRoute] string term,
+        public IActionResult Search([FromRoute] string term,
             [FromRoute] int page = 1)
         {
             string query = term.Replace('+', ' ');
@@ -89,13 +89,13 @@ namespace sXb_service.Controllers
         }
         [AllowAnonymous]
         [HttpPost("search/{term}/{page}")]
-        public Task<IActionResult> SearchFilter([FromBody] SearchFilter searchFilter, [FromRoute] string term, [FromRoute] int page = 1)
+        public IActionResult SearchFilter([FromBody] SearchFilter searchFilter, [FromRoute] string term, [FromRoute] int page = 1)
         {
             string query = term.Replace("%20", " ").Replace("+", " ");
             Regex rx = new Regex(@"\b" + query + @"\b", RegexOptions.IgnoreCase);
 
             // If no conditions selected: set all conditions.
-            if (searchFilter.Conditions == null)
+            if (searchFilter.Conditions.Count() == 0 || searchFilter.Conditions == null)
             {
                 searchFilter.Conditions = new Condition[]
                 {

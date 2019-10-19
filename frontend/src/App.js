@@ -12,7 +12,8 @@ import {
   CreateListing,
   ListingDetails,
   ConfirmEmail,
-  Search
+  Search,
+  SearchFilter
 } from "./pages";
 import Layout from "./Layout";
 
@@ -31,6 +32,7 @@ export default () => (
       <ListingDetails path="listing/:id" />
       <ConfirmEmail path="confirm-email" />
       <Search path="search/:term/:pageId" />
+      <SearchFilter path="search-filter/:term/:pageId" />
     </Layout>
   </Router>
 );
