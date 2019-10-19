@@ -9,9 +9,8 @@ import InputBase from "@material-ui/core/InputBase";
 import { Link } from "@reach/router";
 import styled from "@emotion/styled/macro";
 import { isNil } from "ramda";
-import { ApiGet } from "./utils";
-
 import { fade, makeStyles } from "@material-ui/core/styles";
+import { ApiGet } from "./utils";
 
 const CustomToolBar = styled(Toolbar)`
   & > h6 {
@@ -105,7 +104,7 @@ export default ({ children, navigate }) => {
           method="POST"
           onSubmit={e => {
             e.preventDefault();
-            navigate(`/search-filter/${search}/1`);
+            navigate(`/search/${search}`);
           }}
         >
           <InputBase
