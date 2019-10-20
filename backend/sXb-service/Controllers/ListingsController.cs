@@ -74,7 +74,7 @@ namespace sXb_service.Controllers
 
             // Search compatible with Title, Author, ISBN
             var listing = new Paging<ListingPreviewViewModel>(page,
-                _iRepo.GetAll(x => rx.IsMatch(x.Book.Title) || rx.IsMatch(x.Book.ISBN10) || x.Book.BookAuthors.Any(y => rx.IsMatch(y.Author.FullName) || x.Book.BookAuthors.Any(z => rx.IsMatch(z.Author.FirstName + " " + z.Author.LastName ))))
+                _iRepo.GetAll(x => rx.IsMatch(x.Book.Title) || rx.IsMatch(x.Book.ISBN10) || x.Book.BookAuthors.Any(y => rx.IsMatch(y.Author.FullName) || x.Book.BookAuthors.Any(z => rx.IsMatch(z.Author.FirstName + " " + z.Author.LastName))))
                 .Select(x =>
                 _mapper.Map<ListingPreviewViewModel>(x)));
 
@@ -84,7 +84,7 @@ namespace sXb_service.Controllers
             }
 
             //var details = _mapper.Map<ListingDetailsViewModel>(listing);
-            
+
             return Ok(listing);
         }
         [AllowAnonymous]
@@ -95,7 +95,7 @@ namespace sXb_service.Controllers
             Regex rx = new Regex(@"\b" + query + @"\b", RegexOptions.IgnoreCase);
 
             // If no conditions selected: set all conditions.
-            if (searchFilter.Conditions.Count() == 0 || searchFilter.Conditions == null)
+            if (searchFilter.Conditions == null || searchFilter.Conditions.Count() == 0)
             {
                 searchFilter.Conditions = new Condition[]
                 {

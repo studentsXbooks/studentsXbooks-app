@@ -37,12 +37,4 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Content Remove="SampleData\dbo.Authors.data.sql" />
-    <Content Remove="SampleData\dbo.AspNetUsers.data.sql" />
-    <Content Remove="SampleData\dbo.Books.data.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="SampleData\dbo.Listings.data.sql" />
-  </ItemGroup>
 </Project>
