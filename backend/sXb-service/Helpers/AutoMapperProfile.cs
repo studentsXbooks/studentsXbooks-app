@@ -33,7 +33,9 @@ namespace sXb_service.Helpers {
         .ForMember (dest => dest.Condition, opts =>
           opts.MapFrom (src => src.Condition))
         .ForMember (dest => dest.UserId, opts =>
-          opts.MapFrom (src => src.UserId));
+          opts.MapFrom (src => src.UserId))
+        .ForMember(dest => dest.Status, opts =>
+         opts.MapFrom(src => src.Status));
 
       CreateMap<Listing, ListingPreviewViewModel> ()
         .ForMember (dest => dest.Id, opts =>
@@ -46,6 +48,8 @@ namespace sXb_service.Helpers {
           opts.MapFrom (src => src.Condition))
         .ForMember (dest => dest.ISBN10, opts =>
           opts.MapFrom (src => src.Book.ISBN10))
+        .ForMember(dest => dest.Status, opts =>
+         opts.MapFrom(src => src.Status))
         .ForMember (dest => dest.Authors, opts =>
           opts.MapFrom (src => src.Book.BookAuthors.Select (x => x.Author.FullName.ToString ())));
 
@@ -65,7 +69,9 @@ namespace sXb_service.Helpers {
         .ForMember (dest => dest.Price, opts =>
           opts.MapFrom (src => src.Price))
         .ForMember (dest => dest.Condition, opts =>
-          opts.MapFrom (src => Enum.GetName (typeof (Condition), src.Condition)));
+          opts.MapFrom (src => Enum.GetName (typeof (Condition), src.Condition)))
+        .ForMember(dest => dest.Status, opts =>
+         opts.MapFrom(src => Enum.GetName (typeof(Status), src.Status)));
     }
   }
 }

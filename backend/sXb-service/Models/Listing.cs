@@ -26,7 +26,16 @@ namespace sXb_service.Models {
         public decimal Price { get; set; }
 
         public Condition Condition { get; set; }
+
+        public Status Status { get; set; } = Status.Created;
     }
+
+    public enum Status
+    {
+        Created = -1,
+        Purchased = 99
+    }
+
 
     public enum Condition {
         New,

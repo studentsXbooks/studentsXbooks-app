@@ -26,6 +26,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+    <PackageReference Include="Stripe.net" Version="32.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,13 +37,5 @@
     <Content Include="SampleData/**/*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="SampleData\dbo.Authors.data.sql" />
-    <Content Remove="SampleData\dbo.AspNetUsers.data.sql" />
-    <Content Remove="SampleData\dbo.Books.data.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="SampleData\dbo.Listings.data.sql" />
   </ItemGroup>
 </Project>

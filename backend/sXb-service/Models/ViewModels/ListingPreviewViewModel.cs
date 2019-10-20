@@ -18,5 +18,7 @@ namespace sXb_service.Models.ViewModels {
         public Condition Condition { get; set; }
 
         public List<string> Authors { get; set; }
+
+        public Status Status { get; set; }
     }
 }

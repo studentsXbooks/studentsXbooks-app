@@ -28,5 +28,7 @@ namespace sXb_service.Models.ViewModels
         public decimal Price { get; set; }
 
         public string Condition { get; set; }
+
+        public Status Status { get; set; }
     }
 }

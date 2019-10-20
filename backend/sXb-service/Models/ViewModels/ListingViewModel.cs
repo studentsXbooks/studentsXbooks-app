@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-using sXb_service.Helpers;
 using sXb_service.Models;
 
 namespace sXb_service.ViewModels {
@@ -19,5 +14,7 @@ namespace sXb_service.ViewModels {
         public Condition Condition { get; set; }
 
         public Guid BookId { get; set; }
+
+        public Status Status { get; set; }
     }
 }
