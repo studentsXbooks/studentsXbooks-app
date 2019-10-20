@@ -18,7 +18,7 @@ namespace sXb_service.Models.ViewModels
 
         public string ISBN10 { get; set; }
 
-        public Status Status { get => this.Status; set => Status = Status.Created; }
+        public Status Status { get; set; } = Status.Created;
 
         [StringLength(300, MinimumLength = 1, ErrorMessage = "Description must be between 1 and 300 characters")]
         public string Description { get; set; }
