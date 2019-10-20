@@ -30,15 +30,11 @@ namespace sXb_service
 
 
         public void ConfigureServices(IServiceCollection services)
-        {
+        {        
             var databaseConfig = Configuration.GetSection("Db").Get<DatabaseConfig>();
             var corsSection = Configuration.GetSection("Cors");
             var corsConfig = corsSection.Get<CorsConfig>();
-            var stripeConfig = Configuration.GetSection("STRIPE").Get<StripeConfig>();
-
-            services.AddSingleton(corsConfig);
-            services.AddSingleton(stripeConfig);
-
+          
             services.AddCors(options =>
            {
                options.AddPolicy(AllowAnywhere,
@@ -54,8 +50,6 @@ namespace sXb_service
 
             services.AddDbContext<TxtXContext>(options =>
               options.UseSqlServer(databaseConfig.Connection));
-
-
 
             services.AddIdentity<User, IdentityRole>(config =>
                { config.SignIn.RequireConfirmedEmail = true; }

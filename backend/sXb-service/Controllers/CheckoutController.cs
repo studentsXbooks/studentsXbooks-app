@@ -31,7 +31,8 @@ namespace sXb_service.Controllers
 
         public async Task<ActionResult> CreateCharge([FromBody] ListingCharge listingCharge)
         {
-            StripeConfiguration.ApiKey = _stripeConfig.Apikey;
+            var stripeConfig = Configuration.GetSection("STRIPE").Get<StripeConfig>();
+            StripeConfiguration.ApiKey = stripeConfig.Apikey;
             var chargeService = new ChargeService();
             var listing = await _iRepo.Find(x => x.Id == listingCharge.ListingId);
             var user = await _iUserRepo.Get(listing.UserId);
