@@ -17,6 +17,7 @@ using Xunit.Abstractions;
 
 namespace sXb_tests.Integration
 {
+    [Collection("Integration")]
     public class UsersController : IClassFixture<WebApplicationFactory<Startup>>
     {
         private readonly WebApplicationFactory<Startup> _factory;

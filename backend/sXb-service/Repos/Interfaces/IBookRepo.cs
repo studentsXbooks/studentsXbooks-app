@@ -9,8 +9,6 @@ namespace sXb_service.Repos.Interfaces
 {
     public interface IBookRepo : IRepo<Book>
     {
-        Task<Book> Add(Book book);
 
-        Task<Book> Update(Book book);
     }
 }

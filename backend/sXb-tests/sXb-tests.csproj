@@ -26,4 +26,8 @@
     <ProjectReference Include="..\sXb-service\sXb-service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repos\" />
+  </ItemGroup>
+
 </Project>

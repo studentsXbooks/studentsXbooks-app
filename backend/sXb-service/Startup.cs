@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using sXb_service.EF;
 using sXb_service.Helpers;
 using sXb_service.Models;
@@ -26,42 +28,36 @@ namespace sXb_service
             Configuration = configuration;
         }
 
-
         public void ConfigureServices(IServiceCollection services)
         {
             var databaseConfig = Configuration.GetSection("Db").Get<DatabaseConfig>();
-            var corsSection = Configuration.GetSection("Cors");
-            var corsConfig = corsSection.Get<CorsConfig>();
+            var corsConfig = Configuration.GetSection("Cors").Get<CorsConfig>();
 
             services.AddCors(options =>
-           {
-               options.AddPolicy(AllowAnywhere,
-                   builder =>
-                   {
-                       builder.WithOrigins(corsConfig.AllDomains)
-                       .AllowAnyHeader()
-                       .WithExposedHeaders("*")
-                       .AllowCredentials()
-                       .AllowAnyMethod();
-                   });
-           });
+            {
+                options.AddPolicy(AllowAnywhere,
+                    builder =>
+                    {
+                        builder.WithOrigins(corsConfig.AllDomains)
+                            .AllowAnyHeader()
+                            .WithExposedHeaders("*")
+                            .AllowCredentials()
+                            .AllowAnyMethod();
+                    });
+            });
 
             services.AddDbContext<TxtXContext>(options =>
-              options.UseSqlServer(databaseConfig.Connection));
+               options.UseSqlServer(databaseConfig.Connection));
 
-
-
-            services.AddIdentity<User, IdentityRole>(config =>
-               { config.SignIn.RequireConfirmedEmail = true; }
-            ).AddEntityFrameworkStores<TxtXContext>()
+            services.AddIdentity<User, IdentityRole>(config => { config.SignIn.RequireConfirmedEmail = true; }).AddEntityFrameworkStores<TxtXContext>()
                 .AddDefaultTokenProviders();
 
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<IListingRepo, ListingRepo>();
             services.AddScoped<IBookRepo, BookRepo>();
-            services.AddScoped<IUserBookRepo, UserBookRepo>();
             services.AddScoped<IUserRepo, UserRepo>();
-
+            services.AddScoped<IAuthorRepo, AuthorRepo>();
+            services.AddScoped<IBookAuthorRepo, BookAuthorRepo>();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -82,16 +78,8 @@ namespace sXb_service
                 options.User.RequireUniqueEmail = true;
             });
 
-            services.AddAutoMapper(typeof(Startup));
-            services.AddScoped<IListingRepo, ListingRepo>();
-            services.AddScoped<IBookRepo, BookRepo>();
-            services.AddScoped<IUserBookRepo, UserBookRepo>();
-            services.AddScoped<IUserRepo, UserRepo>();
-
             services.Configure<IdentityOptions>(options =>
             {
-
-
                 // Lockout settings
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
                 options.Lockout.MaxFailedAccessAttempts = 10;
@@ -115,9 +103,23 @@ namespace sXb_service
                 options.SlidingExpiration = true;
             });
 
+            //required
+            // return 401 instead of not found when user is not logged in
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = 401;
+                    return Task.CompletedTask;
+                };
+            });
+
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
         }
 
@@ -135,7 +137,6 @@ namespace sXb_service
             {
                 app.UseHsts();
             }
-
 
             app.UseHttpsRedirection();
 
