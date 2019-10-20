@@ -33,16 +33,16 @@ const buildQuery = (filterObj: {}) => {
 };
 
 const SearchFilterForm = ({ basePath, navigate, location }: Props) => {
-  const getFromSearch = getQuery(location.search);
   // prettier-ignore
   const { loading, data: conditions } = useApi("Conditions");
-  const [min, setMin] = useState(getFromSearch("min"));
-  const [max, setMax] = useState(getFromSearch("max"));
+  const [min, setMin] = useState(getQuery(location.search)("min"));
+  const [max, setMax] = useState(getQuery(location.search)("max"));
   const [selectedConditions, setSelectedConditions] = useState(
     extractConditions(location.search)
   );
 
   useEffect(() => {
+    const getFromSearch = getQuery(location.search);
     setMin(getFromSearch("min"));
     setMax(getFromSearch("max"));
     setSelectedConditions(extractConditions(location.search));
