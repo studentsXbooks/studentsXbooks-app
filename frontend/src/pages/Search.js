@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Typography, Button, List, ListItem } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { ApiPost } from "../utils";
 import SearchFilterForm from "../components/SearchFilterForm";
 import ListingCard from "../components/ListingCard";
 import SiteMargin from "../ui/SiteMargin";
+import Paging from "../components/Paging";
 
 type Props = {
   pageId: string,
@@ -38,38 +39,23 @@ const Search = ({ pageId = "1", term, navigate, location }: Props) => {
           />
         </Grid>
         <Grid item xs={12} sm={9}>
+          <Paging
+            basePath={`/search/${term}`}
+            currentPage={page ? page.currentPage : "1"}
+            totalPages={page ? page.totalPages : "1"}
+          />
           <Grid container spacing={3}>
             {page &&
               page.data &&
               page.data.map(listing => (
                 <ListingCard listing={listing} key={listing.id} />
               ))}
-            <List>
-              <ListItem>
-                <Button
-                  onClick={() =>
-                    navigate(`/search/${term}/${Number(pageId) - 1} `)
-                  }
-                  disabled={page && !page.hasPrev}
-                >
-                  Prev
-                </Button>
-              </ListItem>
-              <ListItem>
-                <Typography>{page && page.currentPage}</Typography>
-              </ListItem>
-              <ListItem>
-                <Button
-                  onClick={() =>
-                    navigate(`/search/${term}/${Number(pageId) + 1} `)
-                  }
-                  disabled={page && !page.hasNext}
-                >
-                  Next
-                </Button>
-              </ListItem>
-            </List>
           </Grid>
+          <Paging
+            basePath={`/search/${term}`}
+            currentPage={page ? page.currentPage : "1"}
+            totalPages={page ? page.totalPages : "1"}
+          />
         </Grid>
       </Grid>
     </SiteMargin>
