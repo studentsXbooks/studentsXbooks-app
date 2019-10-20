@@ -25,9 +25,13 @@ export default () => (
       <LoginSuccess path="login-success" />
       <EmailConfirmed path="email-confirmed" />
       <VerifyEmail path="verify-email" />
+      {/* $FlowFixMe */}
       <UserListing path="user/listings/" />
+      {/* $FlowFixMe */}
       <UserListing path="user/listings/:pageId" />
+      {/* $FlowFixMe */}
       <CreateListing path="listing/new" />
+      {/* $FlowFixMe */}
       <ListingDetails path="listing/:id" />
       <ConfirmEmail path="confirm-email" />
       {/* $FlowFixMe */}

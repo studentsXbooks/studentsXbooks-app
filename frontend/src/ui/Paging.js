@@ -1,5 +1,14 @@
 import React from "react";
-import Link from "./Link";
+import { Link } from "@reach/router";
+
+type Props = {
+  className: string,
+  next: boolean,
+  prev: boolean,
+  currentPage: number,
+  totalPages: number,
+  baseURL: string
+};
 
 const Paging = ({
   className,
@@ -8,12 +17,13 @@ const Paging = ({
   currentPage = 1,
   totalPages = 1,
   baseURL
-}) => {
+}: Props) => {
   const page = Number(currentPage);
   return (
     <nav className={className} aria-label="Pagination Navigation">
       {page > 1 && prev && (
-        <Link to={`${baseURL}${page - 1}`} aria-label="Previos Page">
+        // $FlowFixMe
+        <Link to={`${baseURL}${page - 1}`} aria-label="Previous Page">
           Prev
         </Link>
       )}
@@ -21,6 +31,7 @@ const Paging = ({
         {page} of {totalPages}
       </i>
       {next && (
+        // $FlowFixMe
         <Link to={`${baseURL}${page + 1}`} aria-label="Next Page">
           Next
         </Link>

@@ -12,7 +12,6 @@ type Props = {
   location: { search: string }
 };
 
-// Need paging, and need listing details page
 const Search = ({ pageId = "1", term, navigate, location }: Props) => {
   const [page, setPage] = useState();
 

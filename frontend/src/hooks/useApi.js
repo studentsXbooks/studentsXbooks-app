@@ -7,52 +7,60 @@ const loadingStates = {
   error: "error"
 };
 
-type State = {
+type State<T> = {
   loading: boolean,
-  data?: {} | [] | null,
-  error?: {} | null
+  data: T | null,
+  error: string | null
 };
 
-type DispatchObject = {
+type DispatchObject<T> = {
   type: string,
-  data?: {} | [] | null,
-  error?: {} | null
+  data?: T | null,
+  error?: string | null
 };
 
-const loadingReducer = (
-  currState: State,
-  { type, data, error }: DispatchObject
-) => {
+function loadingReducer<T>(
+  currState: State<T>,
+  { type, data = null, error = null }: DispatchObject<T>
+): State<T> {
   switch (type) {
     case loadingStates.loading:
-      return { loading: true };
+      return { loading: true, data: null, error: null };
     case loadingStates.done:
-      return { loading: false, data };
+      return { loading: false, data, error: null };
     case loadingStates.error:
-      return { loading: false, error };
+      return { loading: false, error, data: null };
     default:
       return currState;
   }
-};
+}
 
-const useApi = (url: string) => {
-  const [{ loading, data, error }: State, dispatch] = useReducer(
-    loadingReducer,
-    {
-      loading: true,
-      data: null,
-      error: null
-    }
-  );
+function useApi<T>(url: string): State<T> {
+  const [{ loading, data, error }, dispatch] = useReducer(loadingReducer, {
+    loading: true,
+    data: null,
+    error: null
+  });
+
   useEffect(() => {
     let cancelled = false;
-    dispatch({ type: loadingStates.loading });
+    dispatch({
+      type: loadingStates.loading
+    });
     ApiGet(url, true)
       .then(json => {
-        if (!cancelled) dispatch({ type: loadingStates.done, data: json });
+        if (!cancelled)
+          dispatch({
+            type: loadingStates.done,
+            data: json
+          });
       })
       .catch(e => {
-        if (!cancelled) dispatch({ type: loadingStates.error, error: e });
+        if (!cancelled)
+          dispatch({
+            type: loadingStates.error,
+            error: e.message
+          });
       });
 
     return () => {
@@ -60,7 +68,7 @@ const useApi = (url: string) => {
     };
   }, [url]);
 
-  return [loading, data, error];
-};
+  return { loading, data, error };
+}
 
 export default useApi;

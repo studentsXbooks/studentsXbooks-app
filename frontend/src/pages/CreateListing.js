@@ -51,7 +51,7 @@ const CreateListing = ({ navigate }: Props) => {
           ApiPost("listings", true, formValues)
             .then(async res => {
               const body = await res.json();
-              navigate("/listing/" + body.id);
+              navigate(`/listing/${body.id}`);
             })
             .finally(() => formikBag.setSubmitting(false));
         }}

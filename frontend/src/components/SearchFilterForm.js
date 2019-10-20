@@ -34,7 +34,8 @@ const buildQuery = (filterObj: {}) => {
 
 const SearchFilterForm = ({ basePath, navigate, location }: Props) => {
   const getFromSearch = getQuery(location.search);
-  const [loading, conditions: []] = useApi("Conditions");
+  // prettier-ignore
+  const { loading, data: conditions } = useApi("Conditions");
   const [min, setMin] = useState(getFromSearch("min"));
   const [max, setMax] = useState(getFromSearch("max"));
   const [selectedConditions, setSelectedConditions] = useState(

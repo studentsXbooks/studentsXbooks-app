@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { ApiGet } from "../utils";
 import { Grid, Typography } from "@material-ui/core";
+import { ApiGet } from "../utils";
 
-const ListingDetails = ({ id }) => {
+type Props = {
+  id: string
+};
+
+const ListingDetails = ({ id }: Props) => {
   const [listing, setListing] = useState();
-  console.log(listing);
+
   useEffect(() => {
     ApiGet(`listings/${id}`, true).then(setListing);
   }, [id]);
