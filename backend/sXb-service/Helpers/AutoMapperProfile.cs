@@ -7,25 +7,28 @@ using sXb_service.Models;
 using sXb_service.Models.ViewModels;
 using sXb_service.ViewModels;
 
-namespace sXb_service.Helpers {
-  public class AutoMapperProfile : Profile {
-    public AutoMapperProfile () {
+namespace sXb_service.Helpers
+{
+    public class AutoMapperProfile : Profile
+    {
+        public AutoMapperProfile()
+        {
 
-      CreateMap<CreateListingViewModel, Book> ()
-        .ForMember (dest => dest.Title, opts =>
-          opts.MapFrom (src => src.Title))
-        .ForMember (dest => dest.ISBN10, opts =>
-          opts.MapFrom (src => src.ISBN10))
-        .ForMember (dest => dest.Description, opts =>
-          opts.MapFrom (src => src.Description));
+            CreateMap<CreateListingViewModel, Book>()
+              .ForMember(dest => dest.Title, opts =>
+               opts.MapFrom(src => src.Title))
+              .ForMember(dest => dest.ISBN10, opts =>
+               opts.MapFrom(src => src.ISBN10))
+              .ForMember(dest => dest.Description, opts =>
+               opts.MapFrom(src => src.Description));
 
-      CreateMap<CreateListingViewModel, Author> ()
-        .ForMember (dest => dest.FirstName, opts =>
-          opts.MapFrom (src => src.FirstName))
-        .ForMember (dest => dest.LastName, opts =>
-          opts.MapFrom (src => src.LastName))
-        .ForMember (dest => dest.MiddleName, opts =>
-          opts.MapFrom (src => src.MiddleName));
+            CreateMap<CreateListingViewModel, Author>()
+              .ForMember(dest => dest.FirstName, opts =>
+               opts.MapFrom(src => src.FirstName))
+              .ForMember(dest => dest.LastName, opts =>
+               opts.MapFrom(src => src.LastName))
+              .ForMember(dest => dest.MiddleName, opts =>
+               opts.MapFrom(src => src.MiddleName));
 
       CreateMap<CreateListingViewModel, Listing> ()
         .ForMember (dest => dest.Price, opts =>

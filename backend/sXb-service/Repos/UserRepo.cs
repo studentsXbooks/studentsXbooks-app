@@ -82,7 +82,7 @@ namespace sXb_service.Repos
             return await Table.FindAsync(id);
         }
 
-        public async Task<int> Update(User user, bool persist = true )
+        public async Task<int> Update(User user, bool persist = true)
         {
             //user.ConcurrencyStamp = System.Guid.NewGuid().ToString();
             user.ConcurrencyStamp = Table.AsNoTracking()
@@ -120,7 +120,7 @@ namespace sXb_service.Repos
         public async Task<bool> UsernameExists(string username)
         {
             int count = Table.Where(e => e.UserName.ToLower().Equals(username.ToLower())).Count();
-            
+
             return count > 0 ? true : false;
         }
         public async Task<bool> EmailExists(string email)

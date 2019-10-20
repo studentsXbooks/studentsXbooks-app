@@ -65,16 +65,42 @@ namespace sXb_service.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("search/{term}/{page}")]
-        public async Task<IActionResult> Search([FromRoute] string term,
-            [FromRoute] int page = 1)
+        [HttpPost("search/{term}/{page}")]
+        public IActionResult Search([FromBody] SearchFilter searchFilter, [FromRoute] string term, [FromRoute] int page = 1)
         {
-            string query = term.Replace('+', ' ');
+            string query = term.Replace("%20", " ").Replace("+", " ");
             Regex rx = new Regex(@"\b" + query + @"\b", RegexOptions.IgnoreCase);
+
+            // If no conditions selected: set all conditions.
+            if (searchFilter.Conditions == null || searchFilter.Conditions.Count() == 0)
+            {
+                searchFilter.Conditions = new Condition[]
+                {
+                    Condition.New,
+                    Condition.LikeNew,
+                    Condition.Good,
+                    Condition.Fair,
+                    Condition.Poor
+                };
+            }
+            // If no Max Price, Include highest possbile priced item.
+            if (searchFilter.MaxPrice == null)
+            {
+                searchFilter.MaxPrice = int.MaxValue;
+            }
+            // If no Min Price, Include lowest possible priced item.
+            if (searchFilter.MinPrice == null)
+            {
+                searchFilter.MinPrice = 0;
+            }
 
             // Search compatible with Title, Author, ISBN
             var listing = new Paging<ListingPreviewViewModel>(page,
-                _iRepo.GetAll(x => rx.IsMatch(x.Book.Title) || rx.IsMatch(x.Book.ISBN10) || x.Book.BookAuthors.Any(y => rx.IsMatch(y.Author.FullName) || x.Book.BookAuthors.Any(z => rx.IsMatch(z.Author.FirstName + " " + z.Author.LastName ))))
+                _iRepo.GetAll(x =>
+                (rx.IsMatch(x.Book.Title) || rx.IsMatch(x.Book.ISBN10) || x.Book.BookAuthors.Any(y => rx.IsMatch(y.Author.FullName) || x.Book.BookAuthors.Any(z => rx.IsMatch(z.Author.FirstName + " " + z.Author.LastName))))
+                &&
+                (searchFilter.Conditions.Any(y => x.Condition == y) &&
+                x.Price >= searchFilter.MinPrice && x.Price <= searchFilter.MaxPrice))
                 .Select(x =>
                 _mapper.Map<ListingPreviewViewModel>(x)));
 
@@ -83,10 +109,9 @@ namespace sXb_service.Controllers
                 return NotFound();
             }
 
-            //var details = _mapper.Map<ListingDetailsViewModel>(listing);
-            
             return Ok(listing);
         }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateListingViewModel createListingViewModel)
         {

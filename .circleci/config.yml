@@ -125,9 +125,11 @@ jobs:
       - run:
           name: Run Integration Tests
           command: >
-            SMTP__host=$SMTP__host SMTP__password=$SMTP__password
-            SMTP__sendAddress=$SMTP__sendAddress SMTP__port=$SMTP__port SMTP__username=$SMTP__username
-            docker-compose -f docker-compose.Test.yml up sxb-integration
+            docker-compose -f docker-compose.Test.yml run
+            -e SMTP__host=$SMTP__host -e SMTP__password=$SMTP__password
+            -e SMTP__sendAddress=$SMTP__sendAddress -e SMTP__port=$SMTP__port
+            -e SMTP__username=$SMTP__username -e Cors__FrontendDomain=$Cors__FrontendDomain
+            sxb-integration
 
 workflows:
   version: 2

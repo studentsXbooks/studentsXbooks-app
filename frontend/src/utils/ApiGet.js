@@ -1,8 +1,6 @@
-// @flow
-
 const BaseUrl: string = process.env.REACT_APP_BACKEND || "";
 
-function ApiGet(url: string, creds: boolean): Object {
+function ApiGet(url: string, creds: boolean) {
   return fetch(BaseUrl + url, {
     method: "GET",
     credentials: creds ? "include" : "omit"

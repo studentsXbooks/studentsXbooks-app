@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,14 +8,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using sXb_service.EF;
 using sXb_service.Helpers;
 using sXb_service.Models;
 using sXb_service.Repos;
 using sXb_service.Repos.Interfaces;
 using sXb_service.Services;
-using Newtonsoft.Json;
-using System.Threading.Tasks;
 
 namespace sXb_service
 {
@@ -28,32 +28,28 @@ namespace sXb_service
             Configuration = configuration;
         }
 
-
         public void ConfigureServices(IServiceCollection services)
         {        
             var databaseConfig = Configuration.GetSection("Db").Get<DatabaseConfig>();
-            var corsSection = Configuration.GetSection("Cors");
-            var corsConfig = corsSection.Get<CorsConfig>();
-          
+            var corsConfig = Configuration.GetSection("Cors").Get<CorsConfig>();
+
             services.AddCors(options =>
-           {
-               options.AddPolicy(AllowAnywhere,
-                   builder =>
-                   {
-                       builder.WithOrigins(corsConfig.AllDomains)
-                       .AllowAnyHeader()
-                       .WithExposedHeaders("*")
-                       .AllowCredentials()
-                       .AllowAnyMethod();
-                   });
-           });
+            {
+                options.AddPolicy(AllowAnywhere,
+                    builder =>
+                    {
+                        builder.WithOrigins(corsConfig.AllDomains)
+                            .AllowAnyHeader()
+                            .WithExposedHeaders("*")
+                            .AllowCredentials()
+                            .AllowAnyMethod();
+                    });
+            });
 
             services.AddDbContext<TxtXContext>(options =>
-              options.UseSqlServer(databaseConfig.Connection));
+               options.UseSqlServer(databaseConfig.Connection));
 
-            services.AddIdentity<User, IdentityRole>(config =>
-               { config.SignIn.RequireConfirmedEmail = true; }
-            ).AddEntityFrameworkStores<TxtXContext>()
+            services.AddIdentity<User, IdentityRole>(config => { config.SignIn.RequireConfirmedEmail = true; }).AddEntityFrameworkStores<TxtXContext>()
                 .AddDefaultTokenProviders();
 
             services.AddAutoMapper(typeof(Startup));
@@ -110,13 +106,13 @@ namespace sXb_service
             //required
             // return 401 instead of not found when user is not logged in
             services.ConfigureApplicationCookie(options =>
-         {
-             options.Events.OnRedirectToLogin = context =>
-             {
-                 context.Response.StatusCode = 401;
-                 return Task.CompletedTask;
-             };
-         });
+            {
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = 401;
+                    return Task.CompletedTask;
+                };
+            });
 
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
@@ -141,7 +137,6 @@ namespace sXb_service
             {
                 app.UseHsts();
             }
-
 
             app.UseHttpsRedirection();
 

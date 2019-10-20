@@ -6,4 +6,5 @@ import "./index.css";
 
 const rootElement = document.getElementById("root");
 
+// $FlowFixMe
 ReactDOM.render(<App />, rootElement);
