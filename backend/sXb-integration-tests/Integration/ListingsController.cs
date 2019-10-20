@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AutoFixture;
 using AutoFixture.AutoMoq;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Testing;
 using sXb_service;
 using sXb_service.Helpers;
@@ -314,7 +312,7 @@ namespace sXb_tests.Integration
 
             Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>>();
 
-            bool isAnyCondition = content.Data.All(x => x.Condition == Condition.New || x.Condition == Condition.LikeNew || x.Condition == Condition.Good || x.Condition == Condition.Fair || x.Condition == Condition.Poor);
+            bool isAnyCondition = content.Data.All(x => Enum.GetNames(typeof(Condition)).Any(c => c == x.Condition));
 
             Assert.True(isAnyCondition);
         }
@@ -335,7 +333,7 @@ namespace sXb_tests.Integration
 
             Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>>();
 
-            bool isOneCondition = content.Data.All(x => x.Condition == Condition.Good);
+            bool isOneCondition = content.Data.All(x => x.Condition == Enum.GetName(typeof(Condition), Condition.Good));
 
             Assert.True(isOneCondition);
         }
@@ -357,7 +355,7 @@ namespace sXb_tests.Integration
 
             Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>>();
 
-            bool isTwoConditions = content.Data.All(x => sfilter.Conditions.Any(a => a == x.Condition));
+            bool isTwoConditions = content.Data.All(x => sfilter.Conditions.Any(a => Enum.GetName(typeof(Condition), a) == x.Condition));
 
             Assert.True(isTwoConditions);
         }
@@ -419,7 +417,8 @@ namespace sXb_tests.Integration
 
             Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>>();
 
-            bool isPerfectMatch = content.Data.All(x => x.Price >= sfilter.MinPrice && x.Price <= sfilter.MaxPrice && (sfilter.Conditions.Any(a => a == x.Condition)));
+            bool isPerfectMatch = content.Data.All(x => x.Price >= sfilter.MinPrice && x.Price <= sfilter.MaxPrice && (sfilter.Conditions.Any(a => Enum.GetName(typeof(Condition), a) == x.Condition)));
+
 
             Assert.True(isPerfectMatch);
         }
