@@ -65,31 +65,8 @@ namespace sXb_service.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("search/{term}/{page}")]
-        public IActionResult Search([FromRoute] string term,
-            [FromRoute] int page = 1)
-        {
-            string query = term.Replace('+', ' ');
-            Regex rx = new Regex(@"\b" + query + @"\b", RegexOptions.IgnoreCase);
-
-            // Search compatible with Title, Author, ISBN
-            var listing = new Paging<ListingPreviewViewModel>(page,
-                _iRepo.GetAll(x => rx.IsMatch(x.Book.Title) || rx.IsMatch(x.Book.ISBN10) || x.Book.BookAuthors.Any(y => rx.IsMatch(y.Author.FullName) || x.Book.BookAuthors.Any(z => rx.IsMatch(z.Author.FirstName + " " + z.Author.LastName))))
-                .Select(x =>
-                _mapper.Map<ListingPreviewViewModel>(x)));
-
-            if (listing == null)
-            {
-                return NotFound();
-            }
-
-            //var details = _mapper.Map<ListingDetailsViewModel>(listing);
-
-            return Ok(listing);
-        }
-        [AllowAnonymous]
         [HttpPost("search/{term}/{page}")]
-        public IActionResult SearchFilter([FromBody] SearchFilter searchFilter, [FromRoute] string term, [FromRoute] int page = 1)
+        public IActionResult Search([FromBody] SearchFilter searchFilter, [FromRoute] string term, [FromRoute] int page = 1)
         {
             string query = term.Replace("%20", " ").Replace("+", " ");
             Regex rx = new Regex(@"\b" + query + @"\b", RegexOptions.IgnoreCase);
@@ -134,6 +111,7 @@ namespace sXb_service.Controllers
 
             return Ok(listing);
         }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateListingViewModel createListingViewModel)
         {

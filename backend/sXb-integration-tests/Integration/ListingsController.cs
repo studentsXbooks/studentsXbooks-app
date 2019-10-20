@@ -173,7 +173,7 @@ namespace sXb_tests.Integration
             string url = $"/api/listings/search/{term}/1";
             var client = _factory.CreateClient();
 
-            var response = await client.GetAsync(url);
+            var response = await client.PostAsJsonAsync(url, new { });
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -192,7 +192,7 @@ namespace sXb_tests.Integration
             string url = $"/api/listings/search/{term}/1";
             var client = _factory.CreateClient();
 
-            var response = await client.GetAsync(url);
+            var response = await client.PostAsJsonAsync(url, new { });
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -211,7 +211,7 @@ namespace sXb_tests.Integration
             string url = $"/api/listings/search/{term}/1";
             var client = _factory.CreateClient();
 
-            var response = await client.GetAsync(url);
+            var response = await client.PostAsJsonAsync(url, new { });
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -230,7 +230,7 @@ namespace sXb_tests.Integration
             string url = $"/api/listings/search/{term}/1";
             var client = _factory.CreateClient();
 
-            var response = await client.GetAsync(url);
+            var response = await client.PostAsJsonAsync(url, new { });
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -248,7 +248,7 @@ namespace sXb_tests.Integration
             string url = $"/api/listings/search/{query}/1";
             var client = _factory.CreateClient();
 
-            var response = await client.GetAsync(url);
+            var response = await client.PostAsJsonAsync(url, new { });
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -266,7 +266,7 @@ namespace sXb_tests.Integration
             string url = $"/api/listings/search/{query}/1";
             var client = _factory.CreateClient();
 
-            var response = await client.GetAsync(url);
+            var response = await client.PostAsJsonAsync(url, new { });
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -284,7 +284,7 @@ namespace sXb_tests.Integration
             string url = $"/api/listings/search/{query}/1";
             var client = _factory.CreateClient();
 
-            var response = await client.GetAsync(url);
+            var response = await client.PostAsJsonAsync(url, new { });
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
