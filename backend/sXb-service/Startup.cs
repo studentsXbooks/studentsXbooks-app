@@ -31,8 +31,7 @@ namespace sXb_service
         public void ConfigureServices(IServiceCollection services)
         {
             var databaseConfig = Configuration.GetSection("Db").Get<DatabaseConfig>();
-            var corsSection = Configuration.GetSection("Cors");
-            var corsConfig = corsSection.Get<CorsConfig>();
+            var corsConfig = Configuration.GetSection("Cors").Get<CorsConfig>();
 
             services.AddCors(options =>
             {
