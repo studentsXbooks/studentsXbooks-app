@@ -45,7 +45,7 @@ it("Enter Valid Min and Max and Click submit, calls navigate with query params",
   fireEvent.change(getByLabelText(/Min/), { target: { value: min } });
   fireEvent.change(getByLabelText(/Max/), { target: { value: max } });
 
-  fireEvent.click(getByText(/Submit/));
+  fireEvent.submit(getByText(/Submit/));
 
   await wait(() =>
     expect(wrappedFakeNavigate).toHaveBeenCalledWith(
@@ -125,7 +125,7 @@ it("Setting Min and Max then selecting condition calls navigate with all queries
   fireEvent.change(getByLabelText(/Min/), { target: { value: min } });
   fireEvent.change(getByLabelText(/Max/), { target: { value: max } });
 
-  fireEvent.click(getByText(/Submit/));
+  fireEvent.submit(getByText(/Submit/));
   await wait(() =>
     expect(global.location.search).toEqual(`?min=${min}&max=${max}`)
   );
@@ -142,7 +142,7 @@ it("Setting Min and Max then selecting condition calls navigate with all queries
   );
 
   fireEvent.change(getByLabelText(/Max/), { target: { value: 30 } });
-  fireEvent.click(getByText(/Submit/));
+  fireEvent.submit(getByText(/Submit/));
 
   await wait(() =>
     expect(global.location.search).toEqual(
