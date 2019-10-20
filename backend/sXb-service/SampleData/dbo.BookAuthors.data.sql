@@ -13,9 +13,6 @@ INSERT INTO [dbo].[BookAuthors]
 VALUES
     (N'bff41fc5-31ce-4e62-ae93-96ce81b20c06',
      N'1be5e41a-4e7e-4777-bdea-721706144726')
-
-
-
 INSERT INTO [dbo].[BookAuthors]
     ([BookId], [AuthorId])
 VALUES
@@ -36,11 +33,8 @@ INSERT INTO [dbo].[BookAuthors]
 VALUES
     (N'bff41fc5-31ce-4e62-ae93-96ce81b20c60',
      N'129baced-27fc-4ad6-9072-4c00fce7ec6c')
-     
 INSERT INTO [dbo].[BookAuthors] ([BookId], [AuthorId]) 
 VALUES (N'bff41fc5-31ce-4e62-ae93-96ce81b20c63', N'129baced-27fc-4ad6-9072-4c00fce7ec6c')
-
-
 INSERT INTO [dbo].[BookAuthors]
     ([BookId], [AuthorId])
 VALUES

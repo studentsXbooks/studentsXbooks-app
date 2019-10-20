@@ -32,6 +32,10 @@ namespace sXb_service
         {        
             var databaseConfig = Configuration.GetSection("Db").Get<DatabaseConfig>();
             var corsConfig = Configuration.GetSection("Cors").Get<CorsConfig>();
+            var stripeConfig = Configuration.GetSection("STRIPE").Get<StripeConfig>();
+
+            services.AddSingleton(corsConfig);
+            services.AddSingleton(stripeConfig);
 
             services.AddCors(options =>
             {
