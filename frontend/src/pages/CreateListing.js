@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { ApiPost, ApiGet } from "../utils";
 import { Formik, Form, Field } from "formik";
 import { Icon, Button } from "@material-ui/core";
 import * as Yup from "yup";
+import { ApiPost, ApiGet } from "../utils";
 
 const listingSchema = Yup.object().shape({
   condition: Yup.number().required()
 });
 
-const Conditions = props => {
+const Conditions = () => {
   const [conditions, setConditions] = useState();
   useEffect(() => {
     ApiGet(`conditions`, true).then(setConditions);
@@ -26,7 +26,11 @@ const Conditions = props => {
   );
 };
 
-const CreateListing = ({ navigate }) => {
+type Props = {
+  navigate: string => any
+};
+
+const CreateListing = ({ navigate }: Props) => {
   return (
     <>
       <h1>New Listing</h1>
@@ -47,7 +51,7 @@ const CreateListing = ({ navigate }) => {
           ApiPost("listings", true, formValues)
             .then(async res => {
               const body = await res.json();
-              navigate("/listing/" + body.id);
+              navigate(`/listing/${body.id}`);
             })
             .finally(() => formikBag.setSubmitting(false));
         }}

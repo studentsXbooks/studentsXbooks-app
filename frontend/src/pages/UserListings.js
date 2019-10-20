@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "@reach/router";
-import { ApiGet } from "../utils";
 import {
   Grid,
   Card,
@@ -11,9 +10,15 @@ import {
   List,
   ListItem
 } from "@material-ui/core";
+import { ApiGet } from "../utils";
+
+type Props = {
+  pageId: string,
+  navigate: string => any
+};
 
 // Need paging, and need listing details page
-const UserListing = ({ pageId = 1, navigate }) => {
+const UserListing = ({ pageId = "1", navigate }: Props) => {
   const [page, setPage] = useState();
 
   useEffect(() => {
@@ -54,6 +59,7 @@ const UserListing = ({ pageId = 1, navigate }) => {
 
 const ListingCard = ({ listing: { title, description, price, id } }) => (
   <Grid item xs={12} sm={6} md={3}>
+    {/* $FlowFixMe */}
     <Link to={`/listing/${id}`}>
       <Card raised>
         <CardHeader
