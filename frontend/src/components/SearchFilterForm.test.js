@@ -92,6 +92,7 @@ it("Selecting Multiple Conditions calls navigate with all in query params", asyn
   makeFetchReturn(fakeConditions);
   const { findByLabelText } = render(
     <Router>
+      {/* $FlowFixMe */}
       <SearchFilterForm basePath="/search/1" default />
     </Router>
   );
@@ -117,6 +118,7 @@ it("Setting Min and Max then selecting condition calls navigate with all queries
   makeFetchReturn(fakeConditions);
   const { getByLabelText, getByText, findByLabelText } = render(
     <Router>
+      {/* $FlowFixMe */}
       <SearchFilterForm basePath="/search/1" default />
     </Router>
   );
@@ -155,6 +157,7 @@ it("Select Condition then unselect condition removes from query", async () => {
   makeFetchReturn(fakeConditions);
   const { findByLabelText } = render(
     <Router>
+      {/* $FlowFixMe */}
       <SearchFilterForm basePath="/search/1" default />
     </Router>
   );
@@ -167,4 +170,21 @@ it("Select Condition then unselect condition removes from query", async () => {
   fireEvent.click(condition);
   await wait(() => expect(condition.checked).toEqual(false));
   await wait(() => expect(global.location.search).toEqual(""));
+});
+
+it("Renders with minPrice and maxPrice inputs set to query params", async () => {
+  const max = 50;
+  const min = 30;
+  navigate(`/?min=${min}&max=${max}`);
+  makeFetchReturn(fakeConditions);
+  const { getByLabelText } = render(
+    <Router>
+      {/* $FlowFixMe */}
+      <SearchFilterForm basePath="/search/1" default />
+    </Router>
+  );
+  await wait(() => {
+    expect(getByLabelText(/Min/).value).toEqual(min.toString());
+    expect(getByLabelText(/Max/).value).toEqual(max.toString());
+  });
 });

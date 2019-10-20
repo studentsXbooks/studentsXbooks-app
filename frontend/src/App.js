@@ -1,4 +1,3 @@
-// @flow
 import React from "react";
 import { Router } from "@reach/router";
 import {
@@ -18,6 +17,7 @@ import Layout from "./Layout";
 
 export default () => (
   <Router>
+    {/* $FlowFixMe */}
     <Layout path="/">
       <Home default />
       <Login path="login" />
@@ -30,7 +30,9 @@ export default () => (
       <CreateListing path="listing/new" />
       <ListingDetails path="listing/:id" />
       <ConfirmEmail path="confirm-email" />
+      {/* $FlowFixMe */}
       <Search path="search/:term" />
+      {/* $FlowFixMe */}
       <Search path="search/:term/:pageId" />
     </Layout>
   </Router>

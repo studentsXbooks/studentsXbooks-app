@@ -5,7 +5,9 @@ import {
   FormLabel,
   FormGroup,
   FormControlLabel,
-  Checkbox
+  Checkbox,
+  Grid,
+  Button
 } from "@material-ui/core";
 import useApi from "../hooks/useApi";
 
@@ -15,8 +17,10 @@ type Props = {
   location: { search: string }
 };
 
+const getQuery = queries => key => new URLSearchParams(queries).get(key) || "";
+
 const extractConditions = queries => {
-  const conditions = new URLSearchParams(queries).get("conditions");
+  const conditions = getQuery(queries)("conditions");
   return conditions ? conditions.split(",") : [];
 };
 
@@ -29,14 +33,17 @@ const buildQuery = (filterObj: {}) => {
 };
 
 const SearchFilterForm = ({ basePath, navigate, location }: Props) => {
-  const [loading, conditions] = useApi("Conditions");
-  const [min, setMin] = useState("");
-  const [max, setMax] = useState("");
+  const getFromSearch = getQuery(location.search);
+  const [loading, conditions: []] = useApi("Conditions");
+  const [min, setMin] = useState(getFromSearch("min"));
+  const [max, setMax] = useState(getFromSearch("max"));
   const [selectedConditions, setSelectedConditions] = useState(
     extractConditions(location.search)
   );
 
   useEffect(() => {
+    setMin(getFromSearch("min"));
+    setMax(getFromSearch("max"));
     setSelectedConditions(extractConditions(location.search));
   }, [location.search]);
 
@@ -65,28 +72,40 @@ const SearchFilterForm = ({ basePath, navigate, location }: Props) => {
   return (
     <div>
       <form method="POST" onSubmit={submitPriceRange}>
-        <TextField
-          type="number"
-          label="Min"
-          id="min"
-          value={min}
-          onChange={e => setMin(e.target.value)}
-        />
-        <TextField
-          type="number"
-          label="Max"
-          id="max"
-          value={max}
-          onChange={e => setMax(e.target.value)}
-        />
-        <button type="submit">Submit</button>
+        <Grid container>
+          <Grid item xs={12} md={4}>
+            <TextField
+              type="number"
+              label="Min"
+              id="min"
+              value={min}
+              onChange={e => setMin(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <TextField
+              type="number"
+              label="Max"
+              id="max"
+              value={max}
+              onChange={e => setMax(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Button type="submit" color="primary" fullWidth variant="contained">
+              Submit
+            </Button>
+          </Grid>
+        </Grid>
       </form>
+      <br />
       <form method="POST">
         <FormControl component="fieldset">
           <FormLabel component="legend">Conditions</FormLabel>
           <FormGroup>
             {!loading &&
               conditions &&
+              Array.isArray(conditions) &&
               conditions.map(({ value, name }) => (
                 <FormControlLabel
                   key={name}

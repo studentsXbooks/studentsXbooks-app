@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import type { Node } from "react";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
@@ -7,7 +8,8 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import { Link } from "@reach/router";
-import styled from "@emotion/styled/macro";
+/* $FlowFixMe */
+import styled from "@emotion/styled";
 import { isNil } from "ramda";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import { ApiGet } from "./utils";
@@ -74,13 +76,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-// Search Input in underneath nav
-// Whenever something is typed in and then submitted that should take you to a search result page
-// Search Result Page component should take in a term
-// Send that term to the api then display results
-// Throw in Paging component in order to have paging.
+type Props = {
+  children: Node,
+  navigate: string => any
+};
 
-export default ({ children, navigate }) => {
+export default ({ children, navigate }: Props) => {
   const classes = useStyles();
   const [search, setSearch] = useState("");
   return (
@@ -91,6 +92,7 @@ export default ({ children, navigate }) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6">
+            {/* $FlowFixMe */}
             <Link to="/">Home</Link>
           </Typography>
           <UserInfoOrLoginRegistration />
@@ -138,9 +140,11 @@ const UserInfoOrLoginRegistration = () => {
     return (
       <>
         <Typography variant="h6" style={{ marginLeft: "auto" }}>
+          {/* $FlowFixMe */}
           <Link to="/register">Register</Link>
         </Typography>
         <Typography variant="h6">
+          {/* $FlowFixMe */}
           <Link to="/login">Login</Link>
         </Typography>
       </>
@@ -148,7 +152,9 @@ const UserInfoOrLoginRegistration = () => {
   return (
     <div>
       <span>{username}</span>
+      {/* $FlowFixMe */}
       <Link to="/user/listings"> My Listings</Link>
+      {/* $FlowFixMe */}
       <Link to="/listing/new"> New Listing</Link>
     </div>
   );

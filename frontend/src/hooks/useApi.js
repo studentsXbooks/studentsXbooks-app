@@ -7,7 +7,22 @@ const loadingStates = {
   error: "error"
 };
 
-const loadingReducer = (currState, { type, data, error }) => {
+type State = {
+  loading: boolean,
+  data?: {} | [] | null,
+  error?: {} | null
+};
+
+type DispatchObject = {
+  type: string,
+  data?: {} | [] | null,
+  error?: {} | null
+};
+
+const loadingReducer = (
+  currState: State,
+  { type, data, error }: DispatchObject
+) => {
   switch (type) {
     case loadingStates.loading:
       return { loading: true };
@@ -20,14 +35,19 @@ const loadingReducer = (currState, { type, data, error }) => {
   }
 };
 
-const useApi = url => {
-  const [{ loading, data, error }, dispatch] = useReducer(loadingReducer, {
-    loading: false
-  });
+const useApi = (url: string) => {
+  const [{ loading, data, error }: State, dispatch] = useReducer(
+    loadingReducer,
+    {
+      loading: true,
+      data: null,
+      error: null
+    }
+  );
   useEffect(() => {
     let cancelled = false;
     dispatch({ type: loadingStates.loading });
-    ApiGet(url)
+    ApiGet(url, true)
       .then(json => {
         if (!cancelled) dispatch({ type: loadingStates.done, data: json });
       })

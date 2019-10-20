@@ -2,8 +2,8 @@ import React from "react";
 import useApi from "../hooks/useApi";
 
 const ConfirmEmail = () => {
-  const id = new URL(window.location).searchParams.get("id");
-  const code = new URL(window.location).searchParams.get("code");
+  const id = new URL(window.location).searchParams.get("id") || "";
+  const code = new URL(window.location).searchParams.get("code") || "";
   const [loading, data, error] = useApi(
     `users/confirm-email?id=${id}&code=${encodeURIComponent(code)}`
   );
