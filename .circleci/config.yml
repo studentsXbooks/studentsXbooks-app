@@ -129,6 +129,7 @@ jobs:
             -e SMTP__host=$SMTP__host -e SMTP__password=$SMTP__password
             -e SMTP__sendAddress=$SMTP__sendAddress -e SMTP__port=$SMTP__port
             -e SMTP__username=$SMTP__username -e Cors__FrontendDomain=$Cors__FrontendDomain
+            -e STRIPE__apiKey=$STRIPE__apiKey
             sxb-integration
 
 workflows:
