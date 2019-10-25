@@ -10,7 +10,10 @@ import {
   CreateListing,
   ListingDetails,
   ConfirmEmail,
-  Search
+  Search,
+  About,
+  Sell,
+  Help
 } from "./pages";
 import Layout from "./Layout";
 
@@ -34,7 +37,10 @@ export default () => (
       {/* $FlowFixMe */}
       <Search path="/search/:term" />
       {/* $FlowFixMe */}
-      <Search path="/search/:term/:pageId" />
+      <Search path="search/:term/:pageId" />
+      <About path="about" />
+      <Sell path="sell" />
+      <Help path="help" />
     </Layout>
   </Router>
 );

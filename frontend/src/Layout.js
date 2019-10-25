@@ -18,6 +18,7 @@ const CustomToolBar = styled(Toolbar)`
     color: white;
     text-decoration: none;
   }
+  background-color: #32a8b3;
 `;
 
 type Props = {
