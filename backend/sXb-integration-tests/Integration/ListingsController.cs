@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -421,6 +422,68 @@ namespace sXb_tests.Integration
 
 
             Assert.True(isPerfectMatch);
+        }
+
+        [Fact]
+        public async void Contact_ContactDoesNotHaveBody_ShouldReturn422()
+        {
+            var contact = new ContactViewModel()
+            {
+                Email = "me@yahoo.com",
+                Body = "",
+                ListingId = Guid.Parse("a059efc3-a4ec-4abf-946a-84194b2e0a00")
+            };
+            var client = _factory.CreateClient();
+
+            var response = await client.PostAsJsonAsync<ContactViewModel>("api/listings/contact", contact);
+            Assert.Equal(HttpStatusCode.UnprocessableEntity, response.StatusCode);
+        }
+
+        [Fact]
+        public async void Contact_ContactDoesNotHaveListingId_ShouldReturn422()
+        {
+            var contact = new ContactViewModel()
+            {
+                Email = "me@yahoo.com",
+                Body = "Hey,dude I wanna get your book",
+            };
+            var client = _factory.CreateClient();
+
+            var response = await client.PostAsJsonAsync<ContactViewModel>("api/listings/contact", contact);
+            Assert.Equal(HttpStatusCode.UnprocessableEntity, response.StatusCode);
+        }
+
+        [Fact]
+        public async void Contact_ListingIdDoesNotExist_ShouldReturn400()
+        {
+            var contact = new ContactViewModel()
+            {
+                Email = "me@yahoo.com",
+                Body = "Hey,dude I wanna get your book",
+                ListingId = Guid.NewGuid() // A random guid could exist but highly unlikely
+            };
+            var client = _factory.CreateClient();
+
+            var response = await client.PostAsJsonAsync<ContactViewModel>("api/listings/contact", contact);
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact]
+        public async void Contact_GET_ShouldReturn200AndAllContactOptionsEnums()
+        {
+            var client = _factory.CreateClient();
+
+            var response = await client.GetAsync("api/listings/contact");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            var contactOptionsFromApi = await response.Content.ReadAsAsync<IEnumerable<EnumNameValue>>();
+            var contactOptionEnums = EnumExtensions.GetValues<ContactOption>();
+
+            Assert.NotEmpty(contactOptionsFromApi);
+            // toString returns back name of enum
+            Assert.Equal(contactOptionEnums.Select(x => x.ToString()), contactOptionsFromApi.Select(x => x.Name));
+            // casting Enum to int returns back underlying value
+            Assert.Equal(contactOptionEnums.Cast<int>(), contactOptionsFromApi.Select(x => x.Value));
         }
     }
 }
