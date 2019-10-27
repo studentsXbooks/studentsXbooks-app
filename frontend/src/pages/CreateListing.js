@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Form, Field } from "formik";
-import { Icon, Button } from "@material-ui/core";
+import { Icon, Button, Grid, Typography } from "@material-ui/core";
 import * as Yup from "yup";
 import { ApiPost, ApiGet } from "../utils";
+import SiteMargin from "../ui/SiteMargin";
 
 const listingSchema = Yup.object().shape({
   condition: Yup.number().required()
@@ -32,10 +33,11 @@ type Props = {
 
 const CreateListing = ({ navigate }: Props) => {
   return (
-    <>
-      <h1>New Listing</h1>
-      <p>Enter book details to create new listing</p>
-
+    <SiteMargin>
+      <Typography variant="h1">New Listing</Typography>
+      <Typography variant="p">
+        Enter book details to create new listing
+      </Typography>
       <Formik
         validationSchema={listingSchema}
         initialValues={{
@@ -58,66 +60,75 @@ const CreateListing = ({ navigate }: Props) => {
       >
         {({ isSubmitting }) => (
           <Form method="POST">
-            <Field
-              name="title"
-              id="title"
-              type="string"
-              placeholder="title"
-              label="Title"
-              required
-            />
-            <Field
-              id="description"
-              type="string"
-              name="description"
-              label="Description"
-              placeholder="Description"
-              required
-            />
-            <Field
-              id="isbn10"
-              type="string"
-              name="isbn10"
-              label="ISBN 10"
-              placeholder="ISBN 10"
-              required
-            />
-            <Field
-              id="price"
-              type="number"
-              name="price"
-              label="Price"
-              placeholder="Price"
-              required
-            />
-            <Field id="condition" name="condition" component="select">
-              <Conditions />
-            </Field>
-            <h3>Author</h3>
-            <Field
-              id="firstName"
-              type="string"
-              name="firstName"
-              label="First Name"
-              placeholder="First Name"
-              required
-            />
-            <Field
-              id="middleName"
-              type="string"
-              name="middleName"
-              label="Middle Name"
-              placeholder="Middle Name"
-              required
-            />
-            <Field
-              id="lastName"
-              type="string"
-              name="lastName"
-              label="Last Name"
-              placeholder="Last Name"
-              required
-            />
+            <Grid container spacing={3}>
+              <Grid item sm={12} md={6}>
+                <Typography variant="h3">Book Details</Typography>
+                <Field
+                  name="title"
+                  id="title"
+                  type="string"
+                  placeholder="title"
+                  label="Title"
+                  required
+                />
+                <Field
+                  id="description"
+                  type="string"
+                  name="description"
+                  label="Description"
+                  placeholder="Description"
+                  required
+                />
+                <Field
+                  id="isbn10"
+                  type="string"
+                  name="isbn10"
+                  label="ISBN 10"
+                  placeholder="ISBN 10"
+                  required
+                />
+                <Typography variant="h3">Author</Typography>
+                <Field
+                  id="firstName"
+                  type="string"
+                  name="firstName"
+                  label="First Name"
+                  placeholder="First Name"
+                  required
+                />
+                <Field
+                  id="middleName"
+                  type="string"
+                  name="middleName"
+                  label="Middle Name"
+                  placeholder="Middle Name"
+                  required
+                />
+                <Field
+                  id="lastName"
+                  type="string"
+                  name="lastName"
+                  label="Last Name"
+                  placeholder="Last Name"
+                  required
+                />
+              </Grid>
+              <Grid item sm={12} md={6}>
+                <Typography variant="h3">About Your Book</Typography>
+                <Field
+                  id="price"
+                  type="number"
+                  name="price"
+                  label="Price"
+                  placeholder="Price"
+                  required
+                />
+                <Field id="condition" name="condition" component="select">
+                  <Conditions />
+                </Field>
+              </Grid>
+            </Grid>
+            <br />
             <Button
               variant="contained"
               color="primary"
@@ -130,7 +141,7 @@ const CreateListing = ({ navigate }: Props) => {
           </Form>
         )}
       </Formik>
-    </>
+    </SiteMargin>
   );
 };
 
