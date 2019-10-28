@@ -23,4 +23,9 @@ namespace sXb_service.Helpers
         public string Password { get; set; }
         public int Port { get; set; }
     }
+
+    public class BookApiConfig
+    {
+        public string Apikey { get; set; }
+    }
 }

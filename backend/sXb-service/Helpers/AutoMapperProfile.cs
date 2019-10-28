@@ -69,6 +69,22 @@ namespace sXb_service.Helpers
                opts.MapFrom(src => src.Price))
               .ForMember(dest => dest.Condition, opts =>
                opts.MapFrom(src => Enum.GetName(typeof(Condition), src.Condition)));
+
+            CreateMap<VolumeInfo, BookApiResult>()
+                .ForMember(dest => dest.Title, opts =>
+                 opts.MapFrom(src => src.Title))
+                .ForMember(dest => dest.Description, opts =>
+                 opts.MapFrom(src => src.Description))
+                 .ForMember(dest => dest.ISBN10, opts =>
+                 opts.MapFrom(src => src.IndustryIdentifiers.Where(x => x.Type == "ISBN_10").First().Identifier))
+                 .ForMember(dest => dest.ISBN13, opts =>
+                 opts.MapFrom(src => src.IndustryIdentifiers.Where(x => x.Type == "ISBN_13").First().Identifier))
+                 .ForMember(dest => dest.SmallThumbnail, opts =>
+                 opts.MapFrom(src => src.ImageLinks.SmallThumbnail))
+                 .ForMember(dest => dest.Thumbnail, opts =>
+                 opts.MapFrom(src => src.ImageLinks.Thumbnail));
+                 
+                 
         }
     }
 }

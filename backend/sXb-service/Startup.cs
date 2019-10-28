@@ -31,7 +31,10 @@ namespace sXb_service
         public void ConfigureServices(IServiceCollection services)
         {
             var databaseConfig = Configuration.GetSection("Db").Get<DatabaseConfig>();
+            var bookApiConfig = Configuration.GetSection("Google").Get<BookApiConfig>();
             var corsConfig = Configuration.GetSection("Cors").Get<CorsConfig>();
+
+            services.AddSingleton(bookApiConfig);
 
             services.AddCors(options =>
             {
@@ -46,6 +49,11 @@ namespace sXb_service
                     });
             });
 
+            services.AddHttpClient("findBook", c =>
+            {
+                c.BaseAddress = new Uri(Configuration["Google:Uri"]);
+            });
+
             services.AddDbContext<TxtXContext>(options =>
                options.UseSqlServer(databaseConfig.Connection));
 
@@ -58,6 +66,7 @@ namespace sXb_service
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IAuthorRepo, AuthorRepo>();
             services.AddScoped<IBookAuthorRepo, BookAuthorRepo>();
+            services.AddScoped<IBookApi, BookApi>();
 
             services.Configure<IdentityOptions>(options =>
             {
