@@ -9,14 +9,16 @@ const HeaderOne = styled.div`
   color: #707070;
 `;
 
-const AlignLeft = styled.div`
-  text-align: left;
-  padding-left: 20px;
+const TimelineLayout = styled.div`
+  display: grid;
+  grid-template-row: auto;
+  grid-template-cols: 50% 50%;
+  justify-items: center;
+  align-items: center;
 `;
 
-const AlignRight = styled.div`
-  text-align: right;
-  padding-right: 20px;
+const TimelineBox = styled.div`
+  width: 300px;
 `;
 
 const BlueScene = styled.div`
@@ -33,40 +35,38 @@ export default () => (
         <h1>Sell or Trade your unneeded textbooks with us!</h1>
         <h2>Want to know how to start the process? Look no further!</h2>
       </div>
-      <div>
+      <TimelineLayout>
         <div>
-          <AlignLeft>
-            <p>
-              To sell a book, you must first log into the site, then go to the
-              Create A Listing link found under your username when it is hovered
-              over
-            </p>
-          </AlignLeft>
+          <TimelineBox>
+            <div>
+              <p>
+                To sell a book, you must first log into the site, then go to the
+                Create A Listing link found under your username when it is
+                hovered over
+              </p>
+            </div>
+            <div>
+              <p>
+                On the new page you can then input the information about your
+                book
+              </p>
+            </div>
+            <div>
+              <p>
+                This information will include: the name of book, author, ISBN,
+                etc. This will also have your payment options you can select
+                from
+              </p>
+            </div>
+            <div>
+              <p>
+                Finally after clicking the Post Listing button, you are all set
+                to have your book shown for sale or trade on the site!
+              </p>
+            </div>
+          </TimelineBox>
         </div>
-        <div>
-          <AlignRight>
-            <p>
-              On the new page you can then input the information about your book
-            </p>
-          </AlignRight>
-        </div>
-        <div>
-          <AlignLeft>
-            <p>
-              This information will include: the name of book, author, ISBN,
-              etc. This will also have your payment options you can select from
-            </p>
-          </AlignLeft>
-        </div>
-        <div>
-          <AlignRight>
-            <p>
-              Finally after clicking the Post Listing button, you are all set to
-              have your book shown for sale or trade on the site!
-            </p>
-          </AlignRight>
-        </div>
-      </div>
+      </TimelineLayout>
       <div>
         <h3>Post your books now!</h3>
       </div>
