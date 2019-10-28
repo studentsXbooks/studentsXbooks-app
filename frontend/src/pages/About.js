@@ -20,7 +20,13 @@ const BulletPoint = styled.p`
   text-align: left;
   width: 50%;
   margin: 0 auto;
-  padding: 20px;
+  padding: 5px;
+`;
+
+const BulletPointHeader = styled.h2`
+  text-align: left;
+  width: 50%;
+  margin: 0 auto;
 `;
 
 const BlueScene = styled.div`
@@ -52,7 +58,7 @@ export default () => (
         now a site that aims to help students out on dealing with the ever
         rising price of textbooks.
       </TextStyle>
-      <p>The Team</p>
+      <h3>The Team</h3>
       <p>
         Levi Butcher - Project Manager <br></br> Sean Rickard - Developer{" "}
         <br></br> Jeremi Swann - Developer <br></br> Brady Starcher -
@@ -61,7 +67,7 @@ export default () => (
     </BlueScene>
     <HeaderOne>
       <h1>Our College!</h1>
-      <h2>About the college:</h2>
+      <BulletPointHeader>About the college:</BulletPointHeader>
       <BulletPoint>
         · Our college is West Virginia University at Parkersburg<br></br> · The
         current president of the college is Chris Gilmer<br></br> · The Software
