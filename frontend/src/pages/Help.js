@@ -46,7 +46,7 @@ export default () => (
     </HeaderOne>
     <SubHeader>
       <FAQ>
-        <p>FAQ</p>
+        <h2>FAQ</h2>
       </FAQ>
       <QBorder>
         How does the site gather the final price for a selling/buying of a book?
@@ -58,7 +58,7 @@ export default () => (
     </SubHeader>
     <br></br>
     <HeaderOne>
-      <h3>Developer Contacts/Helpful Links</h3>
+      <h2>Developer Contacts/Helpful Links</h2>
       <p>
         If you have you have issues with the site you can contact us through our
         email: <h4>Studentxbooks@gmail.com</h4>

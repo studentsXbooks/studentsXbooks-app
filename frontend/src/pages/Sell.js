@@ -13,6 +13,7 @@ const TimelineLayout = styled.div`
   display: grid;
   grid-template-row: auto;
   grid-template-cols: 50% 50%;
+  grid-row-gap: 60px;
   justify-items: center;
   align-items: center;
 `;
@@ -37,34 +38,28 @@ export default () => (
       </div>
       <TimelineLayout>
         <div>
-          <TimelineBox>
-            <div>
-              <p>
-                To sell a book, you must first log into the site, then go to the
-                Create A Listing link found under your username when it is
-                hovered over
-              </p>
-            </div>
-            <div>
-              <p>
-                On the new page you can then input the information about your
-                book
-              </p>
-            </div>
-            <div>
-              <p>
-                This information will include: the name of book, author, ISBN,
-                etc. This will also have your payment options you can select
-                from
-              </p>
-            </div>
-            <div>
-              <p>
-                Finally after clicking the Post Listing button, you are all set
-                to have your book shown for sale or trade on the site!
-              </p>
-            </div>
-          </TimelineBox>
+          <p>
+            To sell a book, you must first log into the site, then go to the
+            Create A Listing link found under your username when it is hovered
+            over
+          </p>
+        </div>
+        <div>
+          <p>
+            On the new page you can then input the information about your book
+          </p>
+        </div>
+        <div>
+          <p>
+            This information will include: the name of book, author, ISBN, etc.
+            This will also have your payment options you can select from
+          </p>
+        </div>
+        <div>
+          <p>
+            Finally after clicking the Post Listing button, you are all set to
+            have your book shown for sale or trade on the site!
+          </p>
         </div>
       </TimelineLayout>
       <div>
