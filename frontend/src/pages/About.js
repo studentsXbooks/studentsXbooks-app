@@ -38,7 +38,7 @@ export default () => (
         now a site that aims to help students out on dealing with the ever
         rising price of textbooks.
       </p>
-      <p>The Team</p>
+      <h3>The Team</h3>
       <p>
         Levi Butcher - Project Manager <br></br> Sean Rickard - Developer{" "}
         <br></br> Jeremi Swann - Developer <br></br> Brady Starcher -
