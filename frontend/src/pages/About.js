@@ -1,9 +1,25 @@
 import React, { useState } from "react";
+/* $FlowFixMe */
+import styled from "styled-components";
+import { isNil } from "ramda";
+import { fade, makeStyles } from "@material-ui/core/styles";
+
+const HeaderOne = styled.div`
+  text-align: center;
+  color: #707070;
+`;
+
+const BlueScene = styled.div`
+  text-align: center;
+  background-color: #7af4ff;
+  color: #b36b39;
+  padding 10px;
+`;
 
 export default () => (
   <div>
-    <div>
-      <p>What our site does to help students</p>
+    <HeaderOne>
+      <h1>What our site does to help students</h1>
       <p>
         We want to improve the way students can purchase their textbooks for
         their classes, as well as allow students an easier way to offload books
@@ -11,9 +27,9 @@ export default () => (
         easier and more cost effective for students so that they can make their
         dreams a reality in the future.
       </p>
-    </div>
-    <div>
-      <p>Our story and who we are</p>
+    </HeaderOne>
+    <BlueScene>
+      <h1>Our story and who we are</h1>
       <p>
         {" "}
         We are a group of software engineering students from West Virginia
@@ -28,16 +44,16 @@ export default () => (
         <br></br> Jeremi Swann - Developer <br></br> Brady Starcher -
         Documenter/Designer <br></br> Samantha Burkey - Tester/Designer
       </p>
-    </div>
-    <div>
-      <p>Our College!</p>
-      <p>About the college:</p>
+    </BlueScene>
+    <HeaderOne>
+      <h1>Our College!</h1>
+      <h2>About the college:</h2>
       <p>
         Our college is West Virginia University at Parkersburg<br></br> The
         current president of the college is Chris Gilmer<br></br> The Software
         Engineering Professors that have lead the way in our learning are
         Charles Almond and Gary Thompson
       </p>
-    </div>
+    </HeaderOne>
   </div>
 );
