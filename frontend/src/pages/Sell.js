@@ -5,8 +5,8 @@ import React, { useState } from "react";
 export default () => (
   <div>
     <div>
-      <p>Sell or Trade your unneeded textbooks with us!</p>
-      <p>Want to know how to start the process? Look no further!</p>
+      <h1>Sell or Trade your unneeded textbooks with us!</h1>
+      <h3>Want to know how to start the process? Look no further!</h3>
     </div>
     <div>
       <p>
@@ -24,10 +24,10 @@ export default () => (
       </p>
     </div>
     <div>
-      <p>Post your books now!</p>
+      <h4>Post your books now!</h4>
     </div>
     <div>
-      <p>Advantages of using StudenTXTbooks</p>
+      <h3>Advantages of using StudenTXTbooks</h3>
       <p>
         {" "}
         Through our site you can buy books much cheaper than what your college

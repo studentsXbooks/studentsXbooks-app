@@ -3,28 +3,28 @@ import React, { useState } from "react";
 export default () => (
   <div>
     <div>
-      <p>
+      <h1>
         Need help with navigating the site? Have a bug that needs to be
         reported? Look no further!
-      </p>
+      </h1>
     </div>
     <div>
-      <p>FAQ</p>
-      <p>
+      <h3>FAQ</h3>
+      <h4>
         How does the site gather the final price for a selling/buying of a book?
-      </p>
-      <p>Can I buy a book while one of my other books is still on sale?</p>
+      </h4>
+      <h4>Can I buy a book while one of my other books is still on sale?</h4>
     </div>
     <div>
-      <p>Developer Contacts/Helpful Links</p>
+      <h3>Developer Contacts/Helpful Links</h3>
       <p>
         If you have you have issues with the site you can contact us through our
-        email: Studentxbooks@gmail.com
+        email: <h4>Studentxbooks@gmail.com</h4>
       </p>
       <p>
         For bugs, errors, or to give suggestions for improvement on our site you
         can create an issue at our GitHub repo:
-        https://github.com/studentsXbooks
+        <h4>https://github.com/studentsXbooks</h4>
       </p>
     </div>
   </div>
