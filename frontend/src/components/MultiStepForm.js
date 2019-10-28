@@ -18,13 +18,13 @@ const MultiStepForm = ({
   reviewComponent,
   ...props
 }: Props) => {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
 
   const displayComponents = steps.map(x => x.inputGroup);
 
-  const toRender = displayComponents[step - 1];
+  const toRender = displayComponents[step];
   const isLastStep = (currentStep: number) =>
-    currentStep === displayComponents.length + 1;
+    currentStep === displayComponents.length;
 
   const handleSubmit = (values, bag) => {
     if (isLastStep(step)) {
@@ -43,6 +43,7 @@ const MultiStepForm = ({
           <Stepper activeStep={step}>
             {steps
               .map(x => x.name)
+              .concat("Review")
               .map(x => (
                 <Step key={x}>
                   <StepLabel>{x}</StepLabel>
