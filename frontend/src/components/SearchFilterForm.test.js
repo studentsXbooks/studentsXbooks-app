@@ -2,20 +2,15 @@ import { render, fireEvent, cleanup, wait } from "@testing-library/react";
 import React from "react";
 import { Router, navigate } from "@reach/router";
 import SearchFilterForm from "./SearchFilterForm";
-
-const makeFetchReturn = (toReturn: any | [any]) => {
-  global.fetch = () =>
-    Promise.resolve({
-      json: () => Promise.resolve(toReturn)
-    });
-};
+import makeFetchReturn from "../test-utils/makeFetchReturn";
 
 const fakeConditions = [
   { name: "Like New", value: 1 },
   { name: "Old and Dirty", value: -1 }
 ];
 
-makeFetchReturn(fakeConditions);
+const customFetchReturn = makeFetchReturn({});
+customFetchReturn(fakeConditions);
 
 afterEach(cleanup);
 
@@ -55,7 +50,7 @@ it("Enter Valid Min and Max and Click submit, calls navigate with query params",
 });
 
 it("Loads in conditions after being rendered", async () => {
-  makeFetchReturn([{ name: "Like New", value: 1 }]);
+  customFetchReturn([{ name: "Like New", value: 1 }]);
   const wrappedFakeNavigate = jest.fn();
   const { findByLabelText } = render(
     <SearchFilterForm
@@ -89,7 +84,7 @@ it("Clicking on a conditions calls navigate", async () => {
 
 it("Selecting Multiple Conditions calls navigate with all in query params", async () => {
   const [cond1, cond2] = fakeConditions;
-  makeFetchReturn(fakeConditions);
+  customFetchReturn(fakeConditions);
   const { findByLabelText } = render(
     <Router>
       {/* $FlowFixMe */}
@@ -115,7 +110,7 @@ it("Setting Min and Max then selecting condition calls navigate with all queries
   const max = 20;
   const [cond1] = fakeConditions;
   navigate("/");
-  makeFetchReturn(fakeConditions);
+  customFetchReturn(fakeConditions);
   const { getByLabelText, getByText, findByLabelText } = render(
     <Router>
       {/* $FlowFixMe */}
@@ -154,7 +149,8 @@ it("Setting Min and Max then selecting condition calls navigate with all queries
 it("Select Condition then unselect condition removes from query", async () => {
   const [cond1] = fakeConditions;
   navigate("/");
-  makeFetchReturn(fakeConditions);
+
+  customFetchReturn(fakeConditions);
   const { findByLabelText } = render(
     <Router>
       {/* $FlowFixMe */}
@@ -176,7 +172,7 @@ it("Renders with minPrice and maxPrice inputs set to query params", async () => 
   const max = 50;
   const min = 30;
   navigate(`/?min=${min}&max=${max}`);
-  makeFetchReturn(fakeConditions);
+  customFetchReturn(fakeConditions);
   const { getByLabelText } = render(
     <Router>
       {/* $FlowFixMe */}

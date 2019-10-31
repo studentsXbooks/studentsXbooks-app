@@ -1,17 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Grid, Typography } from "@material-ui/core";
-import { ApiGet } from "../utils";
+import useApi from "../hooks/useApi";
 
 type Props = {
   id: string
 };
 
 const ListingDetails = ({ id }: Props) => {
-  const [listing, setListing] = useState();
-
-  useEffect(() => {
-    ApiGet(`listings/${id}`, true).then(setListing);
-  }, [id]);
+  const { data: listing } = useApi(`listings/${id}`);
 
   return (
     <Grid container spacing={3}>

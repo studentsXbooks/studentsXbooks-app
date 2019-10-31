@@ -1,5 +1,3 @@
-// @flow
-
 const BaseUrl: string = process.env.REACT_APP_BACKEND || "";
 
 function ApiPost(url: string, creds: boolean, json: Object) {
@@ -11,8 +9,8 @@ function ApiPost(url: string, creds: boolean, json: Object) {
     },
     body: JSON.stringify(json)
   }).then(res => {
-    // if (res.status <= 200 || res.status >= 299)
-    //   throw Error(`Response of ${res.status}`);
+    if (res.status <= 200 || res.status >= 299)
+      throw Error(`Response of ${res.status}`);
     return res;
   });
 }
