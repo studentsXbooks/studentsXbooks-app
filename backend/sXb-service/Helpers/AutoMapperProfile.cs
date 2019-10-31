@@ -75,10 +75,10 @@ namespace sXb_service.Helpers
                  opts.MapFrom(src => src.Title))
                 .ForMember(dest => dest.Description, opts =>
                  opts.MapFrom(src => src.Description))
-                 .ForMember(dest => dest.ISBN10, opts =>
-                 opts.MapFrom(src => src.IndustryIdentifiers.Where(x => x.Type == "ISBN_10").First().Identifier))
+                .ForMember(dest => dest.ISBN10, opts =>
+                 opts.MapFrom(src => src.IndustryIdentifiers.Where(x => x.Type == "ISBN_10").Select(x => x.Identifier).FirstOrDefault()))
                  .ForMember(dest => dest.ISBN13, opts =>
-                 opts.MapFrom(src => src.IndustryIdentifiers.Where(x => x.Type == "ISBN_13").First().Identifier))
+                 opts.MapFrom(src => src.IndustryIdentifiers.Where(x => x.Type == "ISBN_13").Select(x => x.Identifier).FirstOrDefault()))
                  .ForMember(dest => dest.SmallThumbnail, opts =>
                  opts.MapFrom(src => src.ImageLinks.SmallThumbnail))
                  .ForMember(dest => dest.Thumbnail, opts =>

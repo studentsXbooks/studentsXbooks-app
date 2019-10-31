@@ -20,27 +20,33 @@ namespace sXb_service.Models
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<BookApiResult>> FindBook(string term)
+        public async Task<Paging<BookApiResult>> FindBook(string term, int page)
         {
-            var response = await bookApi.GetAsync($"volumes?q={term}&key={key}");
-            response.EnsureSuccessStatusCode();
-            var bookInfo = await response.Content.ReadAsAsync<BookSearchResults>();
-
             List<BookApiResult> results = new List<BookApiResult>();
-
-            foreach(var book in bookInfo.Items)
+            var index = (page - 1) * 10;
+            try
             {
-                var newBook = _mapper.Map<BookApiResult>(book.VolumeInfo);
-                results.Add(newBook);
+                var response = await bookApi.GetAsync($"volumes?q={term}&startIndex={index}&key={key}");
+                response.EnsureSuccessStatusCode();
+                var bookInfo = await response.Content.ReadAsAsync<BookSearchResults>();
+                foreach (var book in bookInfo.Items)
+                {
+                    var newBook = _mapper.Map<BookApiResult>(book.VolumeInfo);
+                    results.Add(newBook);
+                }
+                return Paging<BookApiResult>.ApplyPaging(bookInfo.TotalItems, results, page);
             }
-
-            return results;
-        }
+            catch
+            {
+                return Paging<BookApiResult>.ApplyPaging(0, results, page);
+            }
+        }          
     }
 }
 
 public class BookSearchResults
 {
+    public int TotalItems { get; set; }
     public Items[] Items { get; set; }
 }
 

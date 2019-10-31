@@ -160,9 +160,9 @@ namespace sXb_service.Controllers
 
         [AllowAnonymous]
         [HttpGet("find/{term}")]
-        public async Task<IActionResult> FindBook(string term)
-        {
-            var books = await _iBookApi.FindBook(term);
+        public async Task<IActionResult> FindBook(string term, [FromQuery] int page = 1)
+        {            
+            var books = await _iBookApi.FindBook(term, page);
             return Ok(books);
         }
     }
