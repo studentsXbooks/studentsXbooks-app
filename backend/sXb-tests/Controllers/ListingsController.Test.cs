@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Linq.Expressions;
 using System;
 using sXb_service.Controllers;
@@ -10,6 +11,7 @@ using sXb_service.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using sXb_service.Models;
 using sXb_service.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace sXb_tests.Controllers
 {
@@ -36,23 +38,28 @@ namespace sXb_tests.Controllers
         [Fact]
         public async void Contact_ListingHasSELLERCONTACTBUYERChosen_ShouldCallSendEmailOnceAnd201()
         {
+            var sellerEmail = "seller@gmail.com";
+            var buyerEmail = "buyer@wvup.edu";
             var listingId = Guid.NewGuid();
             var contact = new ContactViewModel()
             {
                 Body = "HEY, I want to buy your book",
-                ListingId = listingId
+                ListingId = listingId,
+                Email = buyerEmail
             };
             listingRepo.Setup(x => x.Find(It.IsAny<Expression<Func<Listing, Boolean>>>())).ReturnsAsync(new Listing()
             {
                 ContactOption = ContactOption.SellerContactBuyer,
                 User = new User()
                 {
-                    Email = "fakeuser@gmail.com"
+                    Email = sellerEmail
                 }
             });
+
             var result = await listingsAPI.Contact(contact);
+
             Assert.IsType<CreatedResult>(result);
-            emailSender.Verify((a) => a.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(1));
+            emailSender.Verify((a) => a.SendEmailAsync(It.Is<string>(x => x == sellerEmail), It.Is<string>(x => x == buyerEmail), It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(1));
         }
 
         [Fact]

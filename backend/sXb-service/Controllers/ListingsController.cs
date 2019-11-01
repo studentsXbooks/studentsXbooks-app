@@ -13,7 +13,6 @@ using sXb_service.Models.ViewModels;
 using sXb_service.Repos.Interfaces;
 using sXb_service.Services;
 using sXb_service.ViewModels;
-using sXb_service.Helpers;
 
 namespace sXb_service.Controllers
 {
@@ -178,7 +177,7 @@ namespace sXb_service.Controllers
                 switch (listing.ContactOption)
                 {
                     case ContactOption.SellerContactBuyer:
-                        _emailSender.SendEmailAsync(listing.User.Email, defaultSubjectMessage, contact.Body);
+                        _emailSender.SendEmailAsync(listing.User.Email, contact.Email, defaultSubjectMessage, contact.Body);
                         return Created("/listings/1", contact);
                     default:
                         return BadRequest();
