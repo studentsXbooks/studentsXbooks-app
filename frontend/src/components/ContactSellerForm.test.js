@@ -7,11 +7,15 @@ import makeFetchReturn from "../test-utils/makeFetchReturn";
 afterEach(cleanup);
 
 const validListing = {
-  contactOption: 0
+  contactOption: 0,
+  id: 0,
+  title: "GOOD"
 };
 
 const badListing = {
-  contactOption: -1
+  contactOption: -1,
+  id: 0,
+  title: "BAD"
 };
 
 it("Renders with required props", () => {
@@ -25,7 +29,7 @@ it("Empty Message and Subject, Send is disabled", () => {
   const { getByText } = render(
     <ContactSellerForm listing={validListing} onComplete={jest.fn()} />
   );
-  const sendButton = getByText(/Send/);
+  const sendButton = getByText("Send");
   expect(sendButton).toBeDisabled();
 });
 
@@ -49,7 +53,7 @@ it("Calls onComplete after form is submitted successfully", async () => {
   fireEvent.change(getByLabelText(/body/i), {
     target: { value: "Hey I really would like to trade" }
   });
-  fireEvent.submit(getByText(/Send/));
+  fireEvent.submit(getByText("Send"));
   await wait(() => {
     expect(mockComplete).toBeCalledTimes(1);
   });

@@ -1,10 +1,10 @@
-import { curry } from "ramda";
-
 const BaseUrl: string = process.env.REACT_APP_BACKEND || "";
 
 type Response = {
   status: number
 };
+
+type Method = "POST" | "GET" | "PUT" | "DELETE";
 
 class FailedRequestError extends Error {
   response: Response;
@@ -23,7 +23,7 @@ class FailedRequestError extends Error {
 /*
   Custom Fetch Wrapper, throws FailedRequestError if status code != 2##
 */
-const fetchLight = (url: string, method: string, json: Object) =>
+const fetchLight = (url: string, method: Method, json: Object) =>
   fetch(url, {
     method,
     credentials: "include",
