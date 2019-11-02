@@ -8,8 +8,8 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import { Link } from "@reach/router";
-/* $FlowFixMe */
-import styled from "@emotion/styled";
+// $FlowFixMe
+import styled from "styled-components";
 import { isNil } from "ramda";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import { ApiGet } from "./utils";

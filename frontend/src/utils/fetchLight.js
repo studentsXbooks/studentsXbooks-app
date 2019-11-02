@@ -41,7 +41,7 @@ const fetchLight = (url: string, method: Method, json: Object) =>
 /*
   Wrapper around fetchLight to use our Backend
 */
-const apiFetch = (url: string, method: string, json: Object) =>
+const apiFetch = (url: string, method: Method, json: Object) =>
   fetchLight(BaseUrl + url, method, json);
 
 export { FailedRequestError, apiFetch };

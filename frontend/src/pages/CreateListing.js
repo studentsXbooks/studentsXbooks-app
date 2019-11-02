@@ -1,16 +1,16 @@
 import React from "react";
-import { Field } from "formik";
-import { Grid, Typography } from "@material-ui/core";
+import { Field, Formik, Form } from "formik";
+import { Grid, Typography, Button } from "@material-ui/core";
 import * as Yup from "yup";
-import { ApiPost } from "../utils";
 import useApi from "../hooks/useApi";
 import SiteMargin from "../ui/SiteMargin";
-import MultiStepForm from "../components/MultiStepForm";
-import RadioButton from "../components/RadioButton";
+import RadioButton from "../ui/RadioButton";
+import { apiFetch } from "../utils/fetchLight";
+import Input from "../ui/Input";
 
 const listingSchema = Yup.object().shape({});
 
-const Conditions = () => {
+const ConditionRadios = () => {
   const { data: conditions } = useApi("conditions");
   return (
     <fieldset>
@@ -29,68 +29,6 @@ const Conditions = () => {
   );
 };
 
-const ListingDetailsInputs = (
-  <Grid container spacing={3}>
-    <Grid item sm={12} md={6}>
-      <Typography variant="h3">Book Details</Typography>
-      <Field
-        name="title"
-        id="title"
-        type="string"
-        placeholder="title"
-        label="Title"
-      />
-      <Field
-        id="description"
-        type="string"
-        name="description"
-        label="Description"
-        placeholder="Description"
-      />
-      <Field
-        id="isbn10"
-        type="string"
-        name="isbn10"
-        label="ISBN 10"
-        placeholder="ISBN 10"
-      />
-      <Typography variant="h3">Author</Typography>
-      <Field
-        id="firstName"
-        type="string"
-        name="firstName"
-        label="First Name"
-        placeholder="First Name"
-      />
-      <Field
-        id="middleName"
-        type="string"
-        name="middleName"
-        label="Middle Name"
-        placeholder="Middle Name"
-      />
-      <Field
-        id="lastName"
-        type="string"
-        name="lastName"
-        label="Last Name"
-        placeholder="Last Name"
-      />
-    </Grid>
-    <Grid item sm={12} md={6}>
-      <Typography variant="h3">About Your Book</Typography>
-      <Field
-        id="price"
-        type="number"
-        name="price"
-        label="Price"
-        placeholder="Price"
-      />
-      <Conditions />
-    </Grid>
-  </Grid>
-);
-
 const getAboutText = contactEnumValue => {
   switch (contactEnumValue) {
     case 0:
@@ -100,7 +38,7 @@ const getAboutText = contactEnumValue => {
   }
 };
 
-const MethodOfContactInputs = () => {
+const MethodOfContactRadios = () => {
   const { data } = useApi("listings/contact");
 
   return (
@@ -123,20 +61,6 @@ const MethodOfContactInputs = () => {
   );
 };
 
-const ReviewListing = ({
-  values: { title, description, price, contactOption, condition }
-}) => {
-  return (
-    <div>
-      <Typography variant="h4">Title: {title}</Typography>
-      <Typography variant="h4">Description: {description}</Typography>
-      <Typography variant="h4">Price: {price}</Typography>
-      <Typography variant="h4">Condition: {condition}</Typography>
-      <Typography variant="h4">ContactOption: {contactOption}</Typography>
-    </div>
-  );
-};
-
 type Props = {
   navigate: string => any
 };
@@ -148,20 +72,7 @@ const CreateListing = ({ navigate }: Props) => {
       <Typography variant="subtitle1">
         Enter book details to create new listing
       </Typography>
-      <MultiStepForm
-        steps={[
-          { name: "Listing Details", inputGroup: ListingDetailsInputs },
-          { name: "Method of Contact", inputGroup: MethodOfContactInputs() }
-        ]}
-        onComplete={(formValues, formikBag) => {
-          ApiPost("listings", true, formValues)
-            .then(async res => {
-              const body = await res.json();
-              navigate(`/listing/${body.id}`);
-            })
-            .finally(() => formikBag.setSubmitting(false));
-        }}
-        reviewComponent={values => <ReviewListing values={values} />}
+      <Formik
         validationSchema={listingSchema}
         initialValues={{
           title: "",
@@ -172,7 +83,105 @@ const CreateListing = ({ navigate }: Props) => {
           middleName: "",
           lastName: ""
         }}
-      />
+        onSubmit={(formValues, formikBag) => {
+          apiFetch("listings", "POST", formValues)
+            .then(async res => {
+              const body = await res.json();
+              navigate(`/listing/${body.id}`);
+            })
+            .finally(() => formikBag.setSubmitting(false));
+        }}
+      >
+        {() => (
+          <Form>
+            <Grid container spacing={3}>
+              <Grid item sm={12} md={6}>
+                <Typography variant="h3">Book Details</Typography>
+                <Field
+                  name="title"
+                  id="title"
+                  placeholder="Title"
+                  component={Input}
+                  label="Title"
+                  variant="outlined"
+                />
+                <Field
+                  id="description"
+                  name="description"
+                  label="Description"
+                  component={Input}
+                  variant="outlined"
+                  placeholder="Description"
+                />
+                <Field
+                  id="isbn10"
+                  name="isbn10"
+                  label="ISBN 10"
+                  component={Input}
+                  variant="outlined"
+                  placeholder="ISBN 10"
+                />
+                <Typography variant="h3">Author</Typography>
+                <Field
+                  id="firstName"
+                  name="firstName"
+                  label="First Name"
+                  component={Input}
+                  variant="outlined"
+                  placeholder="First Name"
+                />
+                <Field
+                  id="middleName"
+                  name="middleName"
+                  label="Middle Name"
+                  component={Input}
+                  variant="outlined"
+                  placeholder="Middle Name"
+                />
+                <Field
+                  id="lastName"
+                  name="lastName"
+                  component={Input}
+                  label="Last Name"
+                  variant="outlined"
+                  placeholder="Last Name"
+                />
+              </Grid>
+              <Grid item sm={12} md={6}>
+                <Typography variant="h3">About Your Book</Typography>
+                <Field
+                  id="price"
+                  type="number"
+                  name="price"
+                  component={Input}
+                  variant="outlined"
+                  label="Price"
+                  placeholder="Price"
+                />
+                <ConditionRadios />
+              </Grid>
+            </Grid>
+            <br />
+            <br />
+            <Typography variant="h6">
+              How do you want to be contacted?
+            </Typography>
+            <Grid container>
+              <Grid>
+                <MethodOfContactRadios />
+              </Grid>
+            </Grid>
+            <Button
+              type="Submit"
+              variant="contained"
+              color="primary"
+              align="right"
+            >
+              Submit
+            </Button>
+          </Form>
+        )}
+      </Formik>
     </SiteMargin>
   );
 };

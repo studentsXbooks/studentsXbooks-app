@@ -1,5 +1,19 @@
 import React from "react";
 
+type Props = {
+  field: {
+    name: string,
+    value: string,
+    onChange: (SyntheticEvent<HTMLInputElement>) => typeof undefined,
+    onBlur: (SyntheticEvent<HTMLInputElement>) => typeof undefined
+  },
+  id: string,
+  label: string,
+  className: string,
+  about: string,
+  props: {}
+};
+
 const RadioButton = ({
   field: { name, value, onChange, onBlur },
   id,
@@ -7,7 +21,7 @@ const RadioButton = ({
   className,
   about,
   ...props
-}) => {
+}: Props) => {
   return (
     <div>
       <input

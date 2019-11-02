@@ -2,7 +2,8 @@ import React from "react";
 import { Formik, Form, Field } from "formik";
 import { Button, Typography } from "@material-ui/core";
 import * as Yup from "yup";
-import styled from "@emotion/styled";
+// $FlowFixMe
+import styled from "styled-components";
 import { apiFetch } from "../utils/fetchLight";
 import Input from "../ui/Input";
 
@@ -14,13 +15,12 @@ const CustomForm = styled(Form)`
 
 const Stack = styled.div`
   & > * + * {
-    display: block;
-    margin-bottom: 1rem;
+    display: block !important;
+    margin-bottom: 1rem !important;
   }
 `;
 
 const contactSellerSchema = Yup.object().shape({
-  subject: Yup.string().required,
   body: Yup.string().required,
   email: Yup.string().email.required
 });
@@ -79,20 +79,13 @@ const ContactSellerForm = ({ listing, onComplete }: Props) => {
               component={Input}
             />
             <Field
-              name="subject"
-              id="subject"
-              type="text"
-              label="Subject"
-              fullWidth
-              variant="outlined"
-              component={Input}
-            />
-            <Field
               name="body"
               id="body"
               type="text"
               fullWidth
               variant="outlined"
+              multiline
+              rows={5}
               label="Body"
               component={Input}
             />

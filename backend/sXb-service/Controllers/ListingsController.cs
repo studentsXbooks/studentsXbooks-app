@@ -172,6 +172,7 @@ namespace sXb_service.Controllers
         {
             var listing = await _iListingRepo.Find(x => x.Id.Equals(contact.ListingId));
             var defaultSubjectMessage = $"{contact.Email} is interested in your book!";
+            var body = contact.Body + "\n\nReply to this email to follow if you like this offer.";
             if (!(listing is null))
             {
                 switch (listing.ContactOption)
