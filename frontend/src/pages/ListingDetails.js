@@ -6,8 +6,24 @@ import {
   Dialog,
   DialogContent
 } from "@material-ui/core";
+// $FlowFixMe
+import styled from "styled-components";
 import useApi from "../hooks/useApi";
 import ContactSellerForm from "../components/ContactSellerForm";
+
+const OptionBox = styled.div`
+  border: 3px solid #ccc;
+  border-radius: 5px;
+  padding: 2rem;
+`;
+
+const ImageBox = styled.div`
+  padding: 1rem;
+  padding-top: 0;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-cols: 1fr;
+`;
 
 type Props = {
   id: string
@@ -25,45 +41,87 @@ const ListingDetails = ({ id }: Props) => {
   const [isOpen, open, close] = useToggle();
 
   return (
-    <Grid container spacing={3}>
+    <>
       {listing && (
-        <>
-          <Grid item xs={6}>
-            <img src="https://www.fillmurray.com/300/300" alt="Book" />
+        <Grid container spacing={3} justify="space-around">
+          <Grid item>
+            <ImageBox>
+              <img src="https://via.placeholder.com/500" alt="Book" />
+              <Typography variant="h4" align="left">
+                ISBN: {listing.isbn10}
+              </Typography>
+            </ImageBox>
           </Grid>
-          <Grid item xs={6}>
-            <Typography variant="h2">{listing.title}</Typography>
-            <Typography variant="h4">{listing.description}</Typography>
-            <Typography variant="h4">{listing.authors}</Typography>
-            <Typography variant="h4">ISBN: {listing.isbn10}</Typography>
-            <Typography variant="h4">{listing.condition}</Typography>
-            <Typography variant="h4">{listing.price}</Typography>
-            {listing.contactOption === 0 && (
-              <Button
-                onClick={() => open()}
-                color="primary"
-                variant="contained"
-              >
-                Contact Seller
-              </Button>
-            )}
+          <Grid item xs={8} container spacing={3}>
+            <Grid item xs={12} sm={6} md={8}>
+              <Typography variant="h2" gutterBottom>
+                {listing.title}
+              </Typography>
+              <Typography variant="subtitle1" gutterBottom>
+                By: {listing.authors}
+              </Typography>
+              <hr />
+              <Typography variant="body1">{listing.description}</Typography>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <OptionBox>
+                <Grid container spacing={3} justify="space-between">
+                  <Grid item>
+                    <Typography variant="h4" style={{ gridArea: "condition" }}>
+                      {listing.condition}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography
+                      variant="h4"
+                      style={{ gridArea: "price" }}
+                      align="right"
+                    >
+                      $ {listing.price}
+                    </Typography>
+                  </Grid>
+                </Grid>
+                {listing.contactOption === 0 && (
+                  <>
+                    <Typography
+                      variant="body2"
+                      gutterBottom
+                      style={{ gridArea: "message" }}
+                    >
+                      Message the seller now to make an offer or trade them a
+                      book.
+                    </Typography>
+                    <Button
+                      onClick={() => open()}
+                      color="primary"
+                      variant="contained"
+                      fullWidth
+                    >
+                      Contact Seller
+                    </Button>
+                  </>
+                )}
+              </OptionBox>
+            </Grid>
           </Grid>
-          <Dialog open={isOpen} onClose={close}>
-            <DialogContent>
-              <ContactSellerForm
-                listing={listing}
-                onComplete={() => {
-                  close();
-                  alert(
-                    "Your message was sent to the Seller, please wait for a reply in your inbox."
-                  );
-                }}
-              />
-            </DialogContent>
-          </Dialog>
-        </>
+        </Grid>
       )}
-    </Grid>
+      {listing && (
+        <Dialog open={isOpen} onClose={close}>
+          <DialogContent>
+            <ContactSellerForm
+              listing={listing}
+              onComplete={() => {
+                close();
+                alert(
+                  "Your message was sent to the Seller, please wait for a reply in your inbox."
+                );
+              }}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
+    </>
   );
 };
 

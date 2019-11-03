@@ -3,8 +3,6 @@ import type { Node } from "react";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import { Link } from "@reach/router";
@@ -88,9 +86,6 @@ export default ({ children, navigate }: Props) => {
     <div>
       <AppBar position="static">
         <CustomToolBar>
-          <IconButton edge="start" color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
           <Typography variant="h6">
             {/* $FlowFixMe */}
             <Link to="/">Home</Link>
