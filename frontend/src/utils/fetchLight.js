@@ -30,7 +30,7 @@ const fetchLight = (url: string, method: Method, json: Object) =>
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(json)
+    body: method !== "GET" ? JSON.stringify(json) : null
   }).then(res => {
     if (res.status < 200 || res.status >= 300) {
       return Promise.reject(new FailedRequestError(res));

@@ -12,7 +12,7 @@ it("Always passes credential and content type json header to fetch", () => {
     headers: {
       "Content-Type": "application/json"
     },
-    body: "{}"
+    body: null
   });
 });
 

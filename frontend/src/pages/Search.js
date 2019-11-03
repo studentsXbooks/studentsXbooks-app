@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Grid } from "@material-ui/core";
-import { ApiPost } from "../utils";
+import { apiFetch } from "../utils/fetchLight";
 import SearchFilterForm from "../components/SearchFilterForm";
 import ListingCard from "../components/ListingCard";
 import SiteMargin from "../ui/SiteMargin";
@@ -20,7 +20,7 @@ const Search = ({ pageId = "1", term, navigate, location }: Props) => {
     const urlParams = new URLSearchParams(location.search);
     const urlConditions = urlParams.get("conditions");
     const conditions = urlConditions ? urlConditions.split(",") : [];
-    ApiPost(`listings/search/${term}/${pageId}`, true, {
+    apiFetch(`listings/search/${term}/${pageId}`, "POST", {
       minPrice: urlParams.get("min"),
       maxPrice: urlParams.get("max"),
       conditions

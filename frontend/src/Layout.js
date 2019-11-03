@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import type { Node } from "react";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -10,7 +10,7 @@ import { Link } from "@reach/router";
 import styled from "styled-components";
 import { isNil } from "ramda";
 import { fade, makeStyles } from "@material-ui/core/styles";
-import { ApiGet } from "./utils";
+import useApi from "./hooks/useApi";
 
 const CustomToolBar = styled(Toolbar)`
   & > h6 {
@@ -121,17 +121,9 @@ export default ({ children, navigate }: Props) => {
 };
 
 const UserInfoOrLoginRegistration = () => {
-  const [username, setUsername] = useState();
-  useEffect(() => {
-    ApiGet("users/name", true)
-      .then(json => {
-        const { username: returnedUserName } = json;
-        setUsername(returnedUserName);
-      })
-      .catch(console.log);
-  });
+  const { data: userInfo } = useApi("users/name");
 
-  if (isNil(username))
+  if (isNil(userInfo))
     return (
       <>
         <Typography variant="h6" style={{ marginLeft: "auto" }}>
@@ -146,7 +138,7 @@ const UserInfoOrLoginRegistration = () => {
     );
   return (
     <div>
-      <span>{username}</span>
+      <span>{userInfo.username}</span>
       {/* $FlowFixMe */}
       <Link to="/user/listings"> My Listings</Link>
       {/* $FlowFixMe */}

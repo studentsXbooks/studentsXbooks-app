@@ -4,7 +4,6 @@ import {
   Home,
   Login,
   Register,
-  LoginSuccess,
   EmailConfirmed,
   VerifyEmail,
   UserListing,
@@ -22,7 +21,6 @@ export default () => (
       <Home default />
       <Login path="login" />
       <Register path="register" />
-      <LoginSuccess path="login-success" />
       <EmailConfirmed path="email-confirmed" />
       <VerifyEmail path="verify-email" />
       {/* $FlowFixMe */}

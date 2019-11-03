@@ -22,7 +22,7 @@ type Props = {
 const ListingCard = ({
   listing: { title, price, id, isbn10, condition, authors }
 }: Props) => (
-  <Grid item xs={12} sm={6} md={3}>
+  <Grid item>
     {/* //$FlowFixMe */}
     <Link to={`/listing/${id}`}>
       <Card raised>
