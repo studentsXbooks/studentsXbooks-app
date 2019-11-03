@@ -32,8 +32,10 @@ const BulletPointHeader = styled.h2`
 const BlueScene = styled.div`
   text-align: center;
   background-color: #7af4ff;
-  color: #b36b39;
+  color: #707070;
   padding 10px;
+  margin: auto;
+  box-shadow: inset 0 0 2px 2px;
 `;
 
 export default () => (
@@ -41,11 +43,11 @@ export default () => (
     <HeaderOne>
       <h1>What our site does to help students</h1>
       <TextStyle>
-        We want to improve the way students can purchase their textbooks for
-        their classes, as well as allow students an easier way to offload books
-        they no longer need or want to keep around. We want our site to make it
-        easier and more cost effective for students so that they can make their
-        dreams a reality in the future.
+        We want to improve the way students can purchase textbooks for their
+        classes and allow students an easier way to sell books they no longer
+        need to keep around. We want our site to make it easier and more cost
+        effective for students so that they can make their dreams a reality in
+        the future.
       </TextStyle>
     </HeaderOne>
     <BlueScene>
@@ -62,7 +64,8 @@ export default () => (
       <p>
         Levi Butcher - Project Manager <br></br> Sean Rickard - Developer{" "}
         <br></br> Jeremi Swann - Developer <br></br> Brady Starcher -
-        Documenter/Designer <br></br> Samantha Burkey - Tester/Designer
+        Documenter/Designer <br></br> Samantha Burkey - Tester/Designer<br></br>{" "}
+        Ethan Rhodes - Developer/Editor
       </p>
     </BlueScene>
     <HeaderOne>
@@ -71,8 +74,8 @@ export default () => (
       <BulletPoint>
         · Our college is West Virginia University at Parkersburg<br></br> · The
         current president of the college is Chris Gilmer<br></br> · The Software
-        Engineering Professors that have lead the way in our learning are
-        Charles Almond and Gary Thompson
+        Engineering Professors that have led the way in our learning are Charles
+        Almond and Gary Thompson
       </BulletPoint>
     </HeaderOne>
   </div>
