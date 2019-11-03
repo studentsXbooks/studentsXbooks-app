@@ -1,5 +1,5 @@
 import { useEffect, useReducer } from "react";
-import { ApiGet } from "../utils";
+import { apiFetch } from "../utils/fetchLight";
 
 const loadingStates = {
   loading: "loading",
@@ -47,7 +47,8 @@ function useApi<T>(url: string): State<T> {
     dispatch({
       type: loadingStates.loading
     });
-    ApiGet(url, true)
+    apiFetch(url, "GET", {})
+      .then(res => res.json())
       .then(json => {
         if (!cancelled)
           dispatch({

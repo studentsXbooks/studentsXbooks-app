@@ -1,4 +1,5 @@
 import React from "react";
+import withSearchBar from "../components/withSearchBar";
 
 const VerifyEmail = () => {
   const email = new URL(window.location).searchParams.get("email");
@@ -13,4 +14,4 @@ const VerifyEmail = () => {
     </div>
   );
 };
-export default VerifyEmail;
+export default withSearchBar(VerifyEmail);
