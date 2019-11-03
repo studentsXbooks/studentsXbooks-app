@@ -10,6 +10,7 @@ import {
 import styled from "styled-components";
 import useApi from "../hooks/useApi";
 import ContactSellerForm from "../components/ContactSellerForm";
+import withSearchBar from "../components/withSearchBar";
 
 const OptionBox = styled.div`
   border: 3px solid #ccc;
@@ -125,4 +126,4 @@ const ListingDetails = ({ id }: Props) => {
   );
 };
 
-export default ListingDetails;
+export default withSearchBar(ListingDetails);

@@ -3,6 +3,7 @@ import { Grid } from "@material-ui/core";
 import ListingCard from "../components/ListingCard";
 import useApi from "../hooks/useApi";
 import Paging from "../components/Paging";
+import withSearchBar from "../components/withSearchBar";
 
 type Props = {
   pageId: string
@@ -38,4 +39,4 @@ const UserListing = ({ pageId = "1" }: Props) => {
   );
 };
 
-export default UserListing;
+export default withSearchBar(UserListing);

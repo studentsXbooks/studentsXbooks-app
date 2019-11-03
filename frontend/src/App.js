@@ -16,26 +16,25 @@ import Layout from "./Layout";
 
 export default () => (
   <Router>
-    {/* $FlowFixMe */}
     <Layout path="/">
-      <Home default />
+      <Home path="/" />
       <Login path="login" />
       <Register path="register" />
       <EmailConfirmed path="email-confirmed" />
       <VerifyEmail path="verify-email" />
       {/* $FlowFixMe */}
-      <UserListing path="user/listings/" />
+      <UserListing path="/user/listings" />
       {/* $FlowFixMe */}
-      <UserListing path="user/listings/:pageId" />
+      <UserListing path="/user/listings/:pageId" />
       {/* $FlowFixMe */}
-      <CreateListing path="listing/new" />
+      <CreateListing path="/listing/new" />
       {/* $FlowFixMe */}
-      <ListingDetails path="listing/:id" />
-      <ConfirmEmail path="confirm-email" />
+      <ListingDetails path="/listing/:id" />
+      <ConfirmEmail path="/confirm-email" />
       {/* $FlowFixMe */}
-      <Search path="search/:term" />
+      <Search path="/search/:term" />
       {/* $FlowFixMe */}
-      <Search path="search/:term/:pageId" />
+      <Search path="/search/:term/:pageId" />
     </Layout>
   </Router>
 );

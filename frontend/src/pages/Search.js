@@ -5,6 +5,7 @@ import SearchFilterForm from "../components/SearchFilterForm";
 import ListingCard from "../components/ListingCard";
 import SiteMargin from "../ui/SiteMargin";
 import Paging from "../components/Paging";
+import withSearchBar from "../components/withSearchBar";
 
 type Props = {
   pageId: string,
@@ -62,4 +63,4 @@ const Search = ({ pageId = "1", term, navigate, location }: Props) => {
   );
 };
 
-export default Search;
+export default withSearchBar(Search);
