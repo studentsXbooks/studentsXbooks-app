@@ -1,14 +1,55 @@
 import React from "react";
 import { Field, Formik, Form } from "formik";
-import { Grid, Typography, Button } from "@material-ui/core";
+import { Typography, Button } from "@material-ui/core";
 import * as Yup from "yup";
+// $FlowFixMe
+import styled from "styled-components";
 import useApi from "../hooks/useApi";
 import SiteMargin from "../ui/SiteMargin";
 import RadioButton from "../ui/RadioButton";
 import { apiFetch } from "../utils/fetchLight";
 import Input from "../ui/Input";
+import Stack from "../ui/Stack";
 
-const listingSchema = Yup.object().shape({});
+const listingSchema = Yup.object().shape({
+  title: Yup.string()
+    .min(1)
+    .required(),
+  isbn10: Yup.string()
+    .length(10)
+    .required(),
+  description: Yup.string()
+    .min(1)
+    .required(),
+  firstName: Yup.string()
+    .min(1)
+    .required(),
+  middleName: Yup.string()
+    .min(1)
+    .required(),
+  lastName: Yup.string()
+    .min(1)
+    .required(),
+  price: Yup.number()
+    .positive()
+    .required(),
+  condition: Yup.string()
+    .min(1)
+    .required(),
+  contactOption: Yup.string()
+    .min(1)
+    .required()
+});
+
+const StyledForm = styled.div`
+  & > form {
+    width: 750px;
+    margin: auto;
+    border: 3px solid #ccc;
+    border-radius: 5px;
+    padding: 2rem;
+  }
+`;
 
 const ConditionRadios = () => {
   const { data: conditions } = useApi("conditions");
@@ -68,10 +109,6 @@ type Props = {
 const CreateListing = ({ navigate }: Props) => {
   return (
     <SiteMargin>
-      <Typography variant="h1">New Listing</Typography>
-      <Typography variant="subtitle1">
-        Enter book details to create new listing
-      </Typography>
       <Formik
         validationSchema={listingSchema}
         initialValues={{
@@ -92,11 +129,19 @@ const CreateListing = ({ navigate }: Props) => {
             .finally(() => formikBag.setSubmitting(false));
         }}
       >
-        {() => (
-          <Form>
-            <Grid container spacing={3}>
-              <Grid item sm={12} md={6}>
-                <Typography variant="h3">Book Details</Typography>
+        {({ isSubmitting, isValid }) => (
+          <StyledForm>
+            <Form>
+              <Typography variant="h1" gutterBottom>
+                New Listing
+              </Typography>
+              <Typography variant="subtitle1" gutterBottom>
+                Enter in your book's details
+              </Typography>
+              <Stack>
+                <Typography variant="h5" gutterBottom>
+                  Book Details
+                </Typography>
                 <Field
                   name="title"
                   id="title"
@@ -104,14 +149,7 @@ const CreateListing = ({ navigate }: Props) => {
                   component={Input}
                   label="Title"
                   variant="outlined"
-                />
-                <Field
-                  id="description"
-                  name="description"
-                  label="Description"
-                  component={Input}
-                  variant="outlined"
-                  placeholder="Description"
+                  fullWidth
                 />
                 <Field
                   id="isbn10"
@@ -120,8 +158,22 @@ const CreateListing = ({ navigate }: Props) => {
                   component={Input}
                   variant="outlined"
                   placeholder="ISBN 10"
+                  fullWidth
                 />
-                <Typography variant="h3">Author</Typography>
+                <Field
+                  id="description"
+                  name="description"
+                  label="Description"
+                  component={Input}
+                  variant="outlined"
+                  placeholder="Description"
+                  fullWidth
+                  multiline
+                  rows="5"
+                />
+                <Typography variant="h5" gutterBottom>
+                  Author
+                </Typography>
                 <Field
                   id="firstName"
                   name="firstName"
@@ -129,6 +181,7 @@ const CreateListing = ({ navigate }: Props) => {
                   component={Input}
                   variant="outlined"
                   placeholder="First Name"
+                  fullWidth
                 />
                 <Field
                   id="middleName"
@@ -137,6 +190,7 @@ const CreateListing = ({ navigate }: Props) => {
                   component={Input}
                   variant="outlined"
                   placeholder="Middle Name"
+                  fullWidth
                 />
                 <Field
                   id="lastName"
@@ -145,10 +199,11 @@ const CreateListing = ({ navigate }: Props) => {
                   label="Last Name"
                   variant="outlined"
                   placeholder="Last Name"
+                  fullWidth
                 />
-              </Grid>
-              <Grid item sm={12} md={6}>
-                <Typography variant="h3">About Your Book</Typography>
+                <Typography variant="h5" gutterBottom>
+                  About Your Book
+                </Typography>
                 <Field
                   id="price"
                   type="number"
@@ -157,29 +212,29 @@ const CreateListing = ({ navigate }: Props) => {
                   variant="outlined"
                   label="Price"
                   placeholder="Price"
+                  fullWidth
+                  min={0}
                 />
-                <ConditionRadios />
-              </Grid>
-            </Grid>
-            <br />
-            <br />
-            <Typography variant="h6">
-              How do you want to be contacted?
-            </Typography>
-            <Grid container>
-              <Grid>
+                <div>
+                  <ConditionRadios />
+                </div>
+                <Typography variant="h5" gutterBottom>
+                  How do you want to be contacted?
+                </Typography>
                 <MethodOfContactRadios />
-              </Grid>
-            </Grid>
-            <Button
-              type="Submit"
-              variant="contained"
-              color="primary"
-              align="right"
-            >
-              Submit
-            </Button>
-          </Form>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  align="right"
+                  fullWidth
+                  disabled={isSubmitting || !isValid}
+                >
+                  Submit
+                </Button>
+              </Stack>
+            </Form>
+          </StyledForm>
         )}
       </Formik>
     </SiteMargin>

@@ -6,18 +6,12 @@ import * as Yup from "yup";
 import styled from "styled-components";
 import { apiFetch } from "../utils/fetchLight";
 import Input from "../ui/Input";
+import Stack from "../ui/Stack";
 
 const CustomForm = styled(Form)`
   background: #fff;
   padding: 2rem;
   border-radius: 5px;
-`;
-
-const Stack = styled.div`
-  & > * + * {
-    display: block !important;
-    margin-bottom: 1rem !important;
-  }
 `;
 
 const contactSellerSchema = Yup.object().shape({
