@@ -30,14 +30,16 @@ const ListingCard = ({
           title={
             <>
               <Typography variant="h5">{title}</Typography>
-              <Typography variant="h6">By: {authors.join(",")}</Typography>
+              <Typography variant="subtitle1">
+                By: {authors.join(",")}
+              </Typography>
             </>
           }
         />
         <CardContent>
-          <Typography>{condition}</Typography>
-          <Typography>{isbn10}</Typography>
-          <Typography>${price}</Typography>
+          <Typography variant="body1">{condition}</Typography>
+          <Typography variant="body1">{isbn10}</Typography>
+          <Typography variant="body1">${price}</Typography>
         </CardContent>
       </Card>
     </Link>

@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import type { Node } from "react";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
 import { Link } from "@reach/router";
+import { Menu, MenuItem } from "@material-ui/core";
 // $FlowFixMe
 import styled from "styled-components";
 import { isNil } from "ramda";
@@ -18,6 +19,7 @@ const CustomToolBar = styled(Toolbar)`
     text-decoration: none;
   }
 `;
+
 type Props = {
   children: Node
 };
@@ -41,6 +43,10 @@ export default ({ children }: Props) => {
 
 const UserNavOrDefault = () => {
   const { data: userInfo } = useApi("users/name");
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = e => setAnchorEl(e.currentTarget);
+  const handleClose = () => setAnchorEl(null);
 
   if (isNil(userInfo))
     return (
@@ -57,15 +63,28 @@ const UserNavOrDefault = () => {
     );
   return (
     <>
-      <Typography variant="h6">{userInfo.username}</Typography>
-      <Typography variant="h6">
-        {/* $FlowFixMe */}
-        <Link to="/user/listings"> My Listings</Link>
+      <Typography
+        variant="h6"
+        onClick={handleClick}
+        style={{ marginLeft: "auto" }}
+      >
+        {userInfo.username}
       </Typography>
-      <Typography variant="h6">
-        {/* $FlowFixMe */}
-        <Link to="/listing/new"> New Listing</Link>
-      </Typography>
+      <Menu
+        id="user-menu"
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleClose}>
+          {/* $FlowFixMe */}
+          <Link to="/user/listings"> My Listings</Link>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          {/* $FlowFixMe */}
+          <Link to="/listing/new"> New Listing</Link>
+        </MenuItem>
+      </Menu>
     </>
   );
 };

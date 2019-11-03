@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "@reach/router";
-import { Button, Typography, Grid } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
+// $FlowFixMe
+import styled from "styled-components";
 
 type Props = {
   className?: string,
@@ -8,6 +10,20 @@ type Props = {
   totalPages: string,
   basePath: string
 };
+
+const PagingNav = styled.nav`
+  margin: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  & > * {
+    margin: 0 2rem !important;
+  }
+`;
+
+const DisabledLink = styled(Link)`
+  pointer-events: ${props => (props["aria-disabled"] ? "none" : "all")};
+`;
 
 const Paging = ({
   className,
@@ -17,39 +33,33 @@ const Paging = ({
 }: Props) => {
   const page = Number(currentPage);
   return (
-    <nav className={className} aria-label="Pagination Navigation">
-      <Grid container justify="center" spacing={3}>
-        <Grid item>
-          <Button variant="contained" color="secondary">
-            {/* // $FlowFixMe */}
-            <Link
-              to={`${basePath}/${page - 1}${window.location.search}`}
-              aria-label="Previous Page"
-              aria-disabled={page <= 1}
-            >
-              Prev
-            </Link>
-          </Button>
-        </Grid>
-        <Grid item>
-          <Typography>
-            {page} of {totalPages}
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Button variant="contained" color="primary">
-            {/* // $FlowFixMe */}
-            <Link
-              to={`${basePath}/${page + 1}${window.location.search}`}
-              aria-label="Next Page"
-              aria-disabled={page >= Number(totalPages)}
-            >
-              Next
-            </Link>
-          </Button>
-        </Grid>
-      </Grid>
-    </nav>
+    <PagingNav className={className} aria-label="Pagination Navigation">
+      <DisabledLink
+        to={`${basePath}/${page - 1}${window.location.search}`}
+        aria-label="Previous Page"
+        aria-disabled={page <= 1}
+      >
+        <Button variant="outlined" color="secondary" disabled={page <= 1}>
+          Prev
+        </Button>
+      </DisabledLink>
+      <Typography variant="body1">
+        {page} of {totalPages}
+      </Typography>
+      <DisabledLink
+        to={`${basePath}/${page + 1}${window.location.search}`}
+        aria-label="Next Page"
+        aria-disabled={page >= Number(totalPages)}
+      >
+        <Button
+          variant="contained"
+          color="primary"
+          disabled={page >= Number(totalPages)}
+        >
+          Next
+        </Button>
+      </DisabledLink>
+    </PagingNav>
   );
 };
 

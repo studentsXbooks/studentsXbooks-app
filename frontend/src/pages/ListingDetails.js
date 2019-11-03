@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Grid,
   Typography,
@@ -11,6 +11,7 @@ import styled from "styled-components";
 import useApi from "../hooks/useApi";
 import ContactSellerForm from "../components/ContactSellerForm";
 import withSearchBar from "../components/withSearchBar";
+import useToggle from "../hooks/useToggle";
 
 const OptionBox = styled.div`
   border: 3px solid #ccc;
@@ -28,13 +29,6 @@ const ImageBox = styled.div`
 
 type Props = {
   id: string
-};
-
-const useToggle = (startOpened = false) => {
-  const [toggle, setToggle] = useState(startOpened);
-  const open = () => setToggle(true);
-  const close = () => setToggle(false);
-  return [toggle, open, close];
 };
 
 const ListingDetails = ({ id }: Props) => {

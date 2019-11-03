@@ -4,6 +4,7 @@ import ListingCard from "../components/ListingCard";
 import useApi from "../hooks/useApi";
 import Paging from "../components/Paging";
 import withSearchBar from "../components/withSearchBar";
+import SiteMargin from "../ui/SiteMargin";
 
 type Props = {
   pageId: string
@@ -22,12 +23,14 @@ const UserListing = ({ pageId = "1" }: Props) => {
             currentPage={page.currentPage}
             totalPages={page.totalPages}
           />
-          <Grid container spacing={3} wrap="wrap" justify="space-around">
-            {page.data &&
-              page.data.map(listing => (
-                <ListingCard listing={listing} key={listing.id} />
-              ))}
-          </Grid>
+          <SiteMargin>
+            <Grid container spacing={3} wrap="wrap" justify="space-around">
+              {page.data &&
+                page.data.map(listing => (
+                  <ListingCard listing={listing} key={listing.id} />
+                ))}
+            </Grid>
+          </SiteMargin>
           <Paging
             basePath="/user/listings"
             currentPage={page.currentPage}
