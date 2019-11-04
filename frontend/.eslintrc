@@ -1,9 +1,14 @@
 {
-  "extends": ["airbnb", "prettier", "prettier/react"],
+  "extends": [
+    "airbnb",
+    "prettier",
+    "prettier/react",
+    "plugin:flowtype/recommended"
+  ],
   "env": {
     "jest": true
   },
-  "plugins": ["prettier"],
+  "plugins": ["prettier", "flowtype"],
   "rules": {
     "react/jsx-filename-extension": [
       1,
@@ -24,7 +29,8 @@
         "depth": 3
       }
     ],
-    "jsx-a11y/label-has-for": off
+    "jsx-a11y/label-has-for": off,
+    "flowtype/no-types-missing-file-annotation": 0
   },
   "globals": {
     "window": true,
@@ -36,5 +42,10 @@
     "navigator": true,
     "fetch": true
   },
-  "parser": "babel-eslint"
+  "parser": "babel-eslint",
+  "settings": {
+    "flowtype": {
+      "onlyFilesWithFlowAnnotation": false
+    }
+  }
 }

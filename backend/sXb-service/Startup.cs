@@ -33,6 +33,7 @@ namespace sXb_service
             var databaseConfig = Configuration.GetSection("Db").Get<DatabaseConfig>();
             var bookApiConfig = Configuration.GetSection("Google").Get<BookApiConfig>();
             var corsConfig = Configuration.GetSection("Cors").Get<CorsConfig>();
+            services.AddSingleton<SMTPConfig>(Configuration.GetSection("SMTP").Get<SMTPConfig>());
 
             services.AddSingleton(bookApiConfig);
 

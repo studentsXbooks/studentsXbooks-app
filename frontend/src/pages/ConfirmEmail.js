@@ -1,5 +1,6 @@
 import React from "react";
 import useApi from "../hooks/useApi";
+import withSearchBar from "../components/withSearchBar";
 
 type ReturnedData = {
   accountConfirm: boolean
@@ -36,4 +37,4 @@ const ConfirmEmail = () => {
 
   return <div>Bad stuff happened</div>;
 };
-export default ConfirmEmail;
+export default withSearchBar(ConfirmEmail);

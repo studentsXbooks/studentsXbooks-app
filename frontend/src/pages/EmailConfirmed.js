@@ -1,6 +1,5 @@
 import React from "react";
-
-// TODO: Consider changing this page to self-dismissing modal popup.
+import withSearchBar from "../components/withSearchBar";
 
 const EmailConfirmed = () => {
   setTimeout(() => {
@@ -14,4 +13,5 @@ const EmailConfirmed = () => {
     </div>
   );
 };
-export default EmailConfirmed;
+
+export default withSearchBar(EmailConfirmed);

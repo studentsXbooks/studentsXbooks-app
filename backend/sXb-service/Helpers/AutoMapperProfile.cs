@@ -67,6 +67,8 @@ namespace sXb_service.Helpers
                opts.MapFrom(src => src.UserId))
               .ForMember(dest => dest.Price, opts =>
                opts.MapFrom(src => src.Price))
+              .ForMember(dest => dest.ContactOption, opts =>
+               opts.MapFrom(src => src.ContactOption))
               .ForMember(dest => dest.Condition, opts =>
                opts.MapFrom(src => Enum.GetName(typeof(Condition), src.Condition)));
 

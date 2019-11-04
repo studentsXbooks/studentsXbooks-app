@@ -12,7 +12,7 @@ import {
   Typography
 } from "@material-ui/core";
 import FullHeightGrid from "../ui/FullHeightGrid";
-import { ApiPost } from "../utils";
+import { apiFetch } from "../utils/fetchLight";
 
 const Register = ({ navigate }: Object) => {
   const [username, setUsername] = useState("");
@@ -26,7 +26,7 @@ const Register = ({ navigate }: Object) => {
           <form
             onSubmit={e => {
               e.preventDefault();
-              ApiPost("users/register", false, { username, email, password })
+              apiFetch("users/register", "POST", { username, email, password })
                 .then(() => {
                   navigate(`/verify-email?email=${email}`);
                 })
