@@ -8,6 +8,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
 import { navigate } from "@reach/router";
+import withSearchBarHome from "../components/withSearchBarHome";
 
 const SearchBox = styled.div`
   margin-bottom: 2rem;
@@ -20,6 +21,7 @@ const SearchBox = styled.div`
 
 const SearchArea = styled.div`
   grid-area: search;
+  position: absolute;
 `;
 
 const LogoArea = styled.div`
@@ -35,10 +37,12 @@ const SearchForm = styled.form`
   grid-template-columns: 1fr auto;
   align-items: center;
   justify-content: space-between;
+  position: absolute;
   & > button {
     align-self: stretch;
     width: 150px;
     background-color: #32a8b3;
+    position: absolute;
   }
   & > div {
     padding-left: 1rem;
@@ -47,10 +51,10 @@ const SearchForm = styled.form`
 
 const Home = () => (
   <div>
-    <img style={{ width: 1366, height: 589.3 }} src="./BookShelf.JPG" />
+    <img style={{ width: 1366, height: 589 }} src="./BookShelf.JPG" />
   </div>
 );
 
-export default Home;
+export default withSearchBarHome(Home);
 
 // style={{ backgroundImage: "url(${./BookShelf.JPG})" }}
