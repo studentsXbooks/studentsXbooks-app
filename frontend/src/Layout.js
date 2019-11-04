@@ -34,6 +34,18 @@ export default ({ children }: Props) => {
             {/* $FlowFixMe */}
             <Link to="/">Home</Link>
           </Typography>
+          <Typography variant="h6">
+            {/* $FlowFixMe */}
+            <Link to="/sell">Sell</Link>
+          </Typography>
+          <Typography variant="h6">
+            {/* $FlowFixMe */}
+            <Link to="/about">About</Link>
+          </Typography>
+          <Typography variant="h6">
+            {/* $FlowFixMe */}
+            <Link to="/help">Help</Link>
+          </Typography>
           <UserNavOrDefault />
         </CustomToolBar>
       </AppBar>

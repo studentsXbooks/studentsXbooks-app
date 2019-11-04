@@ -43,15 +43,12 @@ const SearchForm = styled.form`
   }
 `;
 
-function withSearchBar<C: ComponentType<any>>(WrapComponent: C) {
+function withSearchBarHome<C: ComponentType<any>>(WrapComponent: C) {
   return (props: {}) => {
     const [search, setSearch] = useState("");
     return (
       <>
         <SearchBox>
-          <LogoArea>
-            <img src="https://via.placeholder.com/250x100" alt="logo" />
-          </LogoArea>
           <SearchArea>
             <SearchForm
               method="POST"
@@ -82,4 +79,4 @@ function withSearchBar<C: ComponentType<any>>(WrapComponent: C) {
   };
 }
 
-export default withSearchBar;
+export default withSearchBarHome;

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 // $FlowFixMe
 import styled from "styled-components";
+import withSearchBar from "../components/withSearchBar";
 
 const HeaderOne = styled.div`
   text-align: center;
