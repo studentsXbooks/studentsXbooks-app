@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Grid, Button } from "@material-ui/core";
 import { Formik, Form, Field } from "formik";
 import Input from "../ui/Input";
-import ListingCard from "../components/ListingCard";
+import BookCard from "../components/BookCard";
 import SiteMargin from "../ui/SiteMargin";
 import Paging from "../components/Paging";
 import { apiFetch } from "../utils/fetchLight";
@@ -14,15 +14,15 @@ type Props = {
   location: { search: string }
 };
 
-const FindBook = ({ pageId = "1", term, navigate, location }: Props) => {
+const FindBook = ({ pageId = "1", term = "", navigate, location }: Props) => {
   const [page, setPage] = useState();
 
   useEffect(() => {
-    apiFetch(`listings/find/${term}?page=${pageId}`, "GET", {})
-      .then(res => res.json())
-      .then(setPage);
-  }, [pageId, term]);
-
+    if (term !== "")
+      apiFetch(`listings/find/${term}?page=${pageId}`, "GET", {})
+        .then(res => res.json())
+        .then(setPage);
+  }, [pageId, term, location.search]);
   return (
     <SiteMargin>
       <Formik
@@ -47,7 +47,7 @@ const FindBook = ({ pageId = "1", term, navigate, location }: Props) => {
         )}
       </Formik>
       <Paging
-        basePath={`/findBook/${term}`}
+        basePath={`/listing/findbook/${term}`}
         currentPage={page ? page.currentPage : "1"}
         totalPages={page ? page.totalPages : "1"}
       />
@@ -55,11 +55,11 @@ const FindBook = ({ pageId = "1", term, navigate, location }: Props) => {
         {page &&
           page.data &&
           page.data.map(listing => (
-            <ListingCard listing={listing} key={listing.id} />
+            <BookCard listing={listing} key={listing.id} />
           ))}
       </Grid>
       <Paging
-        basePath={`/findBook/${term}`}
+        basePath={`/listing/findbook/${term}`}
         currentPage={page ? page.currentPage : "1"}
         totalPages={page ? page.totalPages : "1"}
       />

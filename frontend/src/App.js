@@ -31,8 +31,10 @@ export default () => (
       <CreateListing path="/listing/new" />
       {/* $FlowFixMe */}
       <FindBook path="listing/findbook" />
-      <FindBook path="listing/findbook/:term" />
       {/* $FlowFixMe */}
+      <FindBook path="/listing/findbook/:term" />
+      {/* $FlowFixMe */}
+      <FindBook path="/listing/findbook/:term/:pageId" />
       <ListingDetails path="listing/:id" />
       <ConfirmEmail path="confirm-email" />
       {/* $FlowFixMe */}
