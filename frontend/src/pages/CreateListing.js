@@ -11,6 +11,9 @@ import { apiFetch } from "../utils/fetchLight";
 import Input from "../ui/Input";
 import Stack from "../ui/Stack";
 
+const queryString = require("query-string");
+const parsed = queryString.parse(location.search);
+
 const listingSchema = Yup.object().shape({
   title: Yup.string()
     .min(1)
@@ -40,6 +43,8 @@ const listingSchema = Yup.object().shape({
     .min(1)
     .required()
 });
+
+console.log(parsed);
 
 const StyledForm = styled.div`
   & > form {
@@ -103,16 +108,18 @@ const MethodOfContactRadios = () => {
 };
 
 type Props = {
-  navigate: string => any
+  navigate: string => any,
+  location: { search: string }
 };
 
-const CreateListing = ({ navigate }: Props) => {
+const CreateListing = ({ navigate, location }: Props) => {
+  const urlParams = new URLSearchParams(location.search);
   return (
     <SiteMargin>
       <Formik
         validationSchema={listingSchema}
         initialValues={{
-          title: "",
+          title: urlParams.get("title") || "",
           description: "",
           isbn10: "",
           price: "",

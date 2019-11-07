@@ -7,6 +7,7 @@ import {
   CardContent,
   Typography
 } from "@material-ui/core";
+import buildQuery from "../utils/buildQuery";
 
 type Props = {
   listing: {
@@ -24,7 +25,15 @@ const BookCard = ({
 }: Props) => (
   <Grid item>
     {/* //$FlowFixMe */}
-    <Link to={`/listing/${id}`}>
+    <Link
+      to={`/listing/new/${buildQuery({
+        title,
+        isbN10,
+        isbN13,
+        thumbnail,
+        authors
+      })}`}
+    >
       <Card raised>
         <CardHeader
           title={
