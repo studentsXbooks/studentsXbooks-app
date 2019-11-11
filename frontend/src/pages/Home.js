@@ -51,7 +51,7 @@ const SearchForm = styled.form`
 
 const Home = () => (
   <div>
-    <img style={{ width: 1366, height: 589 }} src="./BookShelf.JPG" />
+    <img style={{ width: 1366, height: 589 }} src="./BookShelf2.JPG" />
   </div>
 );
 
