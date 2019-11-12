@@ -8,7 +8,6 @@ import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
 import { navigate } from "@reach/router";
-import withSearchBarHome from "../components/withSearchBarHome";
 
 const SearchBox = styled.div`
   margin-bottom: 2rem;
@@ -48,13 +47,49 @@ const SearchForm = styled.form`
     padding-left: 1rem;
   }
 `;
+const BkgOverlay = styled.div`
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100%;
+`;
+const MainContent = styled.div`
+  background-image: url("./BookShelf2.JPG");
+  background-size: 100vw;
+  background-repeat: no-repeat;
+  height: 60vh;
+`;
 
 const Home = () => (
-  <div>
-    <img style={{ width: 1366, height: 589 }} src="./BookShelf2.JPG" />
-  </div>
+  <MainContent>
+    <BkgOverlay>
+      <SearchBox>
+        <SearchArea>
+          <SearchForm
+            method="POST"
+            onSubmit={e => {
+              e.preventDefault();
+              navigate(`/search/${search}`);
+            }}
+          >
+            <InputBase
+              placeholder="Title, Author, ISBN..."
+              onChange={e => setSearch(e.target.value)}
+              inputProps={{ "aria-label": "search" }}
+            />
+            <Button
+              type="submit"
+              startIcon={<SearchIcon />}
+              color="primary"
+              variant="contained"
+            >
+              Search
+            </Button>
+          </SearchForm>
+        </SearchArea>
+      </SearchBox>
+    </BkgOverlay>
+  </MainContent>
 );
 
-export default withSearchBarHome(Home);
+export default Home;
 
 // style={{ backgroundImage: "url(${./BookShelf.JPG})" }}

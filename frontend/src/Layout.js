@@ -18,7 +18,15 @@ const CustomToolBar = styled(Toolbar)`
     color: white;
     text-decoration: none;
   }
-  background-color: #32a8b3;
+  background-color: #33578c;
+`;
+const Logo = styled.span`
+  & > a {
+    color: #76ecf7;
+    font-weight: bold;
+    font-size: 1.25rem;
+  }
+  margin-right: 1rem;
 `;
 
 type Props = {
@@ -30,10 +38,10 @@ export default ({ children }: Props) => {
     <div>
       <AppBar position="static">
         <CustomToolBar>
-          <Typography variant="h6">
+          <Logo variant="h6">
             {/* $FlowFixMe */}
-            <Link to="/">Home</Link>
-          </Typography>
+            <Link to="/">StudentXBooks</Link>
+          </Logo>
           <Typography variant="h6">
             {/* $FlowFixMe */}
             <Link to="/sell">Sell</Link>
