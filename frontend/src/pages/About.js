@@ -31,8 +31,8 @@ const BulletPointHeader = styled.h2`
 
 const BlueScene = styled.div`
   text-align: center;
-  background-color: #7af4ff;
-  color: #707070;
+  background-color: #33578c;
+  color: #76ecf7;
   padding 10px;
   margin: auto;
   box-shadow: inset 0 0 2px 2px;

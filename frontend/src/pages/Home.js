@@ -40,7 +40,7 @@ const SearchForm = styled.form`
   & > button {
     align-self: stretch;
     width: 150px;
-    background-color: #32a8b3;
+    background-color: #33578c;
     position: absolute;
   }
   & > div {
@@ -60,39 +60,39 @@ const MainContent = styled.div`
 
 const Home = () => {
   const [search, setSearch] = useState("");
-  
+
   return (
-  <MainContent>
-    <BkgOverlay>
-      <SearchBox>
-        <SearchArea>
-          <SearchForm
-            method="POST"
-            onSubmit={e => {
-              e.preventDefault();
-              navigate(`/search/${search}`);
-            }}
-          >
-            <InputBase
-              placeholder="Title, Author, ISBN..."
-              onChange={e => setSearch(e.target.value)}
-              inputProps={{ "aria-label": "search" }}
-            />
-            <Button
-              type="submit"
-              startIcon={<SearchIcon />}
-              color="primary"
-              variant="contained"
+    <MainContent>
+      <BkgOverlay>
+        <SearchBox>
+          <SearchArea>
+            <SearchForm
+              method="POST"
+              onSubmit={e => {
+                e.preventDefault();
+                navigate(`/search/${search}`);
+              }}
             >
-              Search
-            </Button>
-          </SearchForm>
-        </SearchArea>
-      </SearchBox>
-    </BkgOverlay>
-  </MainContent>
+              <InputBase
+                placeholder="Title, Author, ISBN..."
+                onChange={e => setSearch(e.target.value)}
+                inputProps={{ "aria-label": "search" }}
+              />
+              <Button
+                type="submit"
+                startIcon={<SearchIcon />}
+                color="primary"
+                variant="contained"
+              >
+                Search
+              </Button>
+            </SearchForm>
+          </SearchArea>
+        </SearchBox>
+      </BkgOverlay>
+    </MainContent>
   );
-}
+};
 
 export default Home;
 

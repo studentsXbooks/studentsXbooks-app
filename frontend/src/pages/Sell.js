@@ -25,8 +25,8 @@ const TimelineBox = styled.div`
 
 const BlueScene = styled.div`
   text-align: center;
-  background-color: #7af4ff;
-  color: #707070;
+  background-color: #33578c;
+  color: #76ecf7;
   padding 10px;
   border-radius: 10px 10px 10px 10px;
   margin: auto;
