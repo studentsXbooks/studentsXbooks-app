@@ -28,6 +28,7 @@ namespace sXb_service {
         public void ConfigureServices (IServiceCollection services) {
             var databaseConfig = Configuration.GetSection ("Db").Get<DatabaseConfig> ();
             var corsConfig = Configuration.GetSection ("Cors").Get<CorsConfig> ();
+            services.AddSingleton<SMTPConfig> (Configuration.GetSection ("SMTP").Get<SMTPConfig> ());
 
             services.AddCors (options => {
                 options.AddPolicy (AllowAnywhere,

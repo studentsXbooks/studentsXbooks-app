@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using AutoFixture;
 using AutoFixture.AutoMoq;
@@ -13,8 +11,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using sXb_service.Controllers;
-using sXb_service.EF;
-using sXb_service.Helpers;
 using sXb_service.Models;
 using sXb_service.Models.ViewModels;
 using sXb_service.Repos.Interfaces;
@@ -49,16 +45,7 @@ namespace sXb_tests.Controllers
             mockConfiguration.Setup(a => a.GetSection("Cors")).Returns(configurationSection.Object);
             Configuration = mockConfiguration.Object;
 
-            var userManagerMock = new Mock<UserManager<User>>(
-                new Mock<IUserStore<User>>().Object,
-                new Mock<IOptions<IdentityOptions>>().Object,
-                new Mock<IPasswordHasher<User>>().Object,
-                new IUserValidator<User>[0],
-                new IPasswordValidator<User>[0],
-                new Mock<ILookupNormalizer>().Object,
-                new Mock<IdentityErrorDescriber>().Object,
-                new Mock<IServiceProvider>().Object,
-                new Mock<ILogger<UserManager<User>>>().Object);
+            var userManagerMock = MockIdentity.UserManagerMock();
 
             userManagerMock.Setup((mock) => mock.CreateAsync(It.IsAny<User>(), It.IsAny<String>())).ReturnsAsync((User user, String password) =>
             {

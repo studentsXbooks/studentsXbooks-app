@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using sXb_service.Helpers;
 using sXb_service.Helpers.ModelValidation;
 using sXb_service.Models;
 using sXb_service.Models.ViewModels;
 using sXb_service.Repos.Interfaces;
+using sXb_service.Services;
 using sXb_service.ViewModels;
 
 namespace sXb_service.Controllers
@@ -24,27 +22,35 @@ namespace sXb_service.Controllers
     public class ListingsController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
-        private IMapper _mapper;
-        private IListingRepo _iRepo;
-        private IBookRepo _iBookRepo;
-        private IAuthorRepo _iAuthorRepo;
-        private IBookAuthorRepo _iBookAuthorRepo;
+        private readonly IMapper _mapper;
+        private readonly IEmailSender _emailSender;
+        private readonly IListingRepo _iListingRepo;
+        private readonly IBookRepo _iBookRepo;
+        private readonly IAuthorRepo _iAuthorRepo;
+        private readonly IBookAuthorRepo _iBookAuthorRepo;
 
-        public ListingsController(IListingRepo iRepo, IBookRepo iBookRepo, IAuthorRepo iAuthorRepo, IBookAuthorRepo iBookAuthorRepo, UserManager<User> userManager, IMapper mapper)
+        public ListingsController(IListingRepo iRepo,
+            IBookRepo iBookRepo,
+            IAuthorRepo iAuthorRepo,
+            IBookAuthorRepo iBookAuthorRepo,
+            UserManager<User> userManager,
+            IMapper mapper,
+            IEmailSender emailSender)
         {
-            _iRepo = iRepo;
+            _iListingRepo = iRepo;
             _iBookRepo = iBookRepo;
             _iAuthorRepo = iAuthorRepo;
             _iBookAuthorRepo = iBookAuthorRepo;
             _userManager = userManager;
             _mapper = mapper;
+            _emailSender = emailSender;
         }
 
         [AllowAnonymous]
         [HttpGet]
         public IActionResult GetListings([FromQuery] int page = 1)
         {
-            var pageResult = new Paging<Listing>(page, _iRepo.GetAll());
+            var pageResult = new Paging<Listing>(page, _iListingRepo.GetAll());
             return Ok(pageResult);
         }
 
@@ -52,7 +58,7 @@ namespace sXb_service.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetListing([FromRoute] Guid id)
         {
-            var listing = await _iRepo.Find(x => x.Id == id);
+            var listing = await _iListingRepo.Find(x => x.Id == id);
 
             if (listing == null)
             {
@@ -96,7 +102,7 @@ namespace sXb_service.Controllers
 
             // Search compatible with Title, Author, ISBN
             var listing = new Paging<ListingPreviewViewModel>(page,
-                _iRepo.GetAll(x =>
+                _iListingRepo.GetAll(x =>
                 (rx.IsMatch(x.Book.Title) || rx.IsMatch(x.Book.ISBN10) || x.Book.BookAuthors.Any(y => rx.IsMatch(y.Author.FullName) || x.Book.BookAuthors.Any(z => rx.IsMatch(z.Author.FirstName + " " + z.Author.LastName))))
                 &&
                 (searchFilter.Conditions.Any(y => x.Condition == y) &&
@@ -142,7 +148,7 @@ namespace sXb_service.Controllers
             listing.BookId = book.Id;
             var user = await _userManager.GetUserAsync(User);
             listing.UserId = user.Id;
-            await _iRepo.Create(listing);
+            await _iListingRepo.Create(listing);
 
             return Created("GetListing", new { id = listing.Id });
         }
@@ -154,10 +160,36 @@ namespace sXb_service.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user != null)
             {
-                var pageResult = new Paging<ListingPreviewViewModel>(page, _iRepo.GetAll(x => x.UserId == user.Id).Select(x => _mapper.Map<ListingPreviewViewModel>(x)));
+                var pageResult = new Paging<ListingPreviewViewModel>(page, _iListingRepo.GetAll(x => x.UserId == user.Id).Select(x => _mapper.Map<ListingPreviewViewModel>(x)));
                 return Ok(pageResult);
             }
             return NotFound();
         }
+
+        [HttpPost("contact")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Contact([FromBody] ContactViewModel contact)
+        {
+            var listing = await _iListingRepo.Find(x => x.Id.Equals(contact.ListingId));
+            var defaultSubjectMessage = $"{contact.Email} is interested in your book!";
+            var body = contact.Body + "\n\nReply to this email to follow if you like this offer.";
+            if (!(listing is null))
+            {
+                switch (listing.ContactOption)
+                {
+                    case ContactOption.SellerContactBuyer:
+                        _emailSender.SendEmailAsync(listing.User.Email, contact.Email, defaultSubjectMessage, contact.Body);
+                        return Created("/listings/1", contact);
+                    default:
+                        return BadRequest();
+                }
+            }
+            return BadRequest();
+        }
+
+        [HttpGet("contact")]
+        [AllowAnonymous]
+        public IActionResult Contact()
+            => Ok(EnumExtensions.ToList<ContactOption>());
     }
 }

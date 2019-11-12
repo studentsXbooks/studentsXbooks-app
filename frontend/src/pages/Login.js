@@ -1,5 +1,3 @@
-// @flow
-
 import React, { useState } from "react";
 import {
   TextField,
@@ -11,7 +9,7 @@ import {
   Grid,
   Typography
 } from "@material-ui/core";
-import { ApiPost } from "../utils";
+import { apiFetch } from "../utils/fetchLight";
 import FullHeightGrid from "../ui/FullHeightGrid";
 
 const Login = ({ navigate }: Object) => {
@@ -24,9 +22,9 @@ const Login = ({ navigate }: Object) => {
           <form
             onSubmit={e => {
               e.preventDefault();
-              ApiPost("users", true, { email, password })
+              apiFetch("users", "POST", { email, password })
                 .then(() => {
-                  navigate("/login-success");
+                  navigate("/home");
                 })
                 .catch(console.log);
             }}

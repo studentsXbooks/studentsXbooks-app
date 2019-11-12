@@ -1,78 +1,45 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "@reach/router";
-import {
-  Grid,
-  Card,
-  CardHeader,
-  CardContent,
-  Typography,
-  Button,
-  List,
-  ListItem
-} from "@material-ui/core";
-import { ApiGet } from "../utils";
+import React from "react";
+import { Grid } from "@material-ui/core";
+import ListingCard from "../components/ListingCard";
+import useApi from "../hooks/useApi";
+import Paging from "../components/Paging";
+import withSearchBar from "../components/withSearchBar";
+import SiteMargin from "../ui/SiteMargin";
 
 type Props = {
-  pageId: string,
-  navigate: string => any
+  pageId: string
 };
 
 // Need paging, and need listing details page
-const UserListing = ({ pageId = "1", navigate }: Props) => {
-  const [page, setPage] = useState();
-
-  useEffect(() => {
-    ApiGet(`listings/user/${pageId}`, true).then(setPage);
-  }, [pageId]);
+const UserListing = ({ pageId = "1" }: Props) => {
+  const { data: page } = useApi(`listings/user/${pageId}`);
 
   return (
-    <Grid container spacing={3}>
-      {page &&
-        page.data &&
-        page.data.map(listing => (
-          <ListingCard listing={listing} key={listing.id} />
-        ))}
-      <List>
-        <ListItem>
-          <Button
-            onClick={() => navigate(`/user/listings/${Number(pageId) - 1} `)}
-            disabled={page && !page.hasPrev}
-          >
-            Prev
-          </Button>
-        </ListItem>
-        <ListItem>
-          <Typography>{page && page.currentPage}</Typography>
-        </ListItem>
-        <ListItem>
-          <Button
-            onClick={() => navigate(`/user/listings/${Number(pageId) + 1} `)}
-            disabled={page && !page.hasNext}
-          >
-            Next
-          </Button>
-        </ListItem>
-      </List>
-    </Grid>
+    <>
+      {page && (
+        <>
+          <Paging
+            basePath="/user/listings"
+            currentPage={page.currentPage}
+            totalPages={page.totalPages}
+          />
+          <SiteMargin>
+            <Grid container spacing={3} wrap="wrap" justify="space-around">
+              {page.data &&
+                page.data.map(listing => (
+                  <ListingCard listing={listing} key={listing.id} />
+                ))}
+            </Grid>
+          </SiteMargin>
+          <Paging
+            basePath="/user/listings"
+            currentPage={page.currentPage}
+            totalPages={page.totalPages}
+          />
+        </>
+      )}
+    </>
   );
 };
 
-const ListingCard = ({ listing: { title, description, price, id } }) => (
-  <Grid item xs={12} sm={6} md={3}>
-    {/* $FlowFixMe */}
-    <Link to={`/listing/${id}`}>
-      <Card raised>
-        <CardHeader
-          title={
-            <Typography variant="h3">
-              {title} {price}
-            </Typography>
-          }
-        />
-        <CardContent>{description}</CardContent>
-      </Card>
-    </Link>
-  </Grid>
-);
-
-export default UserListing;
+export default withSearchBar(UserListing);
