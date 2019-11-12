@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React, { useState } from "react";
 // $FlowFixMe
 import styled from "styled-components";
 import type { ComponentType } from "react";
@@ -58,7 +58,10 @@ const MainContent = styled.div`
   height: 60vh;
 `;
 
-const Home = () => (
+const Home = () => {
+  const [search, setSearch] = useState("");
+  
+  return (
   <MainContent>
     <BkgOverlay>
       <SearchBox>
@@ -88,7 +91,8 @@ const Home = () => (
       </SearchBox>
     </BkgOverlay>
   </MainContent>
-);
+  );
+}
 
 export default Home;
 
