@@ -36,6 +36,16 @@ const SubHeader = styled.div`
   color: #707070;
 `;
 
+const BlueScene = styled.div`
+  text-align: center;
+  background-color: #76ecf7;
+  color: #33578c;
+  padding: 10px;
+  border-radius: 10px 10px 10px 10px;
+  margin: auto;
+  box-shadow: inset 0 0 2px 2px;
+`;
+
 export default () => (
   <div>
     <HeaderOne>
@@ -57,7 +67,7 @@ export default () => (
       </QBorder>
     </SubHeader>
     <br></br>
-    <HeaderOne>
+    <BlueScene>
       <h2>Developer Contacts/Helpful Links</h2>
       <p>
         If you have you have issues with the site you can contact us through our
@@ -66,10 +76,13 @@ export default () => (
       <p>
         For bugs, errors, or to give suggestions for improvement on our site you
         can create an issue at our GitHub repo: <t></t>
-        <a href="https://github.com/studentsXbooks">
+        <a
+          href="https://github.com/studentsXbooks"
+          style={{ color: "#220B8F" }}
+        >
           https://github.com/studentsXbooks
         </a>
       </p>
-    </HeaderOne>
+    </BlueScene>
   </div>
 );

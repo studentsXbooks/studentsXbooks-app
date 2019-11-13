@@ -20,14 +20,18 @@ const TimelineLayout = styled.div`
 `;
 
 const TimelineBox = styled.div`
-  width: 300px;
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 1fr 300px;
+  grid-gap: 60px;
+  align-items: center;
 `;
 
 const BlueScene = styled.div`
   text-align: center;
-  background-color: #33578c;
-  color: #76ecf7;
-  padding 10px;
+  background-color: #76ecf7;
+  color: #33578c;
+  padding: 10px;
   border-radius: 10px 10px 10px 10px;
   margin: auto;
   box-shadow: inset 0 0 2px 2px;
@@ -41,8 +45,15 @@ export default () => (
         <h2>Want to know how to start the process? Look no further!</h2>
       </div>
       <TimelineLayout>
-        <div>
-          <TimelineBox>
+        <TimelineBox>
+          <img
+            src="./Book-titles-sell.jpg"
+            style={{
+              paddingRight: "60px",
+              height: "300px"
+            }}
+          />
+          <div>
             <div>
               <p>
                 To sell a book, you must first log into the site, then hover
@@ -69,8 +80,8 @@ export default () => (
                 be seen by all potential buyers.
               </p>
             </div>
-          </TimelineBox>
-        </div>
+          </div>
+        </TimelineBox>
       </TimelineLayout>
       <div>
         <h3>Post your books now!</h3>
