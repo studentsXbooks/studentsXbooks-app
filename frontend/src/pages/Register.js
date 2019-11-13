@@ -14,16 +14,38 @@ import {
 } from "@material-ui/core";
 import FullHeightGrid from "../ui/FullHeightGrid";
 import { apiFetch } from "../utils/fetchLight";
+// $FlowFixMe
+import styled from "styled-components";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core";
 
 const Register = ({ navigate }: Object) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const submitButton = createMuiTheme({
+    palette: {
+      primary: {
+        main: "#33578c"
+      }
+    }
+  });
+
+  const LoginInfo = styled.div`
+  text-align: center;
+  background-color: #ffffff;
+  color: #000000;
+  padding 10px;
+  margin: auto;
+`;
   return (
     <FullHeightGrid container alignItems="center" justify="center">
-      <Grid item xs={9} sm={6} lg={3}>
-        <Card component="article" raised>
+      <Grid item>
+        <Card
+          style={{ width: "50rem", padding: 20 }}
+          component="article"
+          raised
+        >
           <form
             onSubmit={e => {
               e.preventDefault();
@@ -37,8 +59,8 @@ const Register = ({ navigate }: Object) => {
           >
             <CardHeader
               title={
-                <Typography variant="h3" align="center">
-                  Registration
+                <Typography variant="h4" align="center">
+                  Register!
                 </Typography>
               }
             />
@@ -76,14 +98,16 @@ const Register = ({ navigate }: Object) => {
               <br />
             </CardContent>
             <CardActions>
-              <Button
-                variant="contained"
-                color="primary"
-                fullWidth
-                type="submit"
-              >
-                Submit
-              </Button>
+              <MuiThemeProvider theme={submitButton}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  type="Submit"
+                >
+                  Submit
+                </Button>
+              </MuiThemeProvider>
             </CardActions>
           </form>
         </Card>
