@@ -14,7 +14,9 @@ namespace sXb_service.Repos
     {
         public BookRepo(DbContextOptions options) : base(options) { }
 
-        protected override IQueryable<Book> Include(DbSet<Book> set) => set.Include(x => x.BookAuthors).ThenInclude(x => x.Author);
-
+        protected override IQueryable<Book> Include(DbSet<Book> set)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

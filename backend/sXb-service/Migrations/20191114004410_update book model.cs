@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace sXb_service.Migrations
 {
-    public partial class Init : Migration
+    public partial class updatebookmodel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,27 +52,15 @@ namespace sXb_service.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Authors",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    MiddleName = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Authors", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Books",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Title = table.Column<string>(nullable: true),
                     ISBN10 = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true)
+                    ISBN13 = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    Authors = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -186,31 +174,6 @@ namespace sXb_service.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BookAuthors",
-                columns: table => new
-                {
-                    BookId = table.Column<Guid>(nullable: false),
-                    AuthorId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BookAuthors", x => new { x.BookId, x.AuthorId });
-                    table.UniqueConstraint("AK_BookAuthors_AuthorId_BookId", x => new { x.AuthorId, x.BookId });
-                    table.ForeignKey(
-                        name: "FK_BookAuthors_Authors_AuthorId",
-                        column: x => x.AuthorId,
-                        principalTable: "Authors",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BookAuthors_Books_BookId",
-                        column: x => x.BookId,
-                        principalTable: "Books",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Listings",
                 columns: table => new
                 {
@@ -218,7 +181,8 @@ namespace sXb_service.Migrations
                     BookId = table.Column<Guid>(nullable: false),
                     UserId = table.Column<string>(nullable: true),
                     Price = table.Column<decimal>(nullable: false),
-                    Condition = table.Column<int>(nullable: false)
+                    Condition = table.Column<int>(nullable: false),
+                    ContactOption = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -305,16 +269,10 @@ namespace sXb_service.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "BookAuthors");
-
-            migrationBuilder.DropTable(
                 name: "Listings");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "Authors");
 
             migrationBuilder.DropTable(
                 name: "Books");

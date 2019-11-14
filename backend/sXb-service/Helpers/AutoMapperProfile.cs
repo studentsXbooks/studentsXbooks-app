@@ -16,17 +16,13 @@ namespace sXb_service.Helpers {
           opts.MapFrom (src => src.Title))
         .ForMember (dest => dest.ISBN10, opts =>
           opts.MapFrom (src => src.ISBN10))
+          .ForMember(dest => dest.ISBN13, opts =>
+         opts.MapFrom(src => src.ISBN13))
+         .ForMember(dest => dest.Authors, opts =>
+         opts.MapFrom(src => src.Authors))
         .ForMember (dest => dest.Description, opts =>
           opts.MapFrom (src => src.Description));
-
-      CreateMap<CreateListingViewModel, Author> ()
-        .ForMember (dest => dest.FirstName, opts =>
-          opts.MapFrom (src => src.FirstName))
-        .ForMember (dest => dest.LastName, opts =>
-          opts.MapFrom (src => src.LastName))
-        .ForMember (dest => dest.MiddleName, opts =>
-          opts.MapFrom (src => src.MiddleName));
-
+            
       CreateMap<CreateListingViewModel, Listing> ()
         .ForMember (dest => dest.Price, opts =>
           opts.MapFrom (src => src.Price))
@@ -46,8 +42,10 @@ namespace sXb_service.Helpers {
           opts.MapFrom (src => Enum.GetName (typeof (Condition), src.Condition)))
         .ForMember (dest => dest.ISBN10, opts =>
           opts.MapFrom (src => src.Book.ISBN10))
+          .ForMember(dest => dest.ISBN13, opts =>
+         opts.MapFrom(src => src.Book.ISBN13))
         .ForMember (dest => dest.Authors, opts =>
-          opts.MapFrom (src => src.Book.BookAuthors.Select (x => x.Author.FullName.ToString ())));
+          opts.MapFrom (src => src.Book.Authors));
 
       CreateMap<Listing, ListingDetailsViewModel> ()
         .ForMember (dest => dest.Id, opts =>
@@ -56,10 +54,12 @@ namespace sXb_service.Helpers {
           opts.MapFrom (src => src.Book.Title))
         .ForMember (dest => dest.ISBN10, opts =>
           opts.MapFrom (src => src.Book.ISBN10))
+           .ForMember(dest => dest.ISBN13, opts =>
+         opts.MapFrom(src => src.Book.ISBN13))
         .ForMember (dest => dest.Description, opts =>
           opts.MapFrom (src => src.Book.Description))
         .ForMember (dest => dest.Authors, opts =>
-          opts.MapFrom (src => src.Book.BookAuthors.Select (x => x.Author.FullName).ToList ()))
+          opts.MapFrom (src => src.Book.Authors))
         .ForMember (dest => dest.UserId, opts =>
           opts.MapFrom (src => src.UserId))
         .ForMember (dest => dest.Price, opts =>

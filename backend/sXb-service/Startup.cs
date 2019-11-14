@@ -65,8 +65,6 @@ namespace sXb_service
             services.AddScoped<IListingRepo, ListingRepo>();
             services.AddScoped<IBookRepo, BookRepo>();
             services.AddScoped<IUserRepo, UserRepo>();
-            services.AddScoped<IAuthorRepo, AuthorRepo>();
-            services.AddScoped<IBookAuthorRepo, BookAuthorRepo>();
             services.AddScoped<IBookApi, BookApi>();
 
             services.Configure<IdentityOptions>(options =>

@@ -185,49 +185,24 @@ namespace sXb_service.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("sXb_service.Models.Author", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("FirstName");
-
-                    b.Property<string>("LastName");
-
-                    b.Property<string>("MiddleName");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Authors");
-                });
-
             modelBuilder.Entity("sXb_service.Models.Book", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Authors");
+
                     b.Property<string>("Description");
 
                     b.Property<string>("ISBN10");
+
+                    b.Property<string>("ISBN13");
 
                     b.Property<string>("Title");
 
                     b.HasKey("Id");
 
                     b.ToTable("Books");
-                });
-
-            modelBuilder.Entity("sXb_service.Models.BookAuthor", b =>
-                {
-                    b.Property<Guid>("BookId");
-
-                    b.Property<Guid>("AuthorId");
-
-                    b.HasKey("BookId", "AuthorId");
-
-                    b.HasAlternateKey("AuthorId", "BookId");
-
-                    b.ToTable("BookAuthors");
                 });
 
             modelBuilder.Entity("sXb_service.Models.Listing", b =>
@@ -313,19 +288,6 @@ namespace sXb_service.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("sXb_service.Models.BookAuthor", b =>
-                {
-                    b.HasOne("sXb_service.Models.Author", "Author")
-                        .WithMany("BookAuthors")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("sXb_service.Models.Book", "Book")
-                        .WithMany("BookAuthors")
-                        .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

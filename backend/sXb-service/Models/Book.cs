@@ -19,10 +19,11 @@ namespace sXb_service.Models
         [ISBNValidation(ISBNType = ISBNTypes.ISBN10)]
         public string ISBN10 { get; set; }
 
+        public string ISBN13 { get; set; }
+
         public string Description { get; set; }
 
-        [InverseProperty(nameof(BookAuthor.Book))]
-        public List<BookAuthor> BookAuthors { get; set; } = new List<BookAuthor>();
+        public string Authors { get; set; }
 
     }
 }

@@ -114,10 +114,9 @@ namespace sXb_tests.Integration
             });
             var newListing = fixture.Create<CreateListingViewModel>();
             newListing.Description = "Short book description";
-            newListing.FirstName = "Author";
-            newListing.MiddleName = "B";
-            newListing.LastName = "BookWriter";
+            newListing.Authors = "Author One, Author Two";
             newListing.ISBN10 = "1082148938";
+            newListing.ISBN13 = "9780201616224";
             newListing.Price = 5.99m;
             newListing.Title = "Short Title";
             newListing.UserId = "1234";
@@ -127,14 +126,12 @@ namespace sXb_tests.Integration
         }
 
         [Theory]
-        [InlineData("This title is way too long and the test should fail because of it because it is really long and it can only be 256 characters but it is longer than that and so it should return a bad request instead of working because this won't work because it is too long and this is a good test so it should not work", "FirstName", "LastName", "middleName", "9780746062760", 4.99, Condition.Fair)]
-        [InlineData("", "FirstName", "LastName", "middleName", "9780746062760", 4.99, Condition.Good)]
-        [InlineData("Normal Length Title", "", "LastName", "middleName", "9780746062760", 4.99, Condition.Fair)]
-        [InlineData("Normal Length Title", "FirstName", "", "middleName", "9780746062760", 4.99, Condition.Fair)]
-        [InlineData("Normal Length Title", "FirstName", "LastName", "", "9780746062760", 4.99, Condition.Fair)]
-        [InlineData("Normal Length Title", "FirstName", "LastName", "MiddleName", "978746062760", 4.99, Condition.Fair)] // Should fail cause ISBN10 not valid
-        [InlineData("Normal Length Title", "FirstName", "LastName", "MiddleName", "978746062760", -4.99, Condition.Fair)]
-        public async Task Create_InvalidListingDetail_Return400(string title, string firstName, string lastName, string middleName, string isbn, decimal price,
+        [InlineData("This title is way too long and the test should fail because of it because it is really long and it can only be 256 characters but it is longer than that and so it should return a bad request instead of working because this won't work because it is too long and this is a good test so it should not work", "Normal Author",  "9780746062760", "9780201616224", 4.99, Condition.Fair)]
+        [InlineData("", "Normal Author",  "9780746062760", "9780201616224", 4.99, Condition.Good)]
+        [InlineData("Normal Length Title", "",  "9780746062760", "9780201616224", 4.99, Condition.Fair)]
+        [InlineData("Normal Length Title", "Normal Author, Second Author",  "978746062760", "9780201616224", 4.99, Condition.Fair)] // Should fail cause ISBN10 not valid
+        [InlineData("Normal Length Title", "Normal Author, Second Author",  "978746062760", "9780201655555554", -4.99, Condition.Fair)] // Should fail cause ISBN13 not valid
+        public async Task Create_InvalidListingDetail_Return400(string title, string authors,  string isbn10, string isbn13, decimal price,
             Condition condition)
         {
             string url = "/api/listings/";
@@ -148,11 +145,10 @@ namespace sXb_tests.Integration
 
             var newListing = new CreateListingViewModel()
             {
-                FirstName = firstName,
-                LastName = lastName,
-                MiddleName = middleName,
+                Authors = authors,
                 Title = title,
-                ISBN10 = isbn,
+                ISBN10 = isbn10,
+                ISBN13 = isbn13,
                 Price = price,
                 Condition = condition
             };

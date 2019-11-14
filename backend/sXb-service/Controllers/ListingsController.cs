@@ -27,13 +27,9 @@ namespace sXb_service.Controllers
         private readonly IListingRepo _iListingRepo;
         private readonly IBookRepo _iBookRepo;
         private readonly IBookApi _iBookApi;
-        private readonly IAuthorRepo _iAuthorRepo;
-        private readonly IBookAuthorRepo _iBookAuthorRepo;
 
         public ListingsController(IListingRepo iRepo,
             IBookRepo iBookRepo,
-            IAuthorRepo iAuthorRepo,
-            IBookAuthorRepo iBookAuthorRepo,
             UserManager<User> userManager,
             IBookApi iBookApi,
             IMapper mapper,
@@ -41,8 +37,6 @@ namespace sXb_service.Controllers
         {
             _iListingRepo = iRepo;
             _iBookRepo = iBookRepo;
-            _iAuthorRepo = iAuthorRepo;
-            _iBookAuthorRepo = iBookAuthorRepo;
             _iBookApi = iBookApi;
             _userManager = userManager;
             _mapper = mapper;
@@ -106,7 +100,7 @@ namespace sXb_service.Controllers
             // Search compatible with Title, Author, ISBN
             var listing = new Paging<ListingPreviewViewModel>(page,
                 _iListingRepo.GetAll(x =>
-                (rx.IsMatch(x.Book.Title) || rx.IsMatch(x.Book.ISBN10) || x.Book.BookAuthors.Any(y => rx.IsMatch(y.Author.FullName) || x.Book.BookAuthors.Any(z => rx.IsMatch(z.Author.FirstName + " " + z.Author.LastName))))
+                (rx.IsMatch(x.Book.Title) || rx.IsMatch(x.Book.ISBN10))
                 &&
                 (searchFilter.Conditions.Any(y => x.Condition == y) &&
                 x.Price >= searchFilter.MinPrice && x.Price <= searchFilter.MaxPrice))
@@ -125,23 +119,11 @@ namespace sXb_service.Controllers
         public async Task<IActionResult> Create([FromBody] CreateListingViewModel createListingViewModel)
         {
             var book = _mapper.Map<Book>(createListingViewModel);
-            var author = _mapper.Map<Author>(createListingViewModel);
             var listing = _mapper.Map<Listing>(createListingViewModel);
 
             if (!await _iBookRepo.Exist(x => x.ISBN10 == book.ISBN10))
             {
-                if (!await _iAuthorRepo.Exist(x => x.FullName == author.FullName))
-                {
-                    await _iAuthorRepo.Create(author);
-                    await _iBookRepo.Create(book);
-
-                    var bookAuthor = new BookAuthor()
-                    {
-                        AuthorId = author.Id,
-                        BookId = book.Id
-                    };
-                    await _iBookAuthorRepo.Create(bookAuthor);
-                }
+                await _iBookRepo.Create(book);
             }
             else
             {
