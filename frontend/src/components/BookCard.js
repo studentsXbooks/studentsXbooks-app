@@ -13,24 +13,26 @@ type Props = {
   listing: {
     title: string,
     thumbnail: string,
+    description: string,
     id: string,
-    isbN10: String,
-    isbN13: String,
+    isbn13: String,
+    isbn10: String,
     authors: [string]
   }
 };
 
 const BookCard = ({
-  listing: { title, id, isbN10, isbN13, thumbnail, authors }
+  listing: { title, description, id, isbn10, isbn13, thumbnail, authors }
 }: Props) => (
   <Grid item>
     {/* //$FlowFixMe */}
     <Link
       to={`/listing/new/${buildQuery({
         title,
-        isbN10,
-        isbN13,
+        isbn10,
+        isbn13,
         thumbnail,
+        description,
         authors
       })}`}
     >
@@ -47,8 +49,8 @@ const BookCard = ({
         />
         <CardContent>
           <img src={thumbnail} alt="Book Cover" width="130" height="130" />
-          <Typography variant="body1">ISBN10: {isbN10}</Typography>
-          <Typography variant="body1">ISBN13: {isbN13}</Typography>
+          <Typography variant="body1">ISBN10: {isbn10}</Typography>
+          <Typography variant="body1">ISBN13: {isbn13}</Typography>
         </CardContent>
       </Card>
     </Link>

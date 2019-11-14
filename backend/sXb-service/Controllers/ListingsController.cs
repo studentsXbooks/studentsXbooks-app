@@ -176,6 +176,7 @@ namespace sXb_service.Controllers
             var books = await _iBookApi.FindBook(term, page);
             return Ok(books);
         }
+
         [HttpPost("contact")]
         [AllowAnonymous]
         public async Task<IActionResult> Contact([FromBody] ContactViewModel contact)

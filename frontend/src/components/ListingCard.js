@@ -14,13 +14,14 @@ type Props = {
     price: string,
     id: string,
     isbn10: String,
+    isbn13: String,
     condition: string,
     authors: [string]
   }
 };
 
 const ListingCard = ({
-  listing: { title, price, id, isbn10, condition, authors }
+  listing: { title, price, id, isbn10, isbn13, condition, authors }
 }: Props) => (
   <Grid item>
     {/* //$FlowFixMe */}
@@ -39,6 +40,7 @@ const ListingCard = ({
         <CardContent>
           <Typography variant="body1">{condition}</Typography>
           <Typography variant="body1">{isbn10}</Typography>
+          <Typography variant="body1">{isbn13}</Typography>
           <Typography variant="body1">${price}</Typography>
         </CardContent>
       </Card>

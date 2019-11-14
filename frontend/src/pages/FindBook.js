@@ -41,6 +41,7 @@ const FindBook = ({ pageId = "1", term = "", navigate, location }: Props) => {
               type="text"
               variant="outlined"
               component={Input}
+              fullWidth
             />
             <Button type="submit">Submit</Button>
           </Form>

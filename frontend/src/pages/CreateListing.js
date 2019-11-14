@@ -11,8 +11,14 @@ import { apiFetch } from "../utils/fetchLight";
 import Input from "../ui/Input";
 import Stack from "../ui/Stack";
 
-const queryString = require("query-string");
-const parsed = queryString.parse(location.search);
+const getQueryParams = url => {
+  const queries = new URLSearchParams(url);
+  const params = {};
+  queries.forEach((value, name) => {
+    params[name] = value;
+  });
+  return params;
+};
 
 const listingSchema = Yup.object().shape({
   title: Yup.string()
@@ -24,13 +30,7 @@ const listingSchema = Yup.object().shape({
   description: Yup.string()
     .min(1)
     .required(),
-  firstName: Yup.string()
-    .min(1)
-    .required(),
-  middleName: Yup.string()
-    .min(1)
-    .required(),
-  lastName: Yup.string()
+  authors: Yup.string()
     .min(1)
     .required(),
   price: Yup.number()
@@ -43,8 +43,6 @@ const listingSchema = Yup.object().shape({
     .min(1)
     .required()
 });
-
-console.log(parsed);
 
 const StyledForm = styled.div`
   & > form {
@@ -112,20 +110,22 @@ type Props = {
   location: { search: string }
 };
 
-const CreateListing = ({ navigate, location }: Props) => {
-  const urlParams = new URLSearchParams(location.search);
+const CreateListing = ({ navigate }: Props) => {
+  const { title, isbn10, isbn13, authors, description } = getQueryParams(
+    window.location.search
+  );
+
   return (
     <SiteMargin>
       <Formik
         validationSchema={listingSchema}
         initialValues={{
-          title: urlParams.get("title") || "",
-          description: "",
-          isbn10: "",
+          title: "" || title,
+          description: "" || description,
+          isbn10: "" || isbn10,
+          isbn13: "" || isbn13,
           price: "",
-          firstName: "",
-          middleName: "",
-          lastName: ""
+          authors: "" || authors
         }}
         onSubmit={(formValues, formikBag) => {
           apiFetch("listings", "POST", formValues)
@@ -168,6 +168,15 @@ const CreateListing = ({ navigate, location }: Props) => {
                   fullWidth
                 />
                 <Field
+                  id="isbn13"
+                  name="isbn13"
+                  label="ISBN 13"
+                  component={Input}
+                  variant="outlined"
+                  placeholder="ISBN 13"
+                  fullWidth
+                />
+                <Field
                   id="description"
                   name="description"
                   label="Description"
@@ -182,32 +191,15 @@ const CreateListing = ({ navigate, location }: Props) => {
                   Author
                 </Typography>
                 <Field
-                  id="firstName"
-                  name="firstName"
-                  label="First Name"
+                  id="authors"
+                  name="authors"
+                  label="Authors "
                   component={Input}
                   variant="outlined"
-                  placeholder="First Name"
+                  placeholder="Author(s)"
                   fullWidth
                 />
-                <Field
-                  id="middleName"
-                  name="middleName"
-                  label="Middle Name"
-                  component={Input}
-                  variant="outlined"
-                  placeholder="Middle Name"
-                  fullWidth
-                />
-                <Field
-                  id="lastName"
-                  name="lastName"
-                  component={Input}
-                  label="Last Name"
-                  variant="outlined"
-                  placeholder="Last Name"
-                  fullWidth
-                />
+
                 <Typography variant="h5" gutterBottom>
                   About Your Book
                 </Typography>

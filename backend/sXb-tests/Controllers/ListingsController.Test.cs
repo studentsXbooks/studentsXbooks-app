@@ -32,7 +32,7 @@ namespace sXb_tests.Controllers
             var mapper = new Mock<IMapper>();
             emailSender = new Mock<IEmailSender>();
 
-            listingsAPI = new ListingsController(listingRepo.Object, bookRepo.Object, authorRepo.Object, bookAuthorRepo.Object, userManager.Object, mapper.Object, emailSender.Object);
+            listingsAPI = new ListingsController(listingRepo.Object, bookRepo.Object, authorRepo.Object, bookAuthorRepo.Object, userManager.Object, mapper.Object);
         }
 
         [Fact]
