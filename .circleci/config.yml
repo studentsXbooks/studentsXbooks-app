@@ -29,7 +29,7 @@ aliases:
 executors:
   front-exec:
     docker:
-      - image: circleci/node:10
+      - image: circleci/node:13
     working_directory: ~/repo
   back-exec:
     docker:
