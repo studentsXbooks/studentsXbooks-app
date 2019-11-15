@@ -113,10 +113,10 @@ const Register = ({ navigate }: Object) => {
 
                 <Button
                   type="submit"
-                  variant="contained"
-                  color="primary"
-                  align="right"
                   fullWidth
+                  color="primary"
+                  variant="contained"
+                  align="right"
                   disabled={isSubmitting || !isValid}
                 >
                   Submit
