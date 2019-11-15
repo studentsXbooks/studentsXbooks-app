@@ -1,5 +1,6 @@
 import { useEffect, useReducer } from "react";
 import { apiFetch } from "../utils/fetchLight";
+import useToggle from "./useToggle";
 
 const loadingStates = {
   loading: "loading",
@@ -35,12 +36,25 @@ function loadingReducer<T>(
   }
 }
 
-function useApi<T>(url: string): State<T> {
+type UseApiReturns<T> = {
+  ...State<T>,
+  retry: () => mixed
+};
+
+function useApi<T>(url: string): UseApiReturns<T> {
   const [{ loading, data, error }, dispatch] = useReducer(loadingReducer, {
     loading: true,
     data: null,
     error: null
   });
+  const [toggle, on, off] = useToggle(false);
+  const retry = () => {
+    if (toggle === true) {
+      off();
+    } else {
+      on();
+    }
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -60,16 +74,16 @@ function useApi<T>(url: string): State<T> {
         if (!cancelled)
           dispatch({
             type: loadingStates.error,
-            error: e.message
+            error: e
           });
       });
 
     return () => {
       cancelled = true;
     };
-  }, [url]);
+  }, [url, toggle]);
 
-  return { loading, data, error };
+  return { loading, data, error, retry };
 }
 
 export default useApi;

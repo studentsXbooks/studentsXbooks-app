@@ -10,6 +10,8 @@
   },
   "plugins": ["prettier", "flowtype"],
   "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
     "react/jsx-filename-extension": [
       1,
       {
@@ -29,7 +31,6 @@
         "depth": 3
       }
     ],
-    "jsx-a11y/label-has-for": off,
     "flowtype/no-types-missing-file-annotation": 0
   },
   "globals": {
