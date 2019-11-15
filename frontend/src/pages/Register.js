@@ -3,12 +3,13 @@
 import React from "react";
 import { Button, Typography } from "@material-ui/core";
 import * as Yup from "yup";
-import styled from "styled-components";
 import { Field, Formik, Form } from "formik";
 import Input from "../ui/Input";
 import { apiFetch } from "../utils/fetchLight";
 import SiteMargin from "../ui/SiteMargin";
 import Stack from "../ui/Stack";
+// $FlowFixMe
+import styled from "styled-components";
 
 const registerSchema = Yup.object().shape({
   username: Yup.string()
@@ -36,11 +37,8 @@ const ErrorMsg = styled.div`
   color: red;
   font-size: 1em;
 `;
-type Props = {
-  navigate: string => any
-};
 
-const Register = ({ navigate }: Props) => {
+const Register = ({ navigate }: Object) => {
   return (
     <SiteMargin>
       <Formik
