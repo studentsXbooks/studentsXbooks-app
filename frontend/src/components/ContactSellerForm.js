@@ -2,7 +2,6 @@ import React from "react";
 import { Formik, Form, Field } from "formik";
 import { Button, Typography } from "@material-ui/core";
 import * as Yup from "yup";
-// $FlowFixMe
 import styled from "styled-components";
 import { apiFetch } from "../utils/fetchLight";
 import Input from "../ui/Input";
