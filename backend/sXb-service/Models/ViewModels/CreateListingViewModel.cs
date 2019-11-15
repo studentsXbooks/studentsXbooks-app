@@ -17,7 +17,6 @@ namespace sXb_service.Models.ViewModels
         [ISBNValidation(ISBNType = ISBNTypes.ISBN10)]
         public string ISBN10 { get; set; }
 
-        [ISBNValidation(ISBNType = ISBNTypes.ISBN13)]
         public string ISBN13 { get; set; }
 
         [StringLength(300, MinimumLength = 1, ErrorMessage = "Description must be between 1 and 300 characters")]
