@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -27,6 +28,11 @@ namespace sXb_service.Services {
             //Execute (subject, message, email);
             SendRestSharpMessage ();
         }
+        public void SendEmailAsync(string emailTo, string replyTo, string subject, string message)
+        {
+            //Execute (subject, message, email);
+            SendRestSharpMessage();
+        }
         public void Execute (string subject, string body, string email) {
             var smtpConfig = Configuration.GetSection ("SMTP").Get<SMTPConfig> ();
             using (var message = new MailMessage ()) {
@@ -36,25 +42,7 @@ namespace sXb_service.Services {
                 message.Subject = subject;
                 message.Body = body;
                 message.IsBodyHtml = true;
-                message.ReplyToList.Add (new MailAddress (replyTo));
-                using (var client = new SmtpClient (smtpConfig.Host)) {
-                    string username = smtpConfig.Username;
-                    string password = smtpConfig.Password;
-                    client.Port = smtpConfig.Port;
-                    client.Credentials = new NetworkCredential (username, password);
-                    client.EnableSsl = true;
-                    client.Send (message);
-                }
-            }
-        }
-
-        private void Execute (string email, string subject, string body) {
-            using (var message = new MailMessage ()) {
-                message.To.Add (new MailAddress (email));
-                message.From = new MailAddress (smtpConfig.sendAddress);
-                message.Subject = subject;
-                message.Body = body;
-                message.IsBodyHtml = true;
+                //message.ReplyToList.Add (new MailAddress (replyTo));
                 using (var client = new SmtpClient (smtpConfig.Host)) {
                     string username = smtpConfig.Username;
                     string password = smtpConfig.Password;

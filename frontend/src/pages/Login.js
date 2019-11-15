@@ -24,7 +24,7 @@ const Login = ({ navigate }: Object) => {
               e.preventDefault();
               apiFetch("users", "POST", { email, password })
                 .then(() => {
-                  navigate("/home");
+                  navigate("/");
                 })
                 .catch(console.log);
             }}
