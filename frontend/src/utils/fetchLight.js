@@ -16,7 +16,6 @@ class FailedRequestError extends Error {
     }
     this.name = "FailedRequestError";
     this.response = response;
-    //this.message = response.message;
     this.message = `Failed Request | status code: ${response.status}`;
   }
 }

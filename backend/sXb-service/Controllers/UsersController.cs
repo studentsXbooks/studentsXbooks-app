@@ -78,7 +78,7 @@ namespace sXb_service.Controllers {
 
             // Validate: username doesn't already exist.
             if (await Repo.UsernameExists (newUser.Username)) {
-                return BadRequest(new ErrorMessage ("Username already taken!"));
+                return BadRequest (new ErrorMessage ("Username already taken!"));
             }
 
             if (newUser.Email != null)
