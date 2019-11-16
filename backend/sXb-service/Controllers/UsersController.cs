@@ -102,8 +102,7 @@ namespace sXb_service.Controllers {
                 string code = await _userManager.GenerateEmailConfirmationTokenAsync (user);
                 var corsConfig = Configuration.GetSection ("Cors").Get<CorsConfig> ();
                 string frontendUrl = corsConfig.FrontendDomain;
-                _emailSender.SendEmailAsync (user.Email, "Confirm your email",
-                    string.Format ("Please confirm your account by <a href='{0}/confirm-email?id={1}&code={2}'>clicking here</a>.", frontendUrl, HttpUtility.UrlEncode (user.Id), HttpUtility.UrlEncode (code)));
+                _emailSender.SendEmailAsync (user.Email, "Confirm your email", string.Format ("Please confirm your account by <a href='{0}/confirm-email?id={1}&code={2}'>clicking here</a>.", frontendUrl, HttpUtility.UrlEncode (user.Id), HttpUtility.UrlEncode (code)));
 
                 return Created ($"api/users/{user.Id}", new { Id = user.Id, Code = HttpUtility.UrlEncode (code) });
             } else {

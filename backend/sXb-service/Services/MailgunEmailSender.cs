@@ -35,7 +35,7 @@ namespace sXb_service.Services {
             RestClient client = new RestClient ();
             client.BaseUrl = new Uri ("https://api.mailgun.net/v3");
 
-            client.Authenticator = new HttpBasicAuthenticator ("api", "// input api key");
+            client.Authenticator = new HttpBasicAuthenticator ("api", "//INPUT API KEY HERE");
             RestRequest request = new RestRequest ();
             request.AddParameter ("domain", "mg.viasof.com", ParameterType.UrlSegment);
             request.Resource = "mg.viasof.com/messages";
@@ -50,7 +50,7 @@ namespace sXb_service.Services {
             RestClient client = new RestClient ();
             client.BaseUrl = new Uri ("https://api.mailgun.net/v3");
 
-            client.Authenticator = new HttpBasicAuthenticator ("api", "// input api key");
+            client.Authenticator = new HttpBasicAuthenticator ("api", "//INPUT API KEY HERE");
             RestRequest request = new RestRequest ();
             request.AddParameter ("domain", "mg.viasof.com", ParameterType.UrlSegment);
             request.Resource = "mg.viasof.com/messages";

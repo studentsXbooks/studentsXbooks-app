@@ -33,7 +33,6 @@ namespace sXb_service.Services {
 
         }
         public void Execute (string emailTo, string subject, string body) {
-            var smtpConfig = Configuration.GetSection ("SMTP").Get<SMTPConfig> ();
             using (var message = new MailMessage ()) {
                 message.To.Add (new MailAddress (emailTo));
                 message.From = new MailAddress (smtpConfig.sendAddress);

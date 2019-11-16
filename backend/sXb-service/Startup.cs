@@ -123,7 +123,7 @@ namespace sXb_service {
                 app.UseHsts ();
             }
 
-            app.UseHttpsRedirection ();
+           // app.UseHttpsRedirection ();
 
             app.UseCors (AllowAnywhere);
 
