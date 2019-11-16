@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { Node } from "react";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
 import { Link } from "@reach/router";
 import { Menu, MenuItem } from "@material-ui/core";
-// $FlowFixMe
 import styled from "styled-components";
 import { isNil } from "ramda";
 import useApi from "./hooks/useApi";
@@ -42,7 +41,13 @@ export default ({ children }: Props) => {
 };
 
 const UserNavOrDefault = () => {
-  const { data: userInfo } = useApi("users/name");
+  const { data: userInfo, retry } = useApi("users/name");
+
+  useEffect(() => {
+    retry();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [global.cookie]);
+
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = e => setAnchorEl(e.currentTarget);

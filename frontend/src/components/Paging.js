@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "@reach/router";
 import { Button, Typography } from "@material-ui/core";
-// $FlowFixMe
 import styled from "styled-components";
 
 type Props = {
