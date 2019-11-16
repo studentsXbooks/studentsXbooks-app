@@ -19,6 +19,7 @@ namespace sXb_service.Models
         [ISBNValidation(ISBNType = ISBNTypes.ISBN10)]
         public string ISBN10 { get; set; }
 
+        [ISBNValidation(ISBNType = ISBNTypes.ISBN13)]
         public string ISBN13 { get; set; }
 
         public string Description { get; set; }

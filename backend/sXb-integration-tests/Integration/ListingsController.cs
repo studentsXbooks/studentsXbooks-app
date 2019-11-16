@@ -130,7 +130,7 @@ namespace sXb_tests.Integration
         [InlineData("", "Normal Author",  "9780746062760", "9780201616224", 4.99, Condition.Good)]
         [InlineData("Normal Length Title", "",  "9780746062760", "9780201616224", 4.99, Condition.Fair)]
         [InlineData("Normal Length Title", "Normal Author, Second Author",  "978746062760", "9780201616224", 4.99, Condition.Fair)] // Should fail cause ISBN10 not valid
-        [InlineData("Normal Length Title", "Normal Author, Second Author", "9780746062760", "9780201655555554", -4.99, Condition.Fair)] // Should fail cause ISBN13 not valid
+        [InlineData("Normal Length Title", "Normal Author, Second Author",  "9780746062760", "9780201655555554", -4.99, Condition.Fair)] // Should fail cause ISBN13 not valid
         public async Task Create_InvalidListingDetail_Return400(string title, string authors,  string isbn10, string isbn13, decimal price,
             Condition condition)
         {
@@ -176,7 +176,7 @@ namespace sXb_tests.Integration
 
             Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>>();
 
-            var isSameAuthor = content.Data.All(x => x.Authors.Any(a => a.ToLower().Contains(term.ToLower())));
+            var isSameAuthor = content.Data.All(x => x.Authors.Contains(term.ToLower()));
             Assert.True(isSameAuthor);
         }
 
@@ -233,7 +233,7 @@ namespace sXb_tests.Integration
 
             Paging<ListingPreviewViewModel> content = await response.Content.ReadAsAsync<Paging<ListingPreviewViewModel>>();
 
-            var isSameX = content.Data.All(x => x.ISBN10.Contains(term) || x.Title.ToLower().Contains(term) || x.Authors.Any(y => y.ToLower().Contains(term.ToLower())));
+            var isSameX = content.Data.All(x => x.ISBN10.Contains(term) || x.Title.ToLower().Contains(term) || x.Authors.Contains(term.ToLower()));
             Assert.True(isSameX);
         }
 

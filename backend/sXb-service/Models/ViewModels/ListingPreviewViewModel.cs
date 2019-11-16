@@ -22,6 +22,6 @@ namespace sXb_service.Models.ViewModels
 
         public string Condition { get; set; }
 
-        public List<string> Authors { get; set; }
+        public string Authors { get; set; }
     }
 }
