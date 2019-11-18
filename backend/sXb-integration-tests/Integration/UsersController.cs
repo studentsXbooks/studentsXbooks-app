@@ -254,8 +254,8 @@ namespace sXb_tests.Integration
 
             LoginViewModel model = new LoginViewModel()
             {
-                Email = "test@wvup.edu",
-                Password = "Develop@90"
+                Email = "newer@wvup.edu",
+                Password = "AbcdeF#1"
             };
             response = await client.PostAsJsonAsync<LoginViewModel>("/api/users", model);
             var getUserResponse = await client.GetAsync($"/api/users/{data.Id}");
