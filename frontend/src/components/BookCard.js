@@ -8,6 +8,7 @@ import {
   Typography
 } from "@material-ui/core";
 import buildQuery from "../utils/buildQuery";
+import styled from "styled-components";
 
 type Props = {
   listing: {
@@ -21,6 +22,11 @@ type Props = {
   }
 };
 
+const StyledCard = styled(Card)`
+  height: 20em;
+  width: 20em;
+`;
+
 const BookCard = ({
   listing: { title, description, id, isbn10, isbn13, thumbnail, authors }
 }: Props) => (
@@ -31,12 +37,12 @@ const BookCard = ({
         title,
         isbn10,
         isbn13,
-        thumbnail,
+        thumbnail: encodeURIComponent(thumbnail),
         description,
         authors
       })}`}
     >
-      <Card raised>
+      <StyledCard raised>
         <CardHeader
           title={
             <>
@@ -49,10 +55,11 @@ const BookCard = ({
         />
         <CardContent>
           <img src={thumbnail} alt="Book Cover" width="130" height="130" />
+
           <Typography variant="body1">ISBN10: {isbn10}</Typography>
           <Typography variant="body1">ISBN13: {isbn13}</Typography>
         </CardContent>
-      </Card>
+      </StyledCard>
     </Link>
   </Grid>
 );

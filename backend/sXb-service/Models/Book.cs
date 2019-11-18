@@ -5,26 +5,28 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 using sXb_service.Helpers.ModelValidation;
 
-namespace sXb_service.Models
-{
-    public class Book
-    {
+namespace sXb_service.Models {
+    public class Book {
         [Key]
         public Guid Id { get; set; }
 
         public string Title { get; set; }
 
-        [JsonProperty(PropertyName = "isbn10")]
-
-        [ISBNValidation(ISBNType = ISBNTypes.ISBN10)]
+        [JsonProperty (PropertyName = "isbn10")]
+        [ISBNValidation (ISBNType = ISBNTypes.ISBN10)]
         public string ISBN10 { get; set; }
 
-        [ISBNValidation(ISBNType = ISBNTypes.ISBN13)]
+        [JsonProperty (PropertyName = "isbn13")]
+        [ISBNValidation (ISBNType = ISBNTypes.ISBN13)]
         public string ISBN13 { get; set; }
 
         public string Description { get; set; }
 
         public string Authors { get; set; }
+
+        public string SmallThumbnail { get; set; }
+
+        public string Thumbnail { get; set; }
 
     }
 }

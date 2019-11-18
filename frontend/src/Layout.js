@@ -82,7 +82,7 @@ const UserNavOrDefault = () => {
         </MenuItem>
         <MenuItem onClick={handleClose}>
           {/* $FlowFixMe */}
-          <Link to="/listing/new"> New Listing</Link>
+          <Link to="/listing/findbook"> New Listing</Link>
         </MenuItem>
       </Menu>
     </>

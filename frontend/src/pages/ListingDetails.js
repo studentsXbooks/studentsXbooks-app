@@ -41,7 +41,7 @@ const ListingDetails = ({ id }: Props) => {
         <Grid container spacing={3} justify="space-around">
           <Grid item>
             <ImageBox>
-              <img src="https://via.placeholder.com/500" alt="Book" />
+              <img src={listing.thumbnail} alt="Book" />
               <Typography variant="h4" align="left">
                 ISBN: {listing.isbn10}
               </Typography>

@@ -111,9 +111,15 @@ type Props = {
 };
 
 const CreateListing = ({ navigate }: Props) => {
-  const { title, isbn10, isbn13, authors, description } = getQueryParams(
-    window.location.search
-  );
+  const {
+    title,
+    isbn10,
+    isbn13,
+    authors,
+    description,
+    smallThumbnail,
+    thumbnail
+  } = getQueryParams(window.location.search);
 
   return (
     <SiteMargin>
@@ -125,7 +131,9 @@ const CreateListing = ({ navigate }: Props) => {
           isbn10: "" || isbn10,
           isbn13: "" || isbn13,
           price: "",
-          authors: "" || authors
+          authors: "" || authors,
+          smallThumbnail: "" || smallThumbnail,
+          thumbnail: "" || thumbnail
         }}
         onSubmit={(formValues, formikBag) => {
           apiFetch("listings", "POST", formValues)
@@ -157,6 +165,7 @@ const CreateListing = ({ navigate }: Props) => {
                   label="Title"
                   variant="outlined"
                   fullWidth
+                  disabled={title}
                 />
                 <Field
                   id="isbn10"
@@ -166,6 +175,7 @@ const CreateListing = ({ navigate }: Props) => {
                   variant="outlined"
                   placeholder="ISBN 10"
                   fullWidth
+                  disabled={isbn10}
                 />
                 <Field
                   id="isbn13"
@@ -174,6 +184,7 @@ const CreateListing = ({ navigate }: Props) => {
                   component={Input}
                   variant="outlined"
                   placeholder="ISBN 13"
+                  disabled={isbn13}
                   fullWidth
                 />
                 <Field
@@ -185,6 +196,7 @@ const CreateListing = ({ navigate }: Props) => {
                   placeholder="Description"
                   fullWidth
                   multiline
+                  disabled={description}
                   rows="5"
                 />
                 <Typography variant="h5" gutterBottom>
@@ -197,6 +209,7 @@ const CreateListing = ({ navigate }: Props) => {
                   component={Input}
                   variant="outlined"
                   placeholder="Author(s)"
+                  disabled={authors}
                   fullWidth
                 />
 

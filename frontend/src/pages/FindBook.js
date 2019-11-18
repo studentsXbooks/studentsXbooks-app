@@ -47,6 +47,9 @@ const FindBook = ({ pageId = "1", term = "", navigate, location }: Props) => {
           </Form>
         )}
       </Formik>
+      <Button onClick={() => navigate(`/listing/new`)}>
+        Can't Find your book? Click here to enter info manually
+      </Button>
       <Paging
         basePath={`/listing/findbook/${term}`}
         currentPage={page ? page.currentPage : "1"}
@@ -56,7 +59,7 @@ const FindBook = ({ pageId = "1", term = "", navigate, location }: Props) => {
         {page &&
           page.data &&
           page.data.map(listing => (
-            <BookCard listing={listing} key={listing.id} />
+            <BookCard listing={listing} key={listing.title + listing.isbn10} />
           ))}
       </Grid>
       <Paging

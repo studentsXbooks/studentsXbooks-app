@@ -16,13 +16,13 @@ namespace sXb_service.Helpers {
           opts.MapFrom (src => src.Title))
         .ForMember (dest => dest.ISBN10, opts =>
           opts.MapFrom (src => src.ISBN10))
-          .ForMember(dest => dest.ISBN13, opts =>
-         opts.MapFrom(src => src.ISBN13))
-         .ForMember(dest => dest.Authors, opts =>
-         opts.MapFrom(src => src.Authors))
+        .ForMember (dest => dest.ISBN13, opts =>
+          opts.MapFrom (src => src.ISBN13))
+        .ForMember (dest => dest.Authors, opts =>
+          opts.MapFrom (src => src.Authors))
         .ForMember (dest => dest.Description, opts =>
           opts.MapFrom (src => src.Description));
-            
+
       CreateMap<CreateListingViewModel, Listing> ()
         .ForMember (dest => dest.Price, opts =>
           opts.MapFrom (src => src.Price))
@@ -42,8 +42,8 @@ namespace sXb_service.Helpers {
           opts.MapFrom (src => Enum.GetName (typeof (Condition), src.Condition)))
         .ForMember (dest => dest.ISBN10, opts =>
           opts.MapFrom (src => src.Book.ISBN10))
-          .ForMember(dest => dest.ISBN13, opts =>
-         opts.MapFrom(src => src.Book.ISBN13))
+        .ForMember (dest => dest.ISBN13, opts =>
+          opts.MapFrom (src => src.Book.ISBN13))
         .ForMember (dest => dest.Authors, opts =>
           opts.MapFrom (src => src.Book.Authors));
 
@@ -54,10 +54,14 @@ namespace sXb_service.Helpers {
           opts.MapFrom (src => src.Book.Title))
         .ForMember (dest => dest.ISBN10, opts =>
           opts.MapFrom (src => src.Book.ISBN10))
-           .ForMember(dest => dest.ISBN13, opts =>
-         opts.MapFrom(src => src.Book.ISBN13))
+        .ForMember (dest => dest.ISBN13, opts =>
+          opts.MapFrom (src => src.Book.ISBN13))
         .ForMember (dest => dest.Description, opts =>
           opts.MapFrom (src => src.Book.Description))
+        .ForMember (dest => dest.SmallThumbnail, opts =>
+          opts.MapFrom (src => src.Book.SmallThumbnail))
+        .ForMember (dest => dest.Thumbnail, opts =>
+          opts.MapFrom (src => src.Book.Thumbnail))
         .ForMember (dest => dest.Authors, opts =>
           opts.MapFrom (src => src.Book.Authors))
         .ForMember (dest => dest.UserId, opts =>

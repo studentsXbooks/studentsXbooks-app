@@ -32,7 +32,10 @@ namespace sXb_service.Models
                 foreach (var book in bookInfo.Items)
                 {
                     var newBook = _mapper.Map<BookApiResult>(book.VolumeInfo);
-                    results.Add(newBook);
+                    if(newBook.ISBN10 != null)
+                    {
+                        results.Add(newBook);
+                    }
                 }
                 return Paging<BookApiResult>.ApplyPaging(bookInfo.TotalItems, results, page);
             }
