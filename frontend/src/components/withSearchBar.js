@@ -50,7 +50,7 @@ function withSearchBar<C: ComponentType<any>>(WrapComponent: C) {
       <>
         <SearchBox>
           <LogoArea>
-            <img src="https://via.placeholder.com/250x100" alt="logo" />
+            <img src="./Mock_Logo.png" alt="logo" />
           </LogoArea>
           <SearchArea>
             <SearchForm
