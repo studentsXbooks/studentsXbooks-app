@@ -29,7 +29,7 @@ aliases:
 executors:
   front-exec:
     docker:
-      - image: circleci/node:10
+      - image: circleci/node:13
     working_directory: ~/repo
   back-exec:
     docker:
@@ -126,7 +126,6 @@ jobs:
           name: Run Integration Tests
           command: >
             docker-compose -f docker-compose.Test.yml run
-            -e Google__Apikey=$Google__Apikey -e Google__Uri=$Google__Uri
             -e SMTP__host=$SMTP__host -e SMTP__password=$SMTP__password
             -e SMTP__sendAddress=$SMTP__sendAddress -e SMTP__port=$SMTP__port
             -e SMTP__username=$SMTP__username -e Cors__FrontendDomain=$Cors__FrontendDomain

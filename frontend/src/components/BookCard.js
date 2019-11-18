@@ -47,9 +47,7 @@ const BookCard = ({
           title={
             <>
               <Typography variant="h5">{title}</Typography>
-              <Typography variant="subtitle1">
-                By: {authors.join(",")}
-              </Typography>
+              <Typography variant="subtitle1">By: {authors}</Typography>
             </>
           }
         />
