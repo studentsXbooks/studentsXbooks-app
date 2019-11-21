@@ -7,13 +7,12 @@ import makeFetchReturn from "../test-utils/makeFetchReturn";
 afterEach(cleanup);
 
 const validListing = {
-  title: "the sound and the fury",
+  title: "sound",
   isbn10: "0679732241",
   isbn13: "978-0679732242",
-  description: "A novel written by the American author William Faulkner.",
-  authors: "William Faulkner",
-  thumbnail:
-    "https://upload.wikimedia.org/wikipedia/en/thumb/e/e3/TheSoundAndTheFuryCover.jpg/220px-TheSoundAndTheFuryCover.jpg"
+  description: "novel",
+  authors: "faulkner",
+  thumbnail: "url"
 };
 
 it("Renders with required props", () => {
@@ -21,4 +20,17 @@ it("Renders with required props", () => {
     <BookCard listing={validListing} onComplete={jest.fn()} />
   );
   expect(container).toBeDefined();
+});
+
+it("Onclick navigate to /create with appropriate queries", async () => {
+  const { getByText } = render(
+    <BookCard listing={validListing} onComplete={jest.fn()} />
+  );
+
+  fireEvent.click(getByText("sound"));
+
+  const url = `?title=sound&isbn10=0679732241&isbn13=978-0679732242&thumbnail=url&description=novel&authors=faulkner`;
+  await wait(() => {
+    expect(global.location.search).toBe(url);
+  });
 });
