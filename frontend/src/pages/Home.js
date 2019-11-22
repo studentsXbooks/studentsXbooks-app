@@ -16,11 +16,17 @@ const SearchBox = styled.div`
   flex-flow: row nowrap;
   grid-template: "logo search" auto / 20% 80%;
   align-items: center;
+  position: absolute;
+  left: 500px;
+  top: 300px;
+  color: white;
 `;
 
 const SearchArea = styled.div`
   grid-area: search;
   position: absolute;
+  width: 500px;
+  color: white;
 `;
 
 const LogoArea = styled.div`
@@ -37,11 +43,14 @@ const SearchForm = styled.form`
   align-items: center;
   justify-content: space-between;
   position: absolute;
+  color: white;
   & > button {
     align-self: stretch;
     width: 150px;
     background-color: #33578c;
-    position: absolute;
+    //position: absolute;
+    // left: 900px;
+    // top: 300px;
   }
   & > div {
     padding-left: 1rem;
