@@ -18,7 +18,7 @@ it("Renders when passed required props", () => {
   expect(container).toBeDefined();
 });
 
-it("Enter Valid Search Term and Click submit, calls navigate with query params", async () => {
+it("Enter Valid Search Term and Click submit", async () => {
   const wrappedFakeNavigate = jest.fn();
   const term = "mybook";
 
