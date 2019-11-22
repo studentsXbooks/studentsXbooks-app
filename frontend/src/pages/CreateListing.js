@@ -202,7 +202,8 @@ const CreateListing = ({ navigate }: Props) => {
                   fullWidth
                 />
                 <Typography variant="h5" gutterBottom>
-                  About Your Book
+                  About Your Book. Please note that the price must be in US
+                  dollars.
                 </Typography>
                 <Field
                   id="price"

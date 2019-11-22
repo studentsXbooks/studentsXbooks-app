@@ -22,6 +22,7 @@ const Register = ({ navigate }: Object) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword] = useState("");
 
   const submitButton = createMuiTheme({
     palette: {
@@ -97,6 +98,14 @@ const Register = ({ navigate }: Object) => {
                 onChange={e => {
                   setPassword(e.target.value);
                 }}
+                fullWidth
+              />
+              <br />
+              <TextField
+                id="confirmPassword"
+                label="Confirm Password"
+                type="password"
+                value={confirmPassword}
                 fullWidth
               />
               <br />
