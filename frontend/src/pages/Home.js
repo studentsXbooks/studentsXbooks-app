@@ -55,7 +55,7 @@ const MainContent = styled.div`
   background-image: url("./BookShelf2.JPG");
   background-size: 100vw;
   background-repeat: no-repeat;
-  height: 60vh;
+  height: 90.3vh;
 `;
 
 const Home = () => {

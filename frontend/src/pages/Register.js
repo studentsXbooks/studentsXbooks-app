@@ -34,15 +34,19 @@ const Register = ({ navigate }: Object) => {
   const LoginInfo = styled.div`
   text-align: center;
   background-color: #ffffff;
-  color: #000000;
-  padding 10px;
+  color: #707070;
+  padding 50px;
   margin: auto;
+  box-shadow: inset 0 0 2px 2px;
 `;
   return (
     <FullHeightGrid container alignItems="center" justify="center">
+      {/* <LoginInfo>
+        <h2>Create a New Account!</h2>
+      </LoginInfo> */}
       <Grid item>
         <Card
-          style={{ width: "50rem", padding: 20 }}
+          style={{ width: "25rem", padding: 20, marginRight: 25 }}
           component="article"
           raised
         >
@@ -105,7 +109,7 @@ const Register = ({ navigate }: Object) => {
                   fullWidth
                   type="Submit"
                 >
-                  Submit
+                  Sign Up
                 </Button>
               </MuiThemeProvider>
             </CardActions>

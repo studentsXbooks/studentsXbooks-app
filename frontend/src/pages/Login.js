@@ -44,9 +44,6 @@ const Login = ({ navigate }: Object) => {
 
   return (
     <FullHeightGrid container alignItems="center" justify="center">
-      <LoginInfo>
-        <h2>You can login here using your email and password!</h2>
-      </LoginInfo>
       <Grid item>
         <Card
           style={{ width: "25rem", padding: 20, marginRight: 25 }}
@@ -98,7 +95,7 @@ const Login = ({ navigate }: Object) => {
                   fullWidth
                   type="Submit"
                 >
-                  Submit
+                  Login
                 </Button>
               </MuiThemeProvider>
             </CardActions>
