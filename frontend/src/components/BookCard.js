@@ -16,8 +16,8 @@ type Props = {
     thumbnail: string,
     description: string,
     id: string,
-    isbn13: String,
-    isbn10: String,
+    isbn13: string,
+    isbn10: string,
     authors: [string]
   }
 };

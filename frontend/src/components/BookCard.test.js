@@ -7,11 +7,12 @@ import makeFetchReturn from "../test-utils/makeFetchReturn";
 afterEach(cleanup);
 
 const validListing = {
+  id: "1",
   title: "sound",
   isbn10: "0679732241",
   isbn13: "978-0679732242",
   description: "novel",
-  authors: "faulkner",
+  authors: ["faulkner"],
   thumbnail: "url"
 };
 
