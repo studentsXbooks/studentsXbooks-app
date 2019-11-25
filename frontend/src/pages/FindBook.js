@@ -8,8 +8,8 @@ import Paging from "../components/Paging";
 import { apiFetch } from "../utils/fetchLight";
 
 type Props = {
-  pageId: string,
-  term: string,
+  pageId?: string,
+  term?: string,
   navigate: string => any,
   location: { search: string }
 };
@@ -69,6 +69,11 @@ const FindBook = ({ pageId = "1", term = "", navigate, location }: Props) => {
       />
     </SiteMargin>
   );
+};
+
+FindBook.defaultProps = {
+  term: "",
+  pageId: "1"
 };
 
 export default FindBook;

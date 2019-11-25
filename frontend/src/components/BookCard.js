@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "@reach/router";
+import styled from "styled-components";
 import {
   Grid,
   Card,
@@ -8,7 +9,6 @@ import {
   Typography
 } from "@material-ui/core";
 import buildQuery from "../utils/buildQuery";
-import styled from "styled-components";
 
 type Props = {
   listing: {
@@ -28,7 +28,7 @@ const StyledCard = styled(Card)`
 `;
 
 const BookCard = ({
-  listing: { title, description, id, isbn10, isbn13, thumbnail, authors }
+  listing: { title, description, isbn10, isbn13, thumbnail, authors }
 }: Props) => (
   <Grid item>
     {/* //$FlowFixMe */}

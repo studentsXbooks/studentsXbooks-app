@@ -22,7 +22,7 @@ test("data = null, errors = null, and loading is true when first rendered", () =
 
 test("Fetch GET is called with url and sets json response to data and loading becomes false", async () => {
   const fakeData: {} = { title: "Death Stranding" };
-  makeFetchReturn({ status: 200 }, fakeData);
+  makeFetchReturn({ status: 200 })(fakeData);
   const { result, waitForNextUpdate } = renderHook(() =>
     useApi("/api/conditions")
   );
@@ -37,7 +37,7 @@ test("Fetch GET is called with url and sets json response to data and loading be
 
 test("Fetch Returns Bad Response, Loading is False, Data is Null, and error is Response", async () => {
   const fakeData: {} = { message: "Not a valid ISBN" };
-  makeFetchReturn({ status: 404 }, fakeData);
+  makeFetchReturn({ status: 404 })(fakeData);
   const { result, waitForNextUpdate } = renderHook(() =>
     useApi("/api/conditions")
   );
@@ -52,7 +52,7 @@ test("Fetch Returns Bad Response, Loading is False, Data is Null, and error is R
 
 test("Fetch return OK response, call retry, expect loading=true with error and data null, then next update loading = false with data and error = null", async () => {
   const groundhogDay: {} = { title: "Bill Freakin Murray" };
-  makeFetchReturn({ status: 200 }, groundhogDay);
+  makeFetchReturn({ status: 200 })(groundhogDay);
   const { result, waitForNextUpdate } = renderHook(() =>
     useApi("/api/conditions")
   );
@@ -67,7 +67,7 @@ test("Fetch return OK response, call retry, expect loading=true with error and d
   });
 
   const zombieLand: {} = { title: "ZombieLand" };
-  makeFetchReturn({ status: 200 }, zombieLand);
+  makeFetchReturn({ status: 200 })(zombieLand);
 
   result.current.retry();
 
