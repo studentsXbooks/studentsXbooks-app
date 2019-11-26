@@ -34,7 +34,10 @@ test("Can't submit with invalid email and other fields valid, can submit after v
 
   const emailError = await findByText(/Invalid Email/i);
   expect(emailError).toBeDefined();
-  //   expect(getByText(/password/i)).toBeDisabled();
+
+  await wait(() => {
+    expect(getByText(/submit/i)).toBeDisabled();
+  });
 
   fireEvent.change(getByLabelText(/username/i), {
     target: { value: "newuser" }

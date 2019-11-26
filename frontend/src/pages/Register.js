@@ -51,7 +51,6 @@ const Register = ({ navigate }: Object) => {
         onSubmit={(formValues, formikBag) => {
           apiFetch("users/register", "POST", formValues)
             .then(res => {
-              console.log(res);
               navigate(`/verify-email?email=${formValues.email}`);
             })
             .catch(async error => {
