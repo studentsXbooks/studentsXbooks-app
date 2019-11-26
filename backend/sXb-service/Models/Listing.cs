@@ -32,6 +32,7 @@ namespace sXb_service.Models
     public enum Condition
     {
         New,
+        [Display(Name = "Like New")]
         LikeNew,
         Good,
         Fair,
