@@ -17,8 +17,8 @@ const SearchBox = styled.div`
   grid-template: "logo search" auto / 20% 80%;
   align-items: center;
   position: absolute;
-  left: 500px;
-  top: 300px;
+  left: 400px;
+  top: 330px;
   color: white;
 `;
 
@@ -35,9 +35,10 @@ const LogoArea = styled.div`
 
 const SearchForm = styled.form`
   border: 2px solid #3f51b5;
-  border-radius: 8px;
+  border-radius: 25px;
   border-color: #707070;
-  height: 50px;
+  height: 43px;
+  width: 500px;
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
@@ -47,6 +48,7 @@ const SearchForm = styled.form`
   & > button {
     align-self: stretch;
     width: 150px;
+    border-radius: 25px;
     background-color: #33578c;
     //position: absolute;
     // left: 900px;
@@ -67,12 +69,17 @@ const MainContent = styled.div`
   height: 90.3vh;
 `;
 
+const fyt = styled.div`
+  color: white;
+`;
+
 const Home = () => {
   const [search, setSearch] = useState("");
 
   return (
     <MainContent>
       <BkgOverlay>
+        {/* <fyt>Find your textbooks!</fyt> */}
         <SearchBox>
           <SearchArea>
             <SearchForm
