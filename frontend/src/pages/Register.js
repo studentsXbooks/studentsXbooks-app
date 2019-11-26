@@ -4,12 +4,12 @@ import React from "react";
 import { Button, Typography } from "@material-ui/core";
 import * as Yup from "yup";
 import { Field, Formik, Form } from "formik";
+import styled from "styled-components";
 import Input from "../ui/Input";
 import { apiFetch } from "../utils/fetchLight";
 import SiteMargin from "../ui/SiteMargin";
 import Stack from "../ui/Stack";
 // $FlowFixMe
-import styled from "styled-components";
 
 const registerSchema = Yup.object().shape({
   username: Yup.string()
@@ -17,9 +17,8 @@ const registerSchema = Yup.object().shape({
     .max(32, "Must be at most 32 characters.")
     .required("Username required"),
   email: Yup.string()
-    .min(1, "Must be at least 1 character long.")
-    .matches(/.+@.+[.]edu/, "Must be a .edu address.")
-    .required("Email required"),
+    .email("Invalid email address")
+    .required("Email Required"),
   password: Yup.string()
     .min(8, "Password must be at least 8 characters long.")
     .required("Password required.")
@@ -52,6 +51,7 @@ const Register = ({ navigate }: Object) => {
         onSubmit={(formValues, formikBag) => {
           apiFetch("users/register", "POST", formValues)
             .then(res => {
+              console.log(res);
               navigate(`/verify-email?email=${formValues.email}`);
             })
             .catch(async error => {
