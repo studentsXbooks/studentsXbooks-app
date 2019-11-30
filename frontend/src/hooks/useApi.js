@@ -11,13 +11,13 @@ const loadingStates = {
 type State<T> = {
   loading: boolean,
   data: T | null,
-  error: string | null
+  error: any | null
 };
 
 type DispatchObject<T> = {
   type: string,
   data?: T | null,
-  error?: string | null
+  error?: any | null
 };
 
 function loadingReducer<T>(
