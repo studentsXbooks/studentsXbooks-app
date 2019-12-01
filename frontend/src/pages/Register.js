@@ -42,9 +42,9 @@ const Register = ({ navigate }: Object) => {
 `;
   return (
     <FullHeightGrid container alignItems="center" justify="center">
-      {/* <LoginInfo>
-        <h2>Create a New Account!</h2>
-      </LoginInfo> */}
+      <LoginInfo>
+        <h2>Create a new account today using a valid '.edu' email.</h2>
+      </LoginInfo>
       <Grid item>
         <Card
           style={{ width: "25rem", padding: 20, marginRight: 25 }}

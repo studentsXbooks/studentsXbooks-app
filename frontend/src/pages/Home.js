@@ -48,7 +48,15 @@ const SearchPosition = styled.div`
   display: grid;
   grid-row-start: 3;
   grid-column-end: 3;
-  grid-gap: 60px;
+  grid-gap: -10px;
+  align-items: center;
+`;
+
+const LogoPosition = styled.div`
+  display: grid;
+  grid-row-start: 2;
+  grid-column-end: 4;
+  grid-gap: -10px;
   align-items: center;
 `;
 
@@ -111,6 +119,9 @@ const Home = () => {
     <MainContent>
       <BkgOverlay>
         <SearchLayout>
+          <LogoPosition>
+            <img src={"./Mock_Logo_LargeV2.png"}></img>
+          </LogoPosition>
           <SearchPosition>
             <SearchBox>
               <SearchArea>
