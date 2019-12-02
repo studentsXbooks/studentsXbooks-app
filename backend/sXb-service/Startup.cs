@@ -146,6 +146,7 @@ namespace sXb_service
                 app.UseHsts();
             }
 
+            
             app.UseHttpsRedirection();
 
             app.UseCors(AllowAnywhere);

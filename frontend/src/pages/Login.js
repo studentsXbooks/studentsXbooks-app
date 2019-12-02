@@ -25,7 +25,7 @@ const Login = ({ navigate }: Object) => {
               apiFetch("users", "POST", { email, password })
                 .then(() => {
                   document.cookie = "auth=true";
-                  navigate("/home");
+                  navigate("/");
                 })
                 .catch(console.log);
             }}
