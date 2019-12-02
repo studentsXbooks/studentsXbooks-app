@@ -80,7 +80,7 @@ const SearchForm = styled.form`
     align-self: stretch;
     width: 150px;
     border-radius: 25px;
-    background-color: #33578c;
+    background-color: #32a8b3;
   }
   & > div {
     padding-left: 1rem;

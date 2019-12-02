@@ -72,34 +72,6 @@ const SearchFilterForm = ({ basePath, navigate, location }: Props) => {
 
   return (
     <div>
-      <form method="POST" onSubmit={submitPriceRange}>
-        <Grid container>
-          <Grid item xs={12} md={4}>
-            <TextField
-              type="number"
-              label="Min"
-              id="min"
-              value={min}
-              onChange={e => setMin(e.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <TextField
-              type="number"
-              label="Max"
-              id="max"
-              value={max}
-              onChange={e => setMax(e.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <Button type="submit" color="primary" fullWidth variant="contained">
-              Submit
-            </Button>
-          </Grid>
-        </Grid>
-      </form>
-      <br />
       <form method="POST">
         <FormControl component="fieldset">
           <FormLabel component="legend">Conditions</FormLabel>
@@ -126,6 +98,34 @@ const SearchFilterForm = ({ basePath, navigate, location }: Props) => {
               ))}
           </FormGroup>
         </FormControl>
+      </form>
+      <br />
+      <form method="POST" onSubmit={submitPriceRange}>
+        <Grid container>
+          <Grid item xs={12} md={4}>
+            <TextField
+              type="number"
+              label="Min"
+              id="min"
+              value={min}
+              onChange={e => setMin(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <TextField
+              type="number"
+              label="Max"
+              id="max"
+              value={max}
+              onChange={e => setMax(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Button type="submit" color="primary" fullWidth variant="contained">
+              Submit
+            </Button>
+          </Grid>
+        </Grid>
       </form>
     </div>
   );
