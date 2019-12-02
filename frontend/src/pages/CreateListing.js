@@ -55,7 +55,7 @@ const ConditionRadios = () => {
   const { data: conditions } = useApi("conditions");
   return (
     <fieldset>
-      <legend>condition</legend>
+      <legend>Condition</legend>
       {conditions &&
         conditions.map(({ value, name }) => (
           <Field
