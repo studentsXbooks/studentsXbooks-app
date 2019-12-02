@@ -1,11 +1,14 @@
 import { curry } from "ramda";
 
 const makeFetchReturn = (props: { status: string }, toReturn: any) => {
-  global.fetch = () =>
+  const fakeFetch = jest.fn(() =>
     Promise.resolve({
       json: () => Promise.resolve(toReturn),
       ...props
-    });
+    })
+  );
+  global.fetch = fakeFetch;
+  return fakeFetch;
 };
 
 // $FlowFixMe

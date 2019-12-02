@@ -4,7 +4,6 @@ import {
   Home,
   Login,
   Register,
-  EmailConfirmed,
   VerifyEmail,
   UserListing,
   CreateListing,
@@ -21,11 +20,8 @@ export default () => (
       <Home path="/" />
       <Login path="login" />
       <Register path="register" />
-      <EmailConfirmed path="email-confirmed" />
       <VerifyEmail path="verify-email" />
-      {/* $FlowFixMe */}
       <UserListing path="/user/listings" />
-      {/* $FlowFixMe */}
       <UserListing path="/user/listings/:pageId" />
       {/* $FlowFixMe */}
       <CreateListing path="/listing/new" />
@@ -39,7 +35,6 @@ export default () => (
       <ConfirmEmail path="confirm-email" />
       {/* $FlowFixMe */}
       <Search path="/search/:term" />
-      {/* $FlowFixMe */}
       <Search path="/search/:term/:pageId" />
     </Layout>
   </Router>
