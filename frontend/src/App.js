@@ -9,7 +9,8 @@ import {
   CreateListing,
   ListingDetails,
   ConfirmEmail,
-  Search
+  Search,
+  FindBook
 } from "./pages";
 import Layout from "./Layout";
 
@@ -24,8 +25,15 @@ export default () => (
       <UserListing path="/user/listings/:pageId" />
       {/* $FlowFixMe */}
       <CreateListing path="/listing/new" />
-      <ListingDetails path="/listing/:id" />
-      <ConfirmEmail path="/confirm-email" />
+      {/* $FlowFixMe */}
+      <FindBook path="listing/findbook" />
+      {/* $FlowFixMe */}
+      <FindBook path="/listing/findbook/:term" />
+      {/* $FlowFixMe */}
+      <FindBook path="/listing/findbook/:term/:pageId" />
+      <ListingDetails path="listing/:id" />
+      <ConfirmEmail path="confirm-email" />
+      {/* $FlowFixMe */}
       <Search path="/search/:term" />
       <Search path="/search/:term/:pageId" />
     </Layout>

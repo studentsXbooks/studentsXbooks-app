@@ -24,6 +24,7 @@ namespace sXb_service.Helpers
         public Paging(int page, IEnumerable<T> allData) : this(page, 20, allData)
         {
         }
+
         public int TotalRecords { get; set; }
         public int TotalPages => (int)Math.Ceiling((decimal)TotalRecords / PageSize);
         public int PageSize { get; set; }
@@ -31,5 +32,15 @@ namespace sXb_service.Helpers
         public bool HasPrev => CurrentPage > 1;
         public int CurrentPage { get; set; }
         public IEnumerable<T> Data { get; set; }
+
+        public static Paging<T> ApplyPaging( int totalItems, IEnumerable<T> pageData, int currentPage, int PageSize = 10)
+        {
+            Paging<T> paging = new Paging<T>();
+            paging.PageSize = PageSize;
+            paging.TotalRecords = totalItems;
+            paging.Data = pageData;
+            paging.CurrentPage = currentPage;
+            return paging;
+        }
     }
 }

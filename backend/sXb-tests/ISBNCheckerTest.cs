@@ -27,5 +27,28 @@ namespace sXb_tests
             var result = ISBNChecker.isISBN10(invalidISBN);
             Assert.False(result);
         }
+
+        [Theory]
+        [InlineData("978-0-306-406157")]
+        [InlineData("9780132350884")]
+        [InlineData("978-0393912692")]
+        [InlineData("9781974305032")]
+        [InlineData("978-0-1359-5705-9")]
+        public void isValidISBN13_ValidString_ShouldReturnTrue(string validISBN)
+        {
+            var result = ISBNChecker.isISBN13(validISBN);
+            Assert.True(result);
+        }
+
+
+        [Theory]
+        [InlineData("0")]
+        [InlineData("01111111111111111111")]
+        [InlineData("1234567890123")]
+        public void isValidISBN13_InValidString_ShouldReturnFalse(string invalidISBN)
+        {
+            var result = ISBNChecker.isISBN13(invalidISBN);
+            Assert.False(result);
+        }
     }
 }

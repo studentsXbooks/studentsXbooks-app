@@ -10,6 +10,7 @@ import {
   Button
 } from "@material-ui/core";
 import useApi from "../hooks/useApi";
+import buildQuery from "../utils/buildQuery";
 
 type Props = {
   basePath: string,
@@ -22,14 +23,6 @@ const getQuery = queries => key => new URLSearchParams(queries).get(key) || "";
 const extractConditions = queries => {
   const conditions = getQuery(queries)("conditions");
   return conditions ? conditions.split(",") : [];
-};
-
-const buildQuery = (filterObj: {}) => {
-  const keys = Object.keys(filterObj);
-  return keys
-    .filter(x => filterObj[x] !== "")
-    .reduce((acc, key) => `${acc}${key}=${filterObj[key]}&`, "?")
-    .slice(0, -1);
 };
 
 const SearchFilterForm = ({ basePath, navigate, location }: Props) => {

@@ -83,5 +83,26 @@ namespace sXb_tests
             Assert.Equal(list.Count / 2, page.TotalPages);
             Assert.Equal(list.Count, page.TotalRecords);
         }
+
+        [Fact]
+        public void ApplyPaging_20ItemsAndDefaultPageSizeOf10AndCurrentPageOf2_ShouldHave20TotalRecordsAndHasPrevTrueHasNextFalseAndTotalPagesOf2()
+        {
+            var list = Enumerable.Repeat(1, 20).ToList();
+            var page = Paging<int>.ApplyPaging(list.Count(), list, 2);
+            Assert.Equal(20, page.TotalRecords);
+            Assert.True(page.HasPrev);
+            Assert.False(page.HasNext);
+            Assert.Equal(2, page.TotalPages);
+        }
+
+        [Fact]
+        public void ApplyPaging_0ItemsAndDefaultPageSizeOf10AndCurrentPageOf1_ShouldHave0TotalItemsAndBothHavePrevAndHaveNextFalseAndTotalPagesOf0()
+        {
+            var page = Paging<int>.ApplyPaging(0, new List<int>(), 1);
+            Assert.Equal(0, page.TotalRecords);
+            Assert.False(page.HasPrev);
+            Assert.False(page.HasNext);
+            Assert.Equal(0, page.TotalPages);
+        }
     }
 }

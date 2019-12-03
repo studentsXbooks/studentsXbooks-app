@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "@reach/router";
+import styled from "styled-components";
 import {
   Grid,
   Card,
@@ -7,30 +8,40 @@ import {
   CardContent,
   Typography
 } from "@material-ui/core";
-import styled from "styled-components";
+import buildQuery from "../utils/buildQuery";
 
 type Props = {
   listing: {
     title: string,
-    price: string,
+    thumbnail: string,
+    description: string,
     id: string,
-    isbn10: String,
-    isbn13: String,
-    condition: string,
+    isbn13: string,
+    isbn10: string,
     authors: [string]
   }
 };
+
 const StyledCard = styled(Card)`
   height: 20em;
   width: 20em;
 `;
 
-const ListingCard = ({
-  listing: { title, price, id, isbn10, isbn13, condition, authors }
+const BookCard = ({
+  listing: { title, description, isbn10, isbn13, thumbnail, authors }
 }: Props) => (
   <Grid item>
     {/* //$FlowFixMe */}
-    <Link to={`/listing/${id}`}>
+    <Link
+      to={`/listing/new/${buildQuery({
+        title,
+        isbn10,
+        isbn13,
+        thumbnail: encodeURIComponent(thumbnail),
+        description,
+        authors
+      })}`}
+    >
       <StyledCard raised>
         <CardHeader
           title={
@@ -41,14 +52,14 @@ const ListingCard = ({
           }
         />
         <CardContent>
-          <Typography variant="body1">{condition}</Typography>
-          <Typography variant="body1">{isbn10}</Typography>
-          <Typography variant="body1">{isbn13}</Typography>
-          <Typography variant="body1">${price}</Typography>
+          <img src={thumbnail} alt="Book Cover" width="130" height="130" />
+
+          <Typography variant="body1">ISBN10: {isbn10}</Typography>
+          <Typography variant="body1">ISBN13: {isbn13}</Typography>
         </CardContent>
       </StyledCard>
     </Link>
   </Grid>
 );
 
-export default ListingCard;
+export default BookCard;
