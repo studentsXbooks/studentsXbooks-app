@@ -10,6 +10,8 @@ import {
   Button
 } from "@material-ui/core";
 import useApi from "../hooks/useApi";
+import styled from "styled-components";
+import { withStyles } from "@material-ui/styles";
 
 type Props = {
   basePath: string,
@@ -70,32 +72,73 @@ const SearchFilterForm = ({ basePath, navigate, location }: Props) => {
     );
   };
 
+  const CheckboxGridLayout = styled.div`
+    display: grid;
+    grid-template-row: 20px 20px 20px 20px 20px;
+    grid-template-cols: auto;
+    grid-row-gap: 3px;
+    justify-items: center;
+    align-items: center;
+  `;
+
+  const CheckboxBox = styled.div`
+    display: grid;
+    grid-template-rows: 1fr 300px;
+    grid-template-columns: auto;
+    grid-gap: 3px;
+    align-items: center;
+  `;
+
+  const StyledCheckbox = styled.div`
+    label[id="condition-0"] {
+      border-bottom: solid 3px #07e000;
+    }
+
+    label[id="condition-1"] {
+      border-bottom: solid 3px #a6ff00;
+    }
+
+    label[id="condition-2"] {
+      border-bottom: solid 3px #ffbf00;
+    }
+
+    label[id="condition-3"] {
+      border-bottom: solid 3px #cc3703;
+    }
+
+    label[id="condition-4"] {
+      border-bottom: solid 3px #ff1a00;
+    }
+  `;
+
   return (
     <div>
       <form method="POST">
         <FormControl component="fieldset">
           <FormLabel component="legend">Conditions</FormLabel>
           <FormGroup>
-            {!loading &&
-              conditions &&
-              Array.isArray(conditions) &&
-              conditions.map(({ value, name }) => (
-                <FormControlLabel
-                  key={name}
-                  control={
-                    <Checkbox
-                      value={value}
-                      checked={selectedConditions.some(
-                        x => x.toString() === value.toString()
-                      )}
-                      inputProps={{ "aria-label": `condition-${value}` }}
-                    />
-                  }
-                  onChange={handleCondition}
-                  label={name}
-                  id={`condition-${value}`}
-                />
-              ))}
+            <StyledCheckbox>
+              {!loading &&
+                conditions &&
+                Array.isArray(conditions) &&
+                conditions.map(({ value, name }) => (
+                  <FormControlLabel
+                    key={name}
+                    control={
+                      <Checkbox
+                        value={value}
+                        checked={selectedConditions.some(
+                          x => x.toString() === value.toString()
+                        )}
+                        inputProps={{ "aria-label": `condition-${value}` }}
+                      />
+                    }
+                    onChange={handleCondition}
+                    label={name}
+                    id={`condition-${value}`}
+                  />
+                ))}
+            </StyledCheckbox>
           </FormGroup>
         </FormControl>
       </form>
