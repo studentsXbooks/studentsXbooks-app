@@ -116,7 +116,7 @@ const SearchFilterForm = ({ basePath, navigate, location }: Props) => {
       <form method="POST">
         <FormControl component="fieldset">
           <FormLabel component="legend">Conditions</FormLabel>
-          <FormGroup>
+          <FormGroup style={{ width: "100px", paddingLeft: "13px" }}>
             <StyledCheckbox>
               {!loading &&
                 conditions &&
