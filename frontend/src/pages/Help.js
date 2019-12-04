@@ -46,6 +46,29 @@ const BlueScene = styled.div`
   box-shadow: inset 0 0 2px 2px;
 `;
 
+const BlueSceneLayout = styled.div`
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 50% 50%;
+  grid-row-gap: 250px;
+  justify-items: center;
+  align-items: center;
+`;
+
+const DevLinksPosition = styled.div`
+  display: grid;
+  grid-row-start: 1;
+  grid-column-end: 2;
+  align-items: center;
+`;
+
+// const TextPosition = styled.div`
+//   display: grid;
+//   grid-row-start: 4;
+//   grid-column-end: 1;
+//   align-items: center;
+// `;
+
 export default () => (
   <div>
     <HeaderOne>
@@ -68,21 +91,25 @@ export default () => (
     </SubHeader>
     <br></br>
     <BlueScene>
-      <h2>Developer Contacts/Helpful Links</h2>
-      <p>
-        If you have you have issues with the site you can contact us through our
-        email: <h4>Studentxbooks@gmail.com</h4>
-      </p>
-      <p>
-        For bugs, errors, or to give suggestions for improvement on our site you
-        can create an issue at our GitHub repo: <t></t>
-        <a
-          href="https://github.com/studentsXbooks"
-          style={{ color: "#220B8F" }}
-        >
-          https://github.com/studentsXbooks
-        </a>
-      </p>
+      <BlueSceneLayout>
+        <DevLinksPosition>
+          <h2>Developer Contacts/Helpful Links</h2>
+          <p>
+            If you have you have issues with the site you can contact us through
+            our email: <h4>Studentxbooks@gmail.com</h4>
+          </p>
+          <p>
+            For bugs, errors, or to give suggestions for improvement on our site
+            you can create an issue at our GitHub repo: <t></t>
+            <a
+              href="https://github.com/studentsXbooks"
+              style={{ color: "#220B8F" }}
+            >
+              https://github.com/studentsXbooks
+            </a>
+          </p>
+        </DevLinksPosition>
+      </BlueSceneLayout>
     </BlueScene>
   </div>
 );
