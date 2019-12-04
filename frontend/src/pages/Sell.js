@@ -29,12 +29,16 @@ const TimelineBox = styled.div`
 
 const BlueScene = styled.div`
   text-align: center;
-  background-color: #76ecf7;
-  color: #33578c;
+  background-color: #efefef;
+  color: #333;
+  border-top: 1px solid #bbb;
+  border-bottom: 1px solid #bbb;
   padding: 10px;
-  border-radius: 10px 10px 10px 10px;
-  margin: auto;
-  box-shadow: inset 0 0 2px 2px;
+  margin: 1.5em auto;
+`;
+
+const BlueSceneLayoutHeader = styled.h2`
+  color: #4bb;
 `;
 
 export default () => (
@@ -89,7 +93,9 @@ export default () => (
     </HeaderOne>
     <BlueScene>
       <div>
-        <h2>Advantages of using StudentXbooks</h2>
+        <BlueSceneLayoutHeader>
+          Advantages of using StudentXbooks
+        </BlueSceneLayoutHeader>
         <p>
           {" "}
           If you're looking to buy textbooks, you can buy find them on our site
