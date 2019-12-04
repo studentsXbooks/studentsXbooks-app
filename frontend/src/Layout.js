@@ -18,11 +18,11 @@ const CustomToolBar = styled(Toolbar)`
     color: white;
     text-decoration: none;
   }
-  background-color: #33578c;
+  background-color: #358;
 `;
 const Logo = styled.span`
   & > a {
-    color: #76ecf7;
+    color: #f95;
     font-weight: bold;
     font-size: 1.25rem;
   }

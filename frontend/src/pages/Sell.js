@@ -89,7 +89,7 @@ export default () => (
     </HeaderOne>
     <BlueScene>
       <div>
-        <h2>Advantages of using StudenTXTbooks</h2>
+        <h2>Advantages of using StudentXbooks</h2>
         <p>
           {" "}
           If you're looking to buy textbooks, you can buy find them on our site

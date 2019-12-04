@@ -31,12 +31,20 @@ const BulletPointHeader = styled.h2`
 
 const BlueScene = styled.div`
   text-align: center;
-  background-color: #76ecf7;
-  color: #33578c;
+  background-color: #efefef;
+  color: #333;
+  border-top: 1px solid #bbb;
+  border-bottom: 1px solid #bbb;
   padding: 10px;
-  border-radius: 10px 10px 10px 10px;
-  margin: auto;
-  box-shadow: inset 0 0 2px 2px;
+  margin: 1.5em auto;
+`;
+
+const BlueSceneLayoutHeader = styled.h1`
+  color: #4bb;
+`;
+
+const BlueSceneSubHeader = styled.h3`
+  color: #4bb;
 `;
 
 export default () => (
@@ -52,7 +60,7 @@ export default () => (
       </TextStyle>
     </HeaderOne>
     <BlueScene>
-      <h1>Our story and who we are</h1>
+      <BlueSceneLayoutHeader>Our story and who we are</BlueSceneLayoutHeader>
       <TextStyle>
         {" "}
         We are a group of software engineering students from West Virginia
@@ -61,7 +69,7 @@ export default () => (
         now a site that aims to help students out on dealing with the ever
         rising price of textbooks.
       </TextStyle>
-      <h3>The Team</h3>
+      <BlueSceneSubHeader>The Team</BlueSceneSubHeader>
       <p>
         Levi Butcher - Project Manager <br></br> Sean Rickard - Developer{" "}
         <br></br> Jeremi Swann - Developer <br></br> Brady Starcher -
