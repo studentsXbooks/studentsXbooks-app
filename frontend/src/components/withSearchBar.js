@@ -36,7 +36,7 @@ const SearchForm = styled.form`
   & > button {
     align-self: stretch;
     width: 150px;
-    background-color: #33578c;
+    background-color: #32a8b3;
     border-radius: 25px;
   }
   & > div {

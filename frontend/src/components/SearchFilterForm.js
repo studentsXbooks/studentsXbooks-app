@@ -10,6 +10,7 @@ import {
   Button
 } from "@material-ui/core";
 import useApi from "../hooks/useApi";
+// $FlowFixMe
 import styled from "styled-components";
 import { withStyles } from "@material-ui/styles";
 
@@ -89,6 +90,22 @@ const SearchFilterForm = ({ basePath, navigate, location }: Props) => {
     align-items: center;
   `;
 
+  const SearchFilterLayout = styled.div`
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20% 20%;
+    grid-template-rows: 20% 20% 20% 20% 20%;
+    grid-row-gap: 65px;
+    justify-items: center;
+    align-items: center;
+  `;
+
+  const SubmitPosition = styled.div`
+    display: grid;
+    grid-row-start: 1;
+    grid-column-end: 5;
+    align-items: center;
+  `;
+
   const StyledCheckbox = styled.div`
     label[id="condition-0"] {
       border-bottom: solid 3px #07e000;
@@ -163,11 +180,20 @@ const SearchFilterForm = ({ basePath, navigate, location }: Props) => {
               onChange={e => setMax(e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} md={4}>
-            <Button type="submit" color="primary" fullWidth variant="contained">
-              Submit
-            </Button>
-          </Grid>
+          <SearchFilterLayout>
+            <SubmitPosition>
+              <Grid item xs={12} md={4}>
+                <Button
+                  type="submit"
+                  color="primary"
+                  fullWidth
+                  variant="contained"
+                >
+                  Submit
+                </Button>
+              </Grid>
+            </SubmitPosition>
+          </SearchFilterLayout>
         </Grid>
       </form>
     </div>
