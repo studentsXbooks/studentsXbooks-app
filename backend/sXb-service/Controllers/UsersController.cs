@@ -87,8 +87,8 @@ namespace sXb_service.Controllers {
                 return BadRequest ();
 
             // Validate: .edu email address.
-            if (!Regex.Match (newUser.Email, ".+@.+[.]edu").Success) {
-                return BadRequest (new ErrorMessage ("Invalid email address: Not an edu email address."));
+            if (!Regex.Match (newUser.Email, ".+@.+[.].+").Success) {
+                return BadRequest (new ErrorMessage ("Invalid email address."));
             }
             // Validate: email doesn't already exist.
             if (await Repo.EmailExists (newUser.Email)) {
