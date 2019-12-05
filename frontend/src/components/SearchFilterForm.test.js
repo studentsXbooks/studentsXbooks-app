@@ -20,7 +20,6 @@ it("Renders when passed required props", async () => {
       location={{ search: "" }}
     />
   );
-
   await wait(() => expect(container).toBeDefined());
 });
 

@@ -4,7 +4,6 @@ import {
   Home,
   Login,
   Register,
-  EmailConfirmed,
   VerifyEmail,
   UserListing,
   CreateListing,
@@ -13,7 +12,8 @@ import {
   Search,
   About,
   Sell,
-  Help
+  Help,
+  FindBook
 } from "./pages";
 import Layout from "./Layout";
 
@@ -23,24 +23,24 @@ export default () => (
       <Home path="/" />
       <Login path="login" />
       <Register path="register" />
-      <EmailConfirmed path="email-confirmed" />
       <VerifyEmail path="verify-email" />
-      {/* $FlowFixMe */}
       <UserListing path="/user/listings" />
-      {/* $FlowFixMe */}
       <UserListing path="/user/listings/:pageId" />
       {/* $FlowFixMe */}
       <CreateListing path="/listing/new" />
       {/* $FlowFixMe */}
-      <ListingDetails path="/listing/:id" />
-      <ConfirmEmail path="/confirm-email" />
+      <FindBook path="listing/findbook" />
       {/* $FlowFixMe */}
-      <Search path="/search/:term" />
-      {/* $FlowFixMe */}
-      <Search path="search/:term/:pageId" />
+      <FindBook path="/listing/findbook/:term" />
       <About path="about" />
       <Sell path="sell" />
       <Help path="help" />
+      {/* $FlowFixMe */}
+      <FindBook path="/listing/findbook/:term/:pageId" />
+      <ListingDetails path="listing/:id" />
+      <ConfirmEmail path="confirm-email" />
+      <Search path="/search/:term" />
+      <Search path="/search/:term/:pageId" />
     </Layout>
   </Router>
 );

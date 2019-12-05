@@ -204,7 +204,7 @@ namespace sXb_tests.Integration
             var response = await client.GetAsync(url);
             var username = await response.Content.ReadAsAsync<User>();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal(username.UserName, "TestUser");
+            Assert.Equal( "TestUser", username.UserName);
         }
 
         [Fact]

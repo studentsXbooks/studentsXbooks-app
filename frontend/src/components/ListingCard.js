@@ -7,6 +7,7 @@ import {
   CardContent,
   Typography
 } from "@material-ui/core";
+import styled from "styled-components";
 
 type Props = {
   listing: {
@@ -14,34 +15,38 @@ type Props = {
     price: string,
     id: string,
     isbn10: String,
+    isbn13: String,
     condition: string,
-    authors: [string]
+    authors: string
   }
 };
+const StyledCard = styled(Card)`
+  height: 20em;
+  width: 20em;
+`;
 
 const ListingCard = ({
-  listing: { title, price, id, isbn10, condition, authors }
+  listing: { title, price, id, isbn10, isbn13, condition, authors }
 }: Props) => (
   <Grid item>
     {/* //$FlowFixMe */}
     <Link to={`/listing/${id}`}>
-      <Card raised>
+      <StyledCard raised>
         <CardHeader
           title={
             <>
               <Typography variant="h5">{title}</Typography>
-              <Typography variant="subtitle1">
-                By: {authors.join(",")}
-              </Typography>
+              <Typography variant="subtitle1">By: {authors}</Typography>
             </>
           }
         />
         <CardContent>
           <Typography variant="body1">{condition}</Typography>
           <Typography variant="body1">{isbn10}</Typography>
+          <Typography variant="body1">{isbn13}</Typography>
           <Typography variant="body1">${price}</Typography>
         </CardContent>
-      </Card>
+      </StyledCard>
     </Link>
   </Grid>
 );
