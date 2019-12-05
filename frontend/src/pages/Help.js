@@ -37,7 +37,7 @@ const FAQ = styled.div`
   width: 50%;
   margin: 0 auto;
   padding: 20px 0px 0px 0px;
-  color: #707070;
+  color: #4bb;
 `;
 
 const SubHeader = styled.div`
