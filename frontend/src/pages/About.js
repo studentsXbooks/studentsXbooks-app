@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 /* $FlowFixMe */
 import styled from "styled-components";
-import { isNil } from "ramda";
-import { fade, makeStyles } from "@material-ui/core/styles";
 
 const HeaderOne = styled.div`
   text-align: center;

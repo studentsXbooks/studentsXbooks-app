@@ -1,9 +1,6 @@
-// @flow
-
-import React, { useState } from "react";
+import React from "react";
 // $FlowFixMe
 import styled from "styled-components";
-import withSearchBar from "../components/withSearchBar";
 
 const HeaderOne = styled.div`
   text-align: center;
@@ -52,6 +49,7 @@ export default () => (
         <TimelineBox>
           <img
             src="./Book-titles-sell.jpg"
+            alt="Powerpoint Graphic of someone buying books"
             style={{
               paddingRight: "60px",
               height: "300px"

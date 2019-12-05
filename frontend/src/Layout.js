@@ -40,7 +40,7 @@ export default ({ children }: Props) => {
         <CustomToolBar>
           <Logo variant="h6">
             {/* $FlowFixMe */}
-            <Link to="/">StudentXbooks</Link>
+            <Link to="/">StudentsXbooks</Link>
           </Logo>
           <Typography variant="h6">
             {/* $FlowFixMe */}

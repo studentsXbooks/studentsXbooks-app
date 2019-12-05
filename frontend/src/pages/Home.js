@@ -1,16 +1,10 @@
-// @flow
-
 import React, { useState } from "react";
 // $FlowFixMe
 import styled from "styled-components";
-import type { ComponentType } from "react";
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
 import { navigate } from "@reach/router";
-import { TextField } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core";
 
 const SearchBox = styled.div`
   margin-bottom: 2rem;
@@ -29,14 +23,8 @@ const SearchArea = styled.div`
   color: white;
 `;
 
-const LogoArea = styled.div`
-  grid-area: logo;
-`;
-
 const SearchLayout = styled.div`
   display: grid;
-  /* grid-template-rows: auto;
-  grid-template-columns: 50% 50%; */
   grid-template-columns: 20% 20% 20% 20% 20%;
   grid-template-rows: 20% 20% 20% 20% 20%;
   grid-row-gap: 60px;
@@ -108,10 +96,6 @@ const MainContent = styled.div`
   height: 90.3vh;
 `;
 
-const fyt = styled.div`
-  color: white;
-`;
-
 const Home = () => {
   const [search, setSearch] = useState("");
 
@@ -120,7 +104,7 @@ const Home = () => {
       <BkgOverlay>
         <SearchLayout>
           <LogoPosition>
-            <img src={"./Mock_Logo_LargeV2.png"}></img>
+            <img src={"./Mock_Logo_LargeV2.png"} alt="Very Big Mock Logo"></img>
           </LogoPosition>
           <SearchPosition>
             <SearchBox>
@@ -156,15 +140,3 @@ const Home = () => {
 };
 
 export default Home;
-
-{
-  /* <MuiThemeProvider theme={input}>
-                <InputBase
-                  placeholder="Title, Author, ISBN..."
-                  onChange={e => setSearch(e.target.value)}
-                  inputProps={{ "aria-label": "search" }}
-                />
-              </MuiThemeProvider> */
-}
-
-// style={{ backgroundImage: "url(${./BookShelf.JPG})" }}

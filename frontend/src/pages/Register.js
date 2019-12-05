@@ -1,7 +1,6 @@
 // @flow
 
 import React, { useState } from "react";
-import { navigate } from "@reach/router";
 import {
   TextField,
   Button,
@@ -10,13 +9,14 @@ import {
   CardContent,
   CardActions,
   Grid,
-  Typography
+  Typography,
+  MuiThemeProvider,
+  createMuiTheme
 } from "@material-ui/core";
-import FullHeightGrid from "../ui/FullHeightGrid";
-import { apiFetch } from "../utils/fetchLight";
 // $FlowFixMe
 import styled from "styled-components";
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core";
+import FullHeightGrid from "../ui/FullHeightGrid";
+import { apiFetch } from "../utils/fetchLight";
 
 const Register = ({ navigate }: Object) => {
   const [username, setUsername] = useState("");

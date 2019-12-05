@@ -7,14 +7,12 @@ import {
   CardContent,
   CardActions,
   Grid,
-  Typography
+  Typography,
+  MuiThemeProvider,
+  createMuiTheme
 } from "@material-ui/core";
 import { apiFetch } from "../utils/fetchLight";
 import FullHeightGrid from "../ui/FullHeightGrid";
-
-// $FlowFixMe
-import styled from "styled-components";
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core";
 
 const Login = ({ navigate }: Object) => {
   const [email, setEmail] = useState("");
@@ -27,20 +25,6 @@ const Login = ({ navigate }: Object) => {
       }
     }
   });
-
-  const quote = styled.h2`
-    text-align: center;
-    color: #707070;
-  `;
-
-  const LoginInfo = styled.div`
-  text-align: center;
-  background-color: #ffffff;
-  color: #707070;
-  padding 50px;
-  margin: auto;
-  box-shadow: inset 0 0 2px 2px;
-`;
 
   return (
     <FullHeightGrid container alignItems="center" justify="center">

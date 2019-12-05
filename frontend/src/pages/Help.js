@@ -1,35 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 // $FlowFixMe
 import styled from "styled-components";
-
 import {
   ExpansionPanel,
   ExpansionPanelSummary,
   ExpansionPanelDetails,
   Typography
+  // $FlowFixMe
 } from "@material-ui/core/";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const HeaderOne = styled.div`
   text-align: center;
   color: #707070;
-`;
-
-const TextStyle = styled.p`
-  text-align: center;
-  width: 50%;
-  margin: 0 auto;
-  padding: 20px;
-`;
-
-const QBorder = styled.p`
-  text-align: center;
-  margin: 0 auto;
-  padding: 10px;
-  border: solid;
-  border-width: thin;
-  box-shadow: 1px 1px;
-  width: 50%;
 `;
 
 const FAQ = styled.div`
@@ -53,7 +36,6 @@ const BlueScene = styled.div`
   padding: 10px;
   margin: 1.5em auto;
   width: 50%;
-  /* box-shadow: inset 0 0 2px 2px; */
 `;
 
 const BlueOverallLayout = styled.div`
@@ -66,10 +48,6 @@ const BlueOverallLayout = styled.div`
 `;
 
 const BlueScenePosition = styled.div`
-  /* display: grid;
-  grid-row-start: 1;
-  grid-column-end: 3;
-  align-items: center; */
   margin: 0 auto;
   width: 550px;
 `;
@@ -82,20 +60,6 @@ const BlueSceneLayoutHeader = styled.h2`
 const BlueSceneLayoutText = styled.p`
   text-align: left;
 `;
-
-const DevLinksPosition = styled.div`
-  display: grid;
-  grid-row-start: 1;
-  grid-column-end: 2;
-  align-items: center;
-`;
-
-// const TextPosition = styled.div`
-//   display: grid;
-//   grid-row-start: 4;
-//   grid-column-end: 1;
-//   align-items: center;
-// `;
 
 export default () => (
   <div>
@@ -155,7 +119,10 @@ export default () => (
           <BlueSceneLayoutText>
             If you have you have issues with the site you can contact us through
             our email:{" "}
-            <a style={{ color: "#F93", fontWeight: "bold" }}>
+            <a
+              style={{ color: "#F93", fontWeight: "bold" }}
+              href="mailto:studentxbooks@gmail.com"
+            >
               studentxbooks@gmail.com
             </a>
           </BlueSceneLayoutText>
