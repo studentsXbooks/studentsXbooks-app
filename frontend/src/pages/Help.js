@@ -2,6 +2,14 @@ import React, { useState } from "react";
 // $FlowFixMe
 import styled from "styled-components";
 
+import {
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
+  Typography
+} from "@material-ui/core/";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+
 const HeaderOne = styled.div`
   text-align: center;
   color: #707070;
@@ -101,13 +109,41 @@ export default () => (
       <FAQ>
         <h2>FAQ</h2>
       </FAQ>
-      <QBorder>
-        How does the site gather the final price for a selling/buying of a book?
-      </QBorder>
-      <br></br>
-      <QBorder>
-        Can I buy a book while one of my other books is still on sale?
-      </QBorder>
+      <ExpansionPanel style={{ margin: "0 auto", width: "50%" }}>
+        <ExpansionPanelSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Typography>
+            How does the site gather the final price for a selling/buying of a
+            book?
+          </Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+            malesuada lacus ex, sit amet blandit leo lobortis eget.
+          </Typography>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+      <ExpansionPanel style={{ margin: "0 auto", width: "50%" }}>
+        <ExpansionPanelSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Typography>
+            Can I buy a book while one of my other books is still on sale?
+          </Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+            malesuada lacus ex, sit amet blandit leo lobortis eget.
+          </Typography>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
     </SubHeader>
     <br></br>
     <BlueScene>
