@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import type { Node } from "react";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -7,7 +7,7 @@ import { Link } from "@reach/router";
 import { Menu, MenuItem } from "@material-ui/core";
 import styled from "styled-components";
 import { isNil } from "ramda";
-import useApi from "./hooks/useApi";
+import useUserInfo from "./hooks/useUserInfo";
 
 const CustomToolBar = styled(Toolbar)`
   & > h6 {
@@ -41,13 +41,7 @@ export default ({ children }: Props) => {
 };
 
 const UserNavOrDefault = () => {
-  const { data: userInfo, retry } = useApi("users/name");
-
-  useEffect(() => {
-    retry();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [global.cookie]);
-
+  const { userInfo } = useUserInfo();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = e => setAnchorEl(e.currentTarget);
