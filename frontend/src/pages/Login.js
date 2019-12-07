@@ -7,7 +7,9 @@ import {
   CardContent,
   CardActions,
   Grid,
-  Typography
+  Typography,
+  MuiThemeProvider,
+  createMuiTheme
 } from "@material-ui/core";
 import { apiFetch } from "../utils/fetchLight";
 import FullHeightGrid from "../ui/FullHeightGrid";
@@ -15,10 +17,23 @@ import FullHeightGrid from "../ui/FullHeightGrid";
 const Login = ({ navigate }: Object) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const submitButton = createMuiTheme({
+    palette: {
+      primary: {
+        main: "#33578c"
+      }
+    }
+  });
+
   return (
     <FullHeightGrid container alignItems="center" justify="center">
-      <Grid item xs={9} sm={6} lg={3}>
-        <Card component="article" raised>
+      <Grid item>
+        <Card
+          style={{ width: "25rem", padding: 20, marginRight: 25 }}
+          component="article"
+          raised
+        >
           <form
             onSubmit={e => {
               e.preventDefault();
@@ -32,8 +47,8 @@ const Login = ({ navigate }: Object) => {
           >
             <CardHeader
               title={
-                <Typography variant="h3" align="center">
-                  Login
+                <Typography variant="h4" align="center">
+                  Login!
                 </Typography>
               }
             />
@@ -57,14 +72,16 @@ const Login = ({ navigate }: Object) => {
               <br />
             </CardContent>
             <CardActions>
-              <Button
-                variant="contained"
-                color="primary"
-                fullWidth
-                type="submit"
-              >
-                Submit
-              </Button>
+              <MuiThemeProvider theme={submitButton}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  type="Submit"
+                >
+                  Login
+                </Button>
+              </MuiThemeProvider>
             </CardActions>
           </form>
         </Card>

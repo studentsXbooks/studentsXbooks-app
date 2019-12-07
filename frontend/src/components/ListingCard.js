@@ -17,7 +17,7 @@ type Props = {
     isbn10: String,
     isbn13: String,
     condition: string,
-    authors: [string]
+    authors: string
   }
 };
 const StyledCard = styled(Card)`

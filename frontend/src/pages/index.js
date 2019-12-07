@@ -7,6 +7,9 @@ import CreateListing from "./CreateListing";
 import ListingDetails from "./ListingDetails";
 import ConfirmEmail from "./ConfirmEmail";
 import Search from "./Search";
+import About from "./About";
+import Sell from "./Sell";
+import Help from "./Help";
 import FindBook from "./FindBook";
 
 export {
@@ -19,5 +22,8 @@ export {
   ListingDetails,
   ConfirmEmail,
   Search,
+  About,
+  Sell,
+  Help,
   FindBook
 };

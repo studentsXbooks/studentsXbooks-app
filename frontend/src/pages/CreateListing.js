@@ -58,7 +58,7 @@ const ConditionRadios = () => {
   const { data: conditions } = useApi("conditions");
   return (
     <fieldset>
-      <legend>condition</legend>
+      <legend>Condition</legend>
       {conditions &&
         conditions.map(({ value, name }) => (
           <Field
@@ -214,7 +214,8 @@ const CreateListing = ({ navigate }: Props) => {
                 />
 
                 <Typography variant="h5" gutterBottom>
-                  About Your Book
+                  About Your Book. Please note that the price must be in US
+                  dollars.
                 </Typography>
                 <Field
                   id="price"
