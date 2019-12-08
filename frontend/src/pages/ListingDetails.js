@@ -6,7 +6,6 @@ import {
   Dialog,
   DialogContent
 } from "@material-ui/core";
-// $FlowFixMe
 import styled from "styled-components";
 import useApi from "../hooks/useApi";
 import ContactSellerForm from "../components/ContactSellerForm";
@@ -43,7 +42,10 @@ const ListingDetails = ({ id }: Props) => {
             <ImageBox>
               <img src={listing.thumbnail} alt="Book" />
               <Typography variant="h4" align="left">
-                ISBN: {listing.isbn10}
+                ISBN-10: {listing.isbn10}
+              </Typography>
+              <Typography variant="h4" align="left">
+                ISBN-13: {listing.isbn13 || "None"}
               </Typography>
             </ImageBox>
           </Grid>
