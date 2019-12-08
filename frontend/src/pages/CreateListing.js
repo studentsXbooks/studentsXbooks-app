@@ -2,7 +2,6 @@ import React from "react";
 import { Field, Formik, Form } from "formik";
 import { Typography, Button } from "@material-ui/core";
 import * as Yup from "yup";
-// $FlowFixMe
 import styled from "styled-components";
 import useApi from "../hooks/useApi";
 import SiteMargin from "../ui/SiteMargin";

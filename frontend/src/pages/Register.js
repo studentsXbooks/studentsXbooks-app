@@ -15,7 +15,7 @@ const registerSchema = Yup.object().shape({
     .required("Username required"),
   email: Yup.string()
     .min(1, "Must be at least 1 character long.")
-    .matches(/.+@.+[.]edu/, "Must be a .edu address.")
+    .email("Must be a email address")
     .required("Email required"),
   password: Yup.string()
     .min(8, "Password must be at least 8 characters long.")
