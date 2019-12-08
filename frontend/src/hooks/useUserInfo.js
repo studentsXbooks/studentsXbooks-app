@@ -11,7 +11,7 @@ const useLocation = () => {
 };
 
 const useUserInfo = () => {
-  const { loading, data: userInfo, error, retry } = useApi("users/name");
+  const { loading, data: userInfo, error, retry } = useApi("users/info");
   const { location } = useLocation();
 
   useEffect(() => {

@@ -23,6 +23,7 @@ const FindBook = ({ pageId = "1", term = "", navigate, location }: Props) => {
         .then(res => res.json())
         .then(setPage);
   }, [pageId, term, location.search]);
+
   return (
     <SiteMargin>
       <Formik

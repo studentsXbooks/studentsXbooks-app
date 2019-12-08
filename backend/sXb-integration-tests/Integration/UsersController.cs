@@ -191,26 +191,26 @@ namespace sXb_tests.Integration
         }
 
         [Fact]
-        public async Task GetUserName_CallerHasCookie_Return200WithUserName()
+        public async Task GetUserInfo_CallerHasCookie_Return200WithUserName()
         {
-            string url = "/api/users/name";
             var client = _factory.CreateClient();
-            await client.PostAsJsonAsync<LoginViewModel>("/api/users/", new LoginViewModel()
+            await client.PostAsJsonAsync("/api/users/", new LoginViewModel()
             {
                 Email = "test@wvup.edu",
                 Password = "Develop@90"
             });
 
-            var response = await client.GetAsync(url);
-            var username = await response.Content.ReadAsAsync<User>();
+            var response = await client.GetAsync("/api/users/info");
+            var userInfo = await response.Content.ReadAsAsync<UserInfoViewModel>();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal( "TestUser", username.UserName);
+            Assert.Equal("TestUser", userInfo.UserName);
+            Assert.Equal("test@wvup.edu", userInfo.Email);
         }
 
         [Fact]
-        public async Task GetUserName_CallerHasNoCookie_Return400()
+        public async Task GetUserInfo_CallerHasNoCookie_Return400()
         {
-            string url = "/api/users/name";
+            string url = "/api/users/info";
             var client = _factory.CreateClient();
 
             var response = await client.GetAsync(url);
@@ -218,9 +218,9 @@ namespace sXb_tests.Integration
         }
 
         [Fact]
-        public async Task GetUserName_InvalidCookie_Return400()
+        public async Task GetUserInfo_InvalidCookie_Return400()
         {
-            string url = "/api/users/name";
+            string url = "/api/users/info";
             var client = _factory.CreateClient();
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Add("Cookie", "AspnetIdentityCookie=Whatever;");

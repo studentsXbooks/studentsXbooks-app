@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-// $FlowFixMe
 import styled from "styled-components";
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
 import { navigate } from "@reach/router";
+import MockLogo from "../images/Mock_Logo_Largev2.png";
+import BookShelf2 from "../images/BookShelf2.jpg";
 
 const SearchBox = styled.div`
   margin-bottom: 2rem;
@@ -16,36 +17,11 @@ const SearchBox = styled.div`
   color: white;
 `;
 
-const SearchArea = styled.div`
-  grid-area: search;
-  position: absolute;
-  width: 500px;
-  color: white;
-`;
-
 const SearchLayout = styled.div`
   display: grid;
-  grid-template-columns: 20% 20% 20% 20% 20%;
-  grid-template-rows: 20% 20% 20% 20% 20%;
-  grid-row-gap: 60px;
+  padding-top: 10rem;
+  align-items: flex-start;
   justify-items: center;
-  align-items: center;
-`;
-
-const SearchPosition = styled.div`
-  display: grid;
-  grid-row-start: 3;
-  grid-column-end: 3;
-  grid-gap: -10px;
-  align-items: center;
-`;
-
-const LogoPosition = styled.div`
-  display: grid;
-  grid-row-start: 2;
-  grid-column-end: 4;
-  grid-gap: -10px;
-  align-items: center;
 `;
 
 const SearchForm = styled.form`
@@ -78,22 +54,17 @@ const SearchForm = styled.form`
     background: white;
   }
   & input::placeholder {
-    color: gray !important;
-    opacity: 1;
-    background: white;
+    opacity: 0.75;
   }
 `;
-const BkgOverlay = styled.div`
-  background-color: rgba(0, 0, 0, 0.5);
-  height: 100%;
-  position: relative;
-  z-index: 1;
-`;
+
 const MainContent = styled.div`
-  background-image: url("./BookShelf2.JPG");
-  background-size: 100vw;
-  background-repeat: no-repeat;
-  height: 90.3vh;
+  background: rgba(0, 0, 0, 0.5) url(${BookShelf2}) center / cover no-repeat;
+  background-blend-mode: darken;
+  height: calc(
+    100vh - 64px
+  ); /* 64px is based off of material-ui navbar, Changes on smaller screens */
+  text-align: center;
 `;
 
 const Home = () => {
@@ -101,40 +72,35 @@ const Home = () => {
 
   return (
     <MainContent>
-      <BkgOverlay>
-        <SearchLayout>
-          <LogoPosition>
-            <img src={"./Mock_Logo_LargeV2.png"} alt="Very Big Mock Logo"></img>
-          </LogoPosition>
-          <SearchPosition>
-            <SearchBox>
-              <SearchArea>
-                <SearchForm
-                  method="POST"
-                  onSubmit={e => {
-                    e.preventDefault();
-                    navigate(`/search/${search}`);
-                  }}
-                >
-                  <InputBase
-                    placeholder="Title, Author, ISBN..."
-                    onChange={e => setSearch(e.target.value)}
-                    inputProps={{ "aria-label": "search" }}
-                  />
-                  <Button
-                    type="submit"
-                    startIcon={<SearchIcon />}
-                    color="primary"
-                    variant="contained"
-                  >
-                    Search
-                  </Button>
-                </SearchForm>
-              </SearchArea>
-            </SearchBox>
-          </SearchPosition>
-        </SearchLayout>
-      </BkgOverlay>
+      <SearchLayout>
+        <div>
+          <img src={MockLogo} alt="Very Big Mock Logo" />
+
+          <SearchBox>
+            <SearchForm
+              method="POST"
+              onSubmit={e => {
+                e.preventDefault();
+                navigate(`/search/${search}`);
+              }}
+            >
+              <InputBase
+                placeholder="Title, Author, ISBN..."
+                onChange={e => setSearch(e.target.value)}
+                inputProps={{ "aria-label": "search" }}
+              />
+              <Button
+                type="submit"
+                startIcon={<SearchIcon />}
+                color="primary"
+                variant="contained"
+              >
+                Search
+              </Button>
+            </SearchForm>
+          </SearchBox>
+        </div>
+      </SearchLayout>
     </MainContent>
   );
 };

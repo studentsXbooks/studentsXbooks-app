@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { apiFetch } from "../utils/fetchLight";
 import Input from "../ui/Input";
 import Stack from "../ui/Stack";
+import useUserInfo from "../hooks/useUserInfo";
 
 const CustomForm = styled(Form)`
   background: #fff;
@@ -30,6 +31,8 @@ type Props = {
 };
 
 const ContactSellerForm = ({ listing, onComplete }: Props) => {
+  const { loading, userInfo } = useUserInfo();
+
   if (listing.contactOption !== 0) {
     return <div>Seller has chosen to not to be contacted</div>;
   }
@@ -37,8 +40,13 @@ const ContactSellerForm = ({ listing, onComplete }: Props) => {
   return (
     <Formik
       validationSchema={contactSellerSchema}
-      initialValues={{ body: "", email: "", subject: "" }}
-      onSubmit={async (values, { setSubmitting }) => {
+      enableReinitialize
+      initialValues={{
+        body: "",
+        email: (userInfo && userInfo.email) || "",
+        subject: ""
+      }}
+      onSubmit={async (values, { setSubmitting, setStatus }) => {
         const contactObject = {
           listingId: listing.id,
           ...values
@@ -48,20 +56,24 @@ const ContactSellerForm = ({ listing, onComplete }: Props) => {
           .then(() => {
             onComplete();
           })
-          .catch(e => console.log(e))
+          .catch(async e => {
+            const errorMessage = await e.response.json();
+            setStatus(errorMessage.message);
+          })
           .finally(() => setSubmitting(false));
       }}
     >
-      {({ isSubmitting, isValid }) => (
+      {({ isSubmitting, isValid, status }) => (
         <CustomForm>
           <Stack>
             <Typography variant="h6" paragraph>
-              Contact Seller: about {listing.title}
+              Contact Seller: {listing.title}
             </Typography>
             <Typography variant="body1" paragraph>
               Send a message to the Seller. You can tell them about a book you
               have to trade or tell them you have the cash to buy their book.
             </Typography>
+            <div>{status}</div>
             <Field
               name="email"
               id="email"
@@ -70,6 +82,7 @@ const ContactSellerForm = ({ listing, onComplete }: Props) => {
               fullWidth
               variant="outlined"
               component={Input}
+              helperText={<div>{loading && "loading user info..."}</div>}
             />
             <Field
               name="body"
