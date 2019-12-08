@@ -8,8 +8,6 @@ import { apiFetch } from "../utils/fetchLight";
 import SiteMargin from "../ui/SiteMargin";
 import Stack from "../ui/Stack";
 
-// $FlowFixMe
-
 const registerSchema = Yup.object().shape({
   username: Yup.string()
     .min(1, "Must be at least 1 character long.")
