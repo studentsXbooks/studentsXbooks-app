@@ -6,12 +6,12 @@ import {
   Dialog,
   DialogContent
 } from "@material-ui/core";
-// $FlowFixMe
 import styled from "styled-components";
 import useApi from "../hooks/useApi";
 import ContactSellerForm from "../components/ContactSellerForm";
 import withSearchBar from "../components/withSearchBar";
 import useToggle from "../hooks/useToggle";
+import FallbackImage from "../components/ImageWithFallback";
 
 const OptionBox = styled.div`
   border: 3px solid #ccc;
@@ -41,7 +41,7 @@ const ListingDetails = ({ id }: Props) => {
         <Grid container spacing={3} justify="space-around">
           <Grid item>
             <ImageBox>
-              <img src={listing.thumbnail} alt="Book" />
+              <FallbackImage src={listing.thumbnail} alt="Book" />
               <Typography variant="h4" align="left">
                 ISBN: {listing.isbn10}
               </Typography>
