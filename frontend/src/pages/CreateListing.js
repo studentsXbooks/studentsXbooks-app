@@ -224,7 +224,7 @@ const CreateListing = ({ navigate }: Props) => {
                   component={Input}
                   variant="outlined"
                   label="Price"
-                  placeholder="Price"
+                  placeholder="ex. $10.00"
                   fullWidth
                   min={0}
                 />
