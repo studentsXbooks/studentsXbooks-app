@@ -67,9 +67,9 @@ const UserNavOrDefault = () => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleLogout = () => {
-    apiFetch(`users/logout`, "POST", {})
-      .then(() => navigate(`/login`))
-      .then(() => window.location.replace(`/login`));
+    apiFetch(`users/logout`, "POST", {}).then(() =>
+      window.location.replace(`/login`)
+    );
   };
   const handleClick = e => setAnchorEl(e.currentTarget);
   const handleClose = () => setAnchorEl(null);
