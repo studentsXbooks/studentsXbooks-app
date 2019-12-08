@@ -1,10 +1,13 @@
 import React from "react";
-import { render, fireEvent, wait, cleanup } from "@testing-library/react";
+import {
+  render,
+  fireEvent,
+  wait,
+  waitForElement
+} from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import ContactSellerForm from "./ContactSellerForm";
 import makeFetchReturn from "../test-utils/makeFetchReturn";
-
-afterEach(cleanup);
 
 const validListing = {
   contactOption: 0,
@@ -25,7 +28,7 @@ it("Renders with required props", () => {
   expect(container).toBeDefined();
 });
 
-it("Empty Message and Subject, Send is disabled", () => {
+it("Empty Message and Subject, Send is disabled", async () => {
   const { getByText } = render(
     <ContactSellerForm listing={validListing} onComplete={jest.fn()} />
   );
@@ -54,4 +57,37 @@ it("Calls onComplete after form is submitted successfully", async () => {
   await wait(() => {
     expect(mockComplete).toBeCalledTimes(1);
   });
+});
+
+it("Should fill in email with the current user's email", async () => {
+  const email = "buyer@gmail.com";
+  makeFetchReturn({ status: 200 })({ email });
+  const { getByLabelText, getByText } = render(
+    <ContactSellerForm listing={validListing} onComplete={jest.fn()} />
+  );
+  const loading = getByText(/loading/i);
+  expect(loading).toBeDefined();
+
+  const emailInput = getByLabelText(/email/i);
+  await wait(() => {
+    expect(emailInput).toHaveValue(email);
+  });
+});
+
+it("Should display error message when fetch returns back a non 2xx on submit", async () => {
+  const { getByLabelText, getByText } = render(
+    <ContactSellerForm listing={validListing} onComplete={jest.fn()} />
+  );
+  fireEvent.change(getByLabelText(/email/i), {
+    target: { value: "buyer@gmail.com" }
+  });
+  fireEvent.change(getByLabelText(/body/i), {
+    target: { value: "Hey I really would like to trade" }
+  });
+  const message = "Bad times";
+  makeFetchReturn({ status: 400 })({ message });
+  fireEvent.submit(getByText("Send"));
+
+  const failedMessage = await waitForElement(() => getByText(message));
+  expect(failedMessage).toBeDefined();
 });

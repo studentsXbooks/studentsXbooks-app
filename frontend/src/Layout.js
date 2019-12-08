@@ -68,6 +68,8 @@ const UserNavOrDefault = () => {
   const handleClick = e => setAnchorEl(e.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
+  console.log(userInfo);
+
   if (isNil(userInfo))
     return (
       <>
@@ -88,7 +90,7 @@ const UserNavOrDefault = () => {
         onClick={handleClick}
         style={{ marginLeft: "auto" }}
       >
-        {userInfo.username}
+        {userInfo.userName}
       </Typography>
       <Menu
         id="user-menu"
