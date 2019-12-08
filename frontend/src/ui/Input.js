@@ -8,15 +8,17 @@ const ErrorText = styled.span`
   color: red;
 `;
 
-const Input = ({ field, ...props }: FieldProps) => (
+const Input = ({ field, helperText, ...props }: FieldProps) => (
   <TextField
     {...field}
     {...props}
     helperText={
-      <ErrorMessage
-        name={field.name}
-        render={msg => <ErrorText>{msg}</ErrorText>}
-      />
+      helperText || (
+        <ErrorMessage
+          name={field.name}
+          render={msg => <ErrorText>{msg}</ErrorText>}
+        />
+      )
     }
   />
 );

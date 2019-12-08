@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using sXb_service.Models;
 using sXb_service.Models.ViewModels;
-using sXb_service.ViewModels;
 
 namespace sXb_service.Helpers
 {
@@ -48,7 +45,9 @@ namespace sXb_service.Helpers
               .ForMember(dest => dest.ISBN13, opts =>
                opts.MapFrom(src => src.Book.ISBN13))
               .ForMember(dest => dest.Authors, opts =>
-               opts.MapFrom(src => src.Book.Authors));
+              opts.MapFrom(src => src.Book.Authors))
+              .ForMember(dest => dest.Thumbnail, opts => opts.MapFrom(src => src.Book.Thumbnail));
+
 
             CreateMap<Listing, ListingDetailsViewModel>()
               .ForMember(dest => dest.Id, opts =>
@@ -91,6 +90,7 @@ namespace sXb_service.Helpers
                opts.MapFrom(src => src.ImageLinks.Thumbnail))
               .ForMember(dest => dest.Authors, opts =>
                opts.MapFrom(src => src.Authors));
+
 
             CreateMap<User, UserInfoViewModel>()
             .ForMember(dest => dest.Email, opts => opts.MapFrom(src => src.Email))
