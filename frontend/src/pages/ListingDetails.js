@@ -6,7 +6,6 @@ import {
   Dialog,
   DialogContent
 } from "@material-ui/core";
-// $FlowFixMe
 import styled from "styled-components";
 import useApi from "../hooks/useApi";
 import ContactSellerForm from "../components/ContactSellerForm";
