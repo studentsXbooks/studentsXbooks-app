@@ -1,14 +1,13 @@
-// @flow
-
 import React from "react";
 import { Button, Typography } from "@material-ui/core";
-import * as Yup from "yup";
 import { Field, Formik, Form } from "formik";
 import styled from "styled-components";
+import * as Yup from "yup";
 import Input from "../ui/Input";
 import { apiFetch } from "../utils/fetchLight";
 import SiteMargin from "../ui/SiteMargin";
 import Stack from "../ui/Stack";
+
 // $FlowFixMe
 
 const registerSchema = Yup.object().shape({
@@ -50,7 +49,7 @@ const Register = ({ navigate }: Object) => {
         }}
         onSubmit={(formValues, formikBag) => {
           apiFetch("users/register", "POST", formValues)
-            .then(res => {
+            .then(() => {
               navigate(`/verify-email?email=${formValues.email}`);
             })
             .catch(async error => {

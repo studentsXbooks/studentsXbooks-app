@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import type { Node } from "react";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -7,7 +7,7 @@ import { Link } from "@reach/router";
 import { Menu, MenuItem } from "@material-ui/core";
 import styled from "styled-components";
 import { isNil } from "ramda";
-import useApi from "./hooks/useApi";
+import useUserInfo from "./hooks/useUserInfo";
 
 const CustomToolBar = styled(Toolbar)`
   & > h6 {
@@ -17,6 +17,15 @@ const CustomToolBar = styled(Toolbar)`
     color: white;
     text-decoration: none;
   }
+  background-color: #358;
+`;
+const Logo = styled.span`
+  & > a {
+    color: #f95;
+    font-weight: bold;
+    font-size: 1.25rem;
+  }
+  margin-right: 1rem;
 `;
 
 type Props = {
@@ -28,9 +37,21 @@ export default ({ children }: Props) => {
     <div>
       <AppBar position="static">
         <CustomToolBar>
+          <Logo variant="h6">
+            {/* $FlowFixMe */}
+            <Link to="/">StudentsXbooks</Link>
+          </Logo>
           <Typography variant="h6">
             {/* $FlowFixMe */}
-            <Link to="/">Home</Link>
+            <Link to="/sell">Sell</Link>
+          </Typography>
+          <Typography variant="h6">
+            {/* $FlowFixMe */}
+            <Link to="/about">About</Link>
+          </Typography>
+          <Typography variant="h6">
+            {/* $FlowFixMe */}
+            <Link to="/help">Help</Link>
           </Typography>
           <UserNavOrDefault />
         </CustomToolBar>
@@ -41,13 +62,7 @@ export default ({ children }: Props) => {
 };
 
 const UserNavOrDefault = () => {
-  const { data: userInfo, retry } = useApi("users/name");
-
-  useEffect(() => {
-    retry();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [global.cookie]);
-
+  const { userInfo } = useUserInfo();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = e => setAnchorEl(e.currentTarget);
@@ -87,7 +102,7 @@ const UserNavOrDefault = () => {
         </MenuItem>
         <MenuItem onClick={handleClose}>
           {/* $FlowFixMe */}
-          <Link to="/listing/new"> New Listing</Link>
+          <Link to="/listing/findbook"> New Listing</Link>
         </MenuItem>
       </Menu>
     </>

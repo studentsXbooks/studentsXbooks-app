@@ -1,18 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import useApi from "../hooks/useApi";
 import withSearchBar from "../components/withSearchBar";
-
-type ReturnedData = {
-  accountConfirm: boolean
-};
 
 const ConfirmEmail = () => {
   const id = new URL(window.location).searchParams.get("id") || "";
   const code = new URL(window.location).searchParams.get("code") || "";
-  // prettier-ignore
-  const { loading, data, error } = useApi<ReturnedData>(
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const { loading, data, error } = useApi(
     `users/confirm-email?id=${id}&code=${encodeURIComponent(code)}`
   );
+
+  useEffect(() => {
+    if (error)
+      error.response.json().then(json => setErrorMessage(json.message));
+  }, [error]);
 
   if (loading === true)
     return (
@@ -21,19 +23,21 @@ const ConfirmEmail = () => {
       </div>
     );
 
-  if (data && data.accountConfirm)
+  if (!loading && data && data.accountConfirm)
     return (
       <div>
-        {!loading && data && data.accountConfirm && <h1>Account Confirmed</h1>}
+        <h1>Account Confirmed</h1>
       </div>
     );
 
-  if (error)
+  if (error) {
     return (
       <div>
         <h1>Error confirming account</h1>
+        <h2>{errorMessage}</h2>
       </div>
     );
+  }
 
   return <div>Bad stuff happened</div>;
 };

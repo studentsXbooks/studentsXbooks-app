@@ -1,4 +1,4 @@
-import { render, fireEvent, cleanup, wait } from "@testing-library/react";
+import { render, fireEvent, wait } from "@testing-library/react";
 import React from "react";
 import { Router, navigate } from "@reach/router";
 import SearchFilterForm from "./SearchFilterForm";
@@ -12,8 +12,6 @@ const fakeConditions = [
 const customFetchReturn = makeFetchReturn({});
 customFetchReturn(fakeConditions);
 
-afterEach(cleanup);
-
 it("Renders when passed required props", async () => {
   const { container } = render(
     <SearchFilterForm
@@ -22,7 +20,6 @@ it("Renders when passed required props", async () => {
       location={{ search: "" }}
     />
   );
-
   await wait(() => expect(container).toBeDefined());
 });
 
@@ -88,21 +85,21 @@ it("Selecting Multiple Conditions calls navigate with all in query params", asyn
   const { findByLabelText } = render(
     <Router>
       {/* $FlowFixMe */}
-      <SearchFilterForm basePath="/search/1" default />
+      <SearchFilterForm basePath="/search/1" path="/*" />
     </Router>
   );
   const condition = await findByLabelText(cond1.name);
   fireEvent.click(condition);
   expect(window.location.search).toEqual(`?conditions=${cond1.value}`);
-  await wait(() => expect(condition.checked).toEqual(true));
+  await wait(() => expect(condition).toBeChecked());
 
   const condition2 = await findByLabelText(cond2.name);
   fireEvent.click(condition2);
   expect(window.location.search).toEqual(
     `?conditions=${cond1.value},${cond2.value}`
   );
-  await wait(() => expect(condition.checked).toEqual(true));
-  await wait(() => expect(condition2.checked).toEqual(true));
+  await wait(() => expect(condition).toBeChecked());
+  await wait(() => expect(condition2).toBeChecked());
 });
 
 it("Setting Min and Max then selecting condition calls navigate with all queries", async () => {

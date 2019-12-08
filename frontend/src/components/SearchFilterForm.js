@@ -9,7 +9,48 @@ import {
   Grid,
   Button
 } from "@material-ui/core";
+// $FlowFixMe
+import styled from "styled-components";
 import useApi from "../hooks/useApi";
+import buildQuery from "../utils/buildQuery";
+
+const SearchFilterLayout = styled.div`
+  display: grid;
+  grid-template-columns: 20% 20% 20% 20% 20%;
+  grid-template-rows: 20% 20% 20% 20% 20%;
+  grid-row-gap: 65px;
+  justify-items: center;
+  align-items: center;
+`;
+
+const SubmitPosition = styled.div`
+  display: grid;
+  grid-row-start: 1;
+  grid-column-end: 5;
+  align-items: center;
+`;
+
+const ConditionCheckBoxForm = styled.form`
+  label[id="condition-0"] {
+    border-bottom: solid 3px #07e000;
+  }
+
+  label[id="condition-1"] {
+    border-bottom: solid 3px #a6ff00;
+  }
+
+  label[id="condition-2"] {
+    border-bottom: solid 3px #ffbf00;
+  }
+
+  label[id="condition-3"] {
+    border-bottom: solid 3px #cc3703;
+  }
+
+  label[id="condition-4"] {
+    border-bottom: solid 3px #ff1a00;
+  }
+`;
 
 type Props = {
   basePath: string,
@@ -24,16 +65,7 @@ const extractConditions = queries => {
   return conditions ? conditions.split(",") : [];
 };
 
-const buildQuery = (filterObj: {}) => {
-  const keys = Object.keys(filterObj);
-  return keys
-    .filter(x => filterObj[x] !== "")
-    .reduce((acc, key) => `${acc}${key}=${filterObj[key]}&`, "?")
-    .slice(0, -1);
-};
-
 const SearchFilterForm = ({ basePath, navigate, location }: Props) => {
-  // prettier-ignore
   const { loading, data: conditions } = useApi("Conditions");
   const [min, setMin] = useState(getQuery(location.search)("min"));
   const [max, setMax] = useState(getQuery(location.search)("max"));
@@ -72,6 +104,34 @@ const SearchFilterForm = ({ basePath, navigate, location }: Props) => {
 
   return (
     <div>
+      <ConditionCheckBoxForm method="POST">
+        <FormControl component="fieldset">
+          <FormLabel component="legend">Conditions</FormLabel>
+          <FormGroup style={{ width: "100px", paddingLeft: "13px" }}>
+            {!loading &&
+              conditions &&
+              Array.isArray(conditions) &&
+              conditions.map(({ value, name }) => (
+                <FormControlLabel
+                  key={name}
+                  control={
+                    <Checkbox
+                      value={value.toString()}
+                      checked={selectedConditions.some(
+                        x => x.toString() === value.toString()
+                      )}
+                      inputProps={{ "aria-label": `condition-${value}` }}
+                    />
+                  }
+                  onChange={handleCondition}
+                  label={name}
+                  id={`condition-${value}`}
+                />
+              ))}
+          </FormGroup>
+        </FormControl>
+      </ConditionCheckBoxForm>
+      <br />
       <form method="POST" onSubmit={submitPriceRange}>
         <Grid container>
           <Grid item xs={12} md={4}>
@@ -92,40 +152,21 @@ const SearchFilterForm = ({ basePath, navigate, location }: Props) => {
               onChange={e => setMax(e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} md={4}>
-            <Button type="submit" color="primary" fullWidth variant="contained">
-              Submit
-            </Button>
-          </Grid>
+          <SearchFilterLayout>
+            <SubmitPosition>
+              <Grid item xs={12} md={4}>
+                <Button
+                  type="submit"
+                  color="primary"
+                  fullWidth
+                  variant="contained"
+                >
+                  Submit
+                </Button>
+              </Grid>
+            </SubmitPosition>
+          </SearchFilterLayout>
         </Grid>
-      </form>
-      <br />
-      <form method="POST">
-        <FormControl component="fieldset">
-          <FormLabel component="legend">Conditions</FormLabel>
-          <FormGroup>
-            {!loading &&
-              conditions &&
-              Array.isArray(conditions) &&
-              conditions.map(({ value, name }) => (
-                <FormControlLabel
-                  key={name}
-                  control={
-                    <Checkbox
-                      value={value}
-                      checked={selectedConditions.some(
-                        x => x.toString() === value.toString()
-                      )}
-                      inputProps={{ "aria-label": `condition-${value}` }}
-                    />
-                  }
-                  onChange={handleCondition}
-                  label={name}
-                  id={`condition-${value}`}
-                />
-              ))}
-          </FormGroup>
-        </FormControl>
       </form>
     </div>
   );

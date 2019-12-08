@@ -204,7 +204,7 @@ namespace sXb_tests.Integration
             var response = await client.GetAsync(url);
             var username = await response.Content.ReadAsAsync<User>();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal("TestUser", username.UserName);
+            Assert.Equal( "TestUser", username.UserName);
         }
 
         [Fact]
@@ -254,8 +254,8 @@ namespace sXb_tests.Integration
 
             LoginViewModel model = new LoginViewModel()
             {
-                Email = "newer@wvup.edu",
-                Password = "AbcdeF#1"
+                Email = "test@wvup.edu",
+                Password = "Develop@90"
             };
             response = await client.PostAsJsonAsync<LoginViewModel>("/api/users", model);
             var getUserResponse = await client.GetAsync($"/api/users/{data.Id}");
