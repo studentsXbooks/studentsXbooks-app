@@ -15,8 +15,10 @@ const CustomForm = styled(Form)`
 `;
 
 const contactSellerSchema = Yup.object().shape({
-  body: Yup.string().required,
-  email: Yup.string().email.required
+  body: Yup.string().required(),
+  email: Yup.string()
+    .email()
+    .required()
 });
 
 type ListingDetail = {
@@ -82,7 +84,7 @@ const ContactSellerForm = ({ listing, onComplete }: Props) => {
               fullWidth
               variant="outlined"
               component={Input}
-              helperText={<div>{loading && "loading user info..."}</div>}
+              helperText={loading && <div>loading user info...</div>}
             />
             <Field
               name="body"

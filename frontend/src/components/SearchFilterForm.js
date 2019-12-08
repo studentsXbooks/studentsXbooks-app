@@ -9,7 +9,6 @@ import {
   Grid,
   Button
 } from "@material-ui/core";
-// $FlowFixMe
 import styled from "styled-components";
 import useApi from "../hooks/useApi";
 import buildQuery from "../utils/buildQuery";
