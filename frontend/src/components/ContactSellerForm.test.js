@@ -50,6 +50,9 @@ it("Calls onComplete after form is submitted successfully", async () => {
   const { getByLabelText, getByText } = render(
     <ContactSellerForm listing={validListing} onComplete={mockComplete} />
   );
+  fireEvent.change(getByLabelText(/email/i), {
+    target: { value: "lbutche3@wvup.edu" }
+  });
   fireEvent.change(getByLabelText(/body/i), {
     target: { value: "Hey I really would like to trade" }
   });

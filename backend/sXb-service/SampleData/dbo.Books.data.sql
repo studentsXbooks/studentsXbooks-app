@@ -1,7 +1,8 @@
 ﻿INSERT [dbo].[Books]
     ([Id], [Title], [ISBN10], [ISBN13], [Description], [Authors], [SmallThumbnail], [Thumbnail])
 VALUES
-    (N'5e885dcf-1fec-4147-94d6-28b04bbdd732', N'Grimms'' Fairy Tales ', N'3-598-21577-0', N'NULL', N'Et quo homo, parte in plorum in quartu egreddior et sed sed vobis habitatio nomen quad linguens in Versus travissimantor si', N' O. Henry', N'https://www.fillmurray.com/', N'https://www.fillmurray.com/')
+    (N'5e885dcf-1fec-4147-94d6-28b04bbdd732', N'Grimms'' Fairy Tales ', N'3-598-21577-0', N'NULL', N'Et quo homo, parte in plorum in quartu egreddior et sed sed vobis habitatio nomen quad linguens in Versus travissimantor si', N' O. Henry', N'https:
+//www.fillmurray.com/200/200', N'https://www.fillmurray.com/200/200')
 
 INSERT [dbo].[Books]
     ([Id], [Title], [ISBN10], [ISBN13], [Description], [Authors], [SmallThumbnail], [Thumbnail])
@@ -86,7 +87,9 @@ VALUES
 INSERT [dbo].[Books]
     ([Id], [Title], [ISBN10], [ISBN13], [Description], [Authors], [SmallThumbnail], [Thumbnail])
 VALUES
-    (N'83c22db5-d88b-40d5-bce1-f3cf976c9b43', N'Grimms'' Fairy Tales ', N'3-598-21547-9', N'NULL', N'vobis regit, et rarendum bono sed non et gravis Sed Tam si volcans bono quoque Sed homo, plurissimum', N' Charles Dickens', N'https://www.fillmurray.com/', N'https://www.fillmurray.com/')
+    (N'83c22db5-d88b-40d5-bce1-f3cf976c9b43', N'Grimms'' Fairy Tales ', N'3-598-21547-9', N'NULL', N'vobis regit, et rarendum bono sed non et gravis Sed Tam si volcans bono quoque Sed homo, plurissimum', N' Charles Dickens', N'https:
+//www.fillmurray.com/200/200', N'https:
+//www.fillmurray.com/200/200')
 
 INSERT [dbo].[Books]
     ([Id], [Title], [ISBN10], [ISBN13], [Description], [Authors], [SmallThumbnail], [Thumbnail])
@@ -143,6 +146,7 @@ INSERT [dbo].[Books]
 VALUES
     (N'b3da9f62-74fb-4bc6-80c4-5b7fbb2b83d9', N'Walden, and On The Duty Of Civil Disobedience ', N'3-598-21500-2', N'NULL', N'in volcans pladior non plorum transit. glavans Versus bono delerium. cognitio, Id si quo, Quad fecit,', N' John Keats', N'https://www.fillmurray.com/', N'https://www.fillmurray.com/')
 INSERT INTO [dbo].[Books]
+
     ([Id], [Title], [ISBN10], [Description], [Authors])
 VALUES
     (N'32eca70d-41c6-4ef9-8ac2-31ce07a3b67c', N'Harry Potter Chamber of Secrets', N'465465465465', N'Harry Potter is a series of fantasy novels written by British author J. K. Rowling. The novels chronicle the lives of a young wizard, Harry Potter, and his friends Hermione Granger and Ron Weasley, all of whom are students at Hogwarts School of Witchcraft and Wizardry.', N'J. K. Rowling')
