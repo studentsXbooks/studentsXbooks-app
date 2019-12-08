@@ -9,6 +9,7 @@ import RadioButton from "../ui/RadioButton";
 import { apiFetch } from "../utils/fetchLight";
 import Input from "../ui/Input";
 import Stack from "../ui/Stack";
+import { isISBN10, isISBN13 } from "../utils/isbnValidator";
 
 const getQueryParams = url => {
   const queries = new URLSearchParams(url);
@@ -19,13 +20,30 @@ const getQueryParams = url => {
   return params;
 };
 
+const callIfTruthyElseReturnDefault = func => defaultVal => value => {
+  if (value) return func(value);
+  return defaultVal;
+};
+
 const listingSchema = Yup.object().shape({
   title: Yup.string()
     .min(1)
     .required(),
   isbn10: Yup.string()
-    .length(10)
+    .min(1)
+    .test(
+      "is-isbn10",
+      "The value entered is not a valid ISBN10",
+      callIfTruthyElseReturnDefault(isISBN10)(true)
+    )
     .required(),
+  isbn13: Yup.string()
+    .min(1)
+    .test(
+      "is-isbn13",
+      "The value entered is not a valid ISBN13",
+      callIfTruthyElseReturnDefault(isISBN13)(true)
+    ),
   description: Yup.string()
     .min(1)
     .required(),
@@ -125,14 +143,14 @@ const CreateListing = ({ navigate }: Props) => {
       <Formik
         validationSchema={listingSchema}
         initialValues={{
-          title: "" || title,
-          description: "" || description,
-          isbn10: "" || isbn10,
-          isbn13: "" || isbn13,
+          title: title || "",
+          description: description || "",
+          isbn10: isbn10 || "",
+          isbn13: isbn13 || "",
           price: "",
-          authors: "" || authors,
-          smallThumbnail: "" || smallThumbnail,
-          thumbnail: "" || thumbnail
+          authors: authors || "",
+          smallThumbnail: smallThumbnail || "",
+          thumbnail: thumbnail || ""
         }}
         onSubmit={(formValues, formikBag) => {
           apiFetch("listings", "POST", formValues)
@@ -198,9 +216,6 @@ const CreateListing = ({ navigate }: Props) => {
                   disabled={description}
                   rows="5"
                 />
-                <Typography variant="h5" gutterBottom>
-                  Author
-                </Typography>
                 <Field
                   id="authors"
                   name="authors"
@@ -213,8 +228,11 @@ const CreateListing = ({ navigate }: Props) => {
                 />
 
                 <Typography variant="h5" gutterBottom>
-                  About Your Book. Please note that the price must be in US
-                  dollars.
+                  About Your Book
+                </Typography>
+                <hr />
+                <Typography variant="h6" gutterBottom>
+                  Please note that the price must be in US dollars.
                 </Typography>
                 <Field
                   id="price"

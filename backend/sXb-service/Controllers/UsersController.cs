@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -24,22 +25,24 @@ namespace sXb_service.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IEmailSender _emailSender;
+        private readonly IMapper _iMapper;
         private IUserRepo Repo { get; set; }
         public IConfiguration Configuration { get; }
 
         public UsersController(IUserRepo repo,
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            IEmailSender emailSender, IConfiguration configuration)
+            IEmailSender emailSender, IConfiguration configuration, IMapper iMapper)
+
         {
             Repo = repo;
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             Configuration = configuration;
+            _iMapper = iMapper;
         }
 
-        //http://localhost:40001/api/[controller]/
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -59,15 +62,18 @@ namespace sXb_service.Controllers
             return Json(item);
         }
 
-        [HttpGet("name")]
-        public async Task<IActionResult> GetUsername()
+
+        [HttpGet("info")]
+        public async Task<IActionResult> GetUserInfo()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
             if (user == null)
             {
                 return BadRequest(new ErrorMessage("No cookie found for user."));
             }
-            return Ok(new { username = user.UserName });
+
+            var userInfo = _iMapper.Map<UserInfoViewModel>(user);
+            return Ok(userInfo);
         }
 
         [HttpPost("register")]
@@ -100,6 +106,7 @@ namespace sXb_service.Controllers
             if (!Regex.Match(newUser.Email, ".+@.+[.]\\w").Success)
             {
                 return BadRequest(new ErrorMessage("Invalid email address."));
+
             }
             // Validate: email doesn't already exist.
             if (await Repo.EmailExists(newUser.Email))
@@ -171,6 +178,7 @@ namespace sXb_service.Controllers
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex);
+
                     return NotFound();
                 }
 
