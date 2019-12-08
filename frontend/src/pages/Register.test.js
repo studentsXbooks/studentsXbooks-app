@@ -1,16 +1,7 @@
 import React from "react";
-import { render, fireEvent, wait, cleanup } from "@testing-library/react";
+import { render, fireEvent, wait } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import Register from "./Register";
-import makeFetchReturn from "../test-utils/makeFetchReturn";
-
-afterEach(cleanup);
-
-const validUser = {
-  username: "newuser",
-  email: "newuser@gmail.com",
-  password: "Develop@90"
-};
 
 test("Renders with required props", () => {
   const { container } = render(<Register />);
@@ -23,9 +14,7 @@ test("Submit button disabled on mount", () => {
 });
 
 test("Can't submit with invalid email and other fields valid, can submit after valid email entered", async () => {
-  const { getByText, getByLabelText, findByText, queryByText } = render(
-    <Register />
-  );
+  const { getByText, getByLabelText, findByText } = render(<Register />);
 
   fireEvent.change(getByLabelText(/email/i), {
     target: { value: "testing" }
@@ -59,9 +48,7 @@ test("Can't submit with invalid email and other fields valid, can submit after v
 });
 
 test("Can't submit with invalid password and other fields valid, can submit after valid password entered", async () => {
-  const { getByText, getByLabelText, findByText, queryByText } = render(
-    <Register />
-  );
+  const { getByText, getByLabelText, findByText } = render(<Register />);
 
   fireEvent.change(getByLabelText(/password/i), {
     target: { value: "Deve0" }

@@ -29,10 +29,6 @@ const StyledForm = styled.div`
     padding: 2rem;
   }
 `;
-const ErrorMsg = styled.div`
-  color: red;
-  font-size: 1em;
-`;
 
 const Register = ({ navigate }: Object) => {
   return (
@@ -59,7 +55,7 @@ const Register = ({ navigate }: Object) => {
             .finally(() => formikBag.setSubmitting(false));
         }}
       >
-        {({ isSubmitting, isValid, errors, touched, status }) => (
+        {({ isSubmitting, isValid, status }) => (
           <StyledForm>
             <Form>
               <Typography variant="h1">Register</Typography>
@@ -74,10 +70,6 @@ const Register = ({ navigate }: Object) => {
                   variant="outlined"
                   fullWidth
                 />
-                {errors.username && touched.username ? (
-                  <ErrorMsg>{errors.username}</ErrorMsg>
-                ) : null}
-
                 <br />
                 <Field
                   id="email"
@@ -88,10 +80,6 @@ const Register = ({ navigate }: Object) => {
                   placeholder="Email"
                   fullWidth
                 />
-                {errors.email && touched.email ? (
-                  <ErrorMsg>{errors.email}</ErrorMsg>
-                ) : null}
-
                 <Field
                   id="password"
                   name="password"
@@ -102,10 +90,6 @@ const Register = ({ navigate }: Object) => {
                   type="Password"
                   fullWidth
                 />
-                {errors.password && touched.password ? (
-                  <ErrorMsg>{errors.password}</ErrorMsg>
-                ) : null}
-
                 <Button
                   type="submit"
                   fullWidth
