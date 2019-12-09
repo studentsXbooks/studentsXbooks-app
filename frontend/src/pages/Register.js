@@ -7,6 +7,8 @@ import Input from "../ui/Input";
 import { apiFetch } from "../utils/fetchLight";
 import SiteMargin from "../ui/SiteMargin";
 import Stack from "../ui/Stack";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const registerSchema = Yup.object().shape({
   username: Yup.string()
@@ -21,6 +23,10 @@ const registerSchema = Yup.object().shape({
     .min(8, "Password must be at least 8 characters long.")
     .required("Password required.")
 });
+
+const notify = () =>
+  toast("A confermation email has been sent! Thanks for registering!");
+
 const StyledForm = styled.div`
   & > form {
     width: 750px;
@@ -65,6 +71,7 @@ const Register = ({ navigate }: Object) => {
             <Form>
               <Typography variant="h1">Register</Typography>
               <Stack>
+                <br />
                 {status && <h4 style={{ color: "red" }}>{status}</h4>}
                 <Field
                   name="username"
@@ -79,7 +86,6 @@ const Register = ({ navigate }: Object) => {
                   <ErrorMsg>{errors.username}</ErrorMsg>
                 ) : null}
 
-                <br />
                 <Field
                   id="email"
                   name="email"
@@ -107,6 +113,17 @@ const Register = ({ navigate }: Object) => {
                   <ErrorMsg>{errors.password}</ErrorMsg>
                 ) : null}
 
+                <Field
+                  id="confirmPassword"
+                  name="comfirmPassword"
+                  label="Confirm Password"
+                  component={Input}
+                  variant="outlined"
+                  placeholder="Confirm Password"
+                  type="Password"
+                  fullWidth
+                />
+
                 <Button
                   type="submit"
                   fullWidth
@@ -114,9 +131,11 @@ const Register = ({ navigate }: Object) => {
                   variant="contained"
                   align="right"
                   disabled={isSubmitting || !isValid}
+                  onClick={notify}
                 >
                   Submit
                 </Button>
+                <ToastContainer />
               </Stack>
             </Form>
           </StyledForm>
