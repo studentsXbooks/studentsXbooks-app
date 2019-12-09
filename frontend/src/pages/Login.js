@@ -10,27 +10,25 @@ import Input from "../ui/Input";
 import SiteMargin from "../ui/SiteMargin";
 import Stack from "../ui/Stack";
 
-const Login = ({ navigate }: Object) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const loginSchema = Yup.object().shape({
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("Email Required"),
+  password: Yup.string()
+    .min(8, "Password must be at least 8 characters long.")
+    .required("Password required.")
+});
+const StyledForm = styled.div`
+  & > form {
+    width: 750px;
+    margin: auto;
+    border: 3px solid #ccc;
+    border-radius: 5px;
+    padding: 2rem;
+  }
+`;
 
-  const loginSchema = Yup.object().shape({
-    email: Yup.string()
-      .email("Invalid email address")
-      .required("Email Required"),
-    password: Yup.string()
-      .min(8, "Password must be at least 8 characters long.")
-      .required("Password required.")
-  });
-  const StyledForm = styled.div`
-    & > form {
-      width: 750px;
-      margin: auto;
-      border: 3px solid #ccc;
-      border-radius: 5px;
-      padding: 2rem;
-    }
-  `;
+const Login = ({ navigate }: Object) => {
   return (
     <SiteMargin>
       <Formik
