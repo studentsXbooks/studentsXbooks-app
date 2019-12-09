@@ -151,6 +151,7 @@ namespace sXb_service.Controllers
             {
 
                 //throw new ApplicationException ($"Unable to load user with ID '{userId}'.");
+                
                 return BadRequest();
             }
             var result = await _userManager.ConfirmEmailAsync(user, code);
@@ -179,7 +180,7 @@ namespace sXb_service.Controllers
                 {
                     Console.WriteLine(ex);
 
-                    return NotFound();
+                    return BadRequest(new ErrorMessage("User does not exist."));
                 }
 
                 // This does not count login failures towards account lockout
@@ -191,6 +192,7 @@ namespace sXb_service.Controllers
 
                     return Ok();
                 }
+                return BadRequest(new ErrorMessage("Check email and/or password."));
             }
 
             // If execution got this far, something failed, redisplay the form.
