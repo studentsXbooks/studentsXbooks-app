@@ -46,6 +46,8 @@ const SearchForm = styled.form`
 
 function withSearchBar<C: ComponentType<any>>(WrapComponent: C) {
   return (props: {}) => {
+    const { term } = props;
+    console.log(props);
     const [search, setSearch] = useState("");
     return (
       <>
@@ -60,6 +62,7 @@ function withSearchBar<C: ComponentType<any>>(WrapComponent: C) {
                 e.preventDefault();
                 navigate(`/search/${search}`);
               }}
+              initialValues={{ search: term || "" }}
             >
               <InputBase
                 placeholder="Title, Author, ISBN..."

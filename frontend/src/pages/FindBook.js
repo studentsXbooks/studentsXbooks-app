@@ -27,7 +27,7 @@ const FindBook = ({ pageId = "1", term = "", navigate, location }: Props) => {
   return (
     <SiteMargin>
       <Formik
-        initialValues={{ search: "" }}
+        initialValues={{ search: term || "" }}
         onSubmit={({ search }, { setSubmitting }) => {
           navigate(`/listing/findbook/${search}`);
           setSubmitting(false);
