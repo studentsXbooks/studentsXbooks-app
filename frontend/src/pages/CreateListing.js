@@ -228,7 +228,8 @@ const CreateListing = ({ navigate }: Props) => {
                 />
 
                 <Typography variant="h5" gutterBottom>
-                  About Your Book
+                  About Your Book. Please note that the price must be in US
+                  dollars.
                 </Typography>
                 <hr />
                 <Typography variant="h6" gutterBottom>
@@ -241,7 +242,7 @@ const CreateListing = ({ navigate }: Props) => {
                   component={Input}
                   variant="outlined"
                   label="Price"
-                  placeholder="Price"
+                  placeholder="ex. $10.00"
                   fullWidth
                   min={0}
                 />

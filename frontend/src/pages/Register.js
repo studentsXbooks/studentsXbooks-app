@@ -20,6 +20,7 @@ const registerSchema = Yup.object().shape({
     .min(8, "Password must be at least 8 characters long.")
     .required("Password required.")
 });
+
 const StyledForm = styled.div`
   & > form {
     width: 750px;
@@ -44,7 +45,11 @@ const Register = ({ navigate }: Object) => {
         onSubmit={(formValues, formikBag) => {
           apiFetch("users/register", "POST", formValues)
             .then(() => {
-              navigate(`/verify-email?email=${formValues.email}`);
+              navigate(`/`, {
+                state: {
+                  register: `${formValues.email}: was sent a email confirmation`
+                }
+              });
             })
             .catch(async error => {
               const body = await error.response.json();
@@ -60,6 +65,7 @@ const Register = ({ navigate }: Object) => {
             <Form>
               <Typography variant="h1">Register</Typography>
               <Stack>
+                <br />
                 {status && <h4 style={{ color: "red" }}>{status}</h4>}
                 <Field
                   name="username"

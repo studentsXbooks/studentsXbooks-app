@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
 import { navigate } from "@reach/router";
+//  $FlowFixMe
+import { ToastContainer, toast } from "react-toastify";
+//  $FlowFixMe
+import "react-toastify/dist/ReactToastify.css";
 import MockLogo from "../images/Mock_Logo_Largev2.png";
 import Books from "../images/homePageBooks.jpg";
 
@@ -67,15 +71,26 @@ const MainContent = styled.div`
   text-align: center;
 `;
 
-const Home = () => {
+type Props = {
+  location: { state: { register: string } }
+};
+
+const Home = ({ location }: Props) => {
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    if (location.state) {
+      const { register } = location.state;
+      toast(register);
+    }
+  });
 
   return (
     <MainContent>
+      <ToastContainer />
       <SearchLayout>
         <div>
           <img src={MockLogo} alt="Very Big Mock Logo" />
-
           <SearchBox>
             <SearchForm
               method="POST"
