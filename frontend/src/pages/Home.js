@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // $FlowFixMe
 import styled from "styled-components";
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
 import { navigate } from "@reach/router";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SearchBox = styled.div`
   margin-bottom: 2rem;
@@ -96,11 +98,19 @@ const MainContent = styled.div`
   height: 90.3vh;
 `;
 
-const Home = () => {
+const Home = ({ location }) => {
   const [search, setSearch] = useState("");
+
+  console.log(location.state);
+
+  useEffect(() => {
+    const { register } = location.state;
+    if (register) toast(register);
+  });
 
   return (
     <MainContent>
+      <ToastContainer />
       <BkgOverlay>
         <SearchLayout>
           <LogoPosition>

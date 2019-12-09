@@ -7,8 +7,6 @@ import Input from "../ui/Input";
 import { apiFetch } from "../utils/fetchLight";
 import SiteMargin from "../ui/SiteMargin";
 import Stack from "../ui/Stack";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const registerSchema = Yup.object().shape({
   username: Yup.string()
@@ -23,9 +21,6 @@ const registerSchema = Yup.object().shape({
     .min(8, "Password must be at least 8 characters long.")
     .required("Password required.")
 });
-
-const notify = () =>
-  toast("A confermation email has been sent! Thanks for registering!");
 
 const StyledForm = styled.div`
   & > form {
@@ -55,7 +50,11 @@ const Register = ({ navigate }: Object) => {
         onSubmit={(formValues, formikBag) => {
           apiFetch("users/register", "POST", formValues)
             .then(() => {
-              navigate(`/verify-email?email=${formValues.email}`);
+              navigate(`/`, {
+                state: {
+                  register: `${formValues.email}: was sent a email confirmation`
+                }
+              });
             })
             .catch(async error => {
               const body = await error.response.json();
@@ -131,11 +130,9 @@ const Register = ({ navigate }: Object) => {
                   variant="contained"
                   align="right"
                   disabled={isSubmitting || !isValid}
-                  onClick={notify}
                 >
                   Submit
                 </Button>
-                <ToastContainer />
               </Stack>
             </Form>
           </StyledForm>
