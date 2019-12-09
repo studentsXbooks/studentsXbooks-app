@@ -26,6 +26,8 @@ const FindBook = ({ pageId = "1", term = "", navigate, location }: Props) => {
 
   return (
     <SiteMargin>
+      <h2>Search for your book</h2>
+      <h3>Enter ISBN, Title, or Author</h3>
       <Formik
         initialValues={{ search: "" }}
         onSubmit={({ search }, { setSubmitting }) => {
@@ -51,11 +53,15 @@ const FindBook = ({ pageId = "1", term = "", navigate, location }: Props) => {
       <Button onClick={() => navigate(`/listing/new`)}>
         Can't Find your book? Click here to enter info manually
       </Button>
-      <Paging
-        basePath={`/listing/findbook/${term}`}
-        currentPage={page ? page.currentPage : "1"}
-        totalPages={page ? page.totalPages : "1"}
-      />
+      {page && page.data ? (
+        <Paging
+          basePath={`/listing/findbook/${term}`}
+          currentPage={page ? page.currentPage : "1"}
+          totalPages={page ? page.totalPages : "1"}
+        />
+      ) : (
+        <> </>
+      )}
       <Grid container spacing={3}>
         {page &&
           page.data &&
@@ -63,11 +69,15 @@ const FindBook = ({ pageId = "1", term = "", navigate, location }: Props) => {
             <BookCard listing={listing} key={listing.title + listing.isbn10} />
           ))}
       </Grid>
-      <Paging
-        basePath={`/listing/findbook/${term}`}
-        currentPage={page ? page.currentPage : "1"}
-        totalPages={page ? page.totalPages : "1"}
-      />
+      {page && page.data ? (
+        <Paging
+          basePath={`/listing/findbook/${term}`}
+          currentPage={page ? page.currentPage : "1"}
+          totalPages={page ? page.totalPages : "1"}
+        />
+      ) : (
+        <> </>
+      )}
     </SiteMargin>
   );
 };
