@@ -3,7 +3,7 @@ import type { Node } from "react";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
-import { Link, navigate } from "@reach/router";
+import { Link } from "@reach/router";
 import { Menu, MenuItem } from "@material-ui/core";
 import styled from "styled-components";
 import { isNil } from "ramda";
@@ -73,8 +73,6 @@ const UserNavOrDefault = () => {
   };
   const handleClick = e => setAnchorEl(e.currentTarget);
   const handleClose = () => setAnchorEl(null);
-
-  console.log(userInfo);
 
   if (isNil(userInfo))
     return (

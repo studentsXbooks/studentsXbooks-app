@@ -23,7 +23,6 @@ const StyledCard = styled(Card)`
   grid-template: "thumbnail about" auto / auto minmax(200px, 350px);
   grid-gap: 2rem;
   padding: 2rem;
-  overflow: visible !important;
   margin: 1rem;
   min-height: 200px;
   max-height: 200px;

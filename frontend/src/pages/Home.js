@@ -5,7 +5,7 @@ import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
 import { navigate } from "@reach/router";
 import MockLogo from "../images/Mock_Logo_Largev2.png";
-import BookShelf2 from "../images/BookShelf2.jpg";
+import Books from "../images/homePageBooks.jpg";
 
 const SearchBox = styled.div`
   margin-bottom: 2rem;
@@ -59,7 +59,7 @@ const SearchForm = styled.form`
 `;
 
 const MainContent = styled.div`
-  background: rgba(0, 0, 0, 0.5) url(${BookShelf2}) center / cover no-repeat;
+  background: rgba(0, 0, 0, 0.5) url(${Books}) center / cover no-repeat;
   background-blend-mode: darken;
   height: calc(
     100vh - 64px
