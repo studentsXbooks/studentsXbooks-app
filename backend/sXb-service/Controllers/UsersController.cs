@@ -152,7 +152,7 @@ namespace sXb_service.Controllers
 
                 //throw new ApplicationException ($"Unable to load user with ID '{userId}'.");
                 
-                return BadRequest(new ErrorMessage("User does not exist."));
+                return BadRequest();
             }
             var result = await _userManager.ConfirmEmailAsync(user, code);
             if (result.Succeeded)

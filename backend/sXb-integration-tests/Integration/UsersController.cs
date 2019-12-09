@@ -298,7 +298,7 @@ namespace sXb_tests.Integration
             var client = _factory.CreateClient();
 
             var response = await client.PostAsJsonAsync<LoginViewModel>(url, model);
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
         [Fact]
