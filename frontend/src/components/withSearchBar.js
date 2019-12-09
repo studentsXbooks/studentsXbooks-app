@@ -44,11 +44,13 @@ const SearchForm = styled.form`
   }
 `;
 
+type SearchBarProps = {
+  term: string
+};
+
 function withSearchBar<C: ComponentType<any>>(WrapComponent: C) {
-  return (props: {}) => {
-    const { term } = props;
-    console.log(props);
-    const [search, setSearch] = useState("");
+  return ({ term, ...props }: SearchBarProps) => {
+    const [search, setSearch] = useState(term || "");
     return (
       <>
         <SearchBox>
@@ -62,12 +64,12 @@ function withSearchBar<C: ComponentType<any>>(WrapComponent: C) {
                 e.preventDefault();
                 navigate(`/search/${search}`);
               }}
-              initialValues={{ search: term || "" }}
             >
               <InputBase
                 placeholder="Title, Author, ISBN..."
                 onChange={e => setSearch(e.target.value)}
                 inputProps={{ "aria-label": "search" }}
+                value={search}
               />
               <Button
                 type="submit"
@@ -80,7 +82,7 @@ function withSearchBar<C: ComponentType<any>>(WrapComponent: C) {
             </SearchForm>
           </SearchArea>
         </SearchBox>
-        <WrapComponent {...props} />
+        <WrapComponent term={term} {...props} />
       </>
     );
   };

@@ -32,9 +32,9 @@ export default () => (
       <FindBook path="listing/findbook" />
       {/* $FlowFixMe */}
       <FindBook path="/listing/findbook/:term" />
-      <About path="about" />
-      <Sell path="sell" />
-      <Help path="help" />
+      <About path="/about" />
+      <Sell path="/sell" />
+      <Help path="/help" />
       {/* $FlowFixMe */}
       <FindBook path="/listing/findbook/:term/:pageId" />
       <ListingDetails path="listing/:id" />
