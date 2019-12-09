@@ -14,9 +14,8 @@ const registerSchema = Yup.object().shape({
     .max(32, "Must be at most 32 characters.")
     .required("Username required"),
   email: Yup.string()
-    .min(1, "Must be at least 1 character long.")
-    .matches(/.+@.+[.]edu/, "Must be a .edu address.")
-    .required("Email required"),
+    .email("Invalid email address")
+    .required("Email Required"),
   password: Yup.string()
     .min(8, "Password must be at least 8 characters long.")
     .required("Password required.")
@@ -30,10 +29,6 @@ const StyledForm = styled.div`
     border-radius: 5px;
     padding: 2rem;
   }
-`;
-const ErrorMsg = styled.div`
-  color: red;
-  font-size: 1em;
 `;
 
 const Register = ({ navigate }: Object) => {
@@ -65,7 +60,7 @@ const Register = ({ navigate }: Object) => {
             .finally(() => formikBag.setSubmitting(false));
         }}
       >
-        {({ isSubmitting, isValid, errors, touched, status }) => (
+        {({ isSubmitting, isValid, status }) => (
           <StyledForm>
             <Form>
               <Typography variant="h1">Register</Typography>
@@ -84,7 +79,6 @@ const Register = ({ navigate }: Object) => {
                 {errors.username && touched.username ? (
                   <ErrorMsg>{errors.username}</ErrorMsg>
                 ) : null}
-
                 <Field
                   id="email"
                   name="email"
@@ -94,10 +88,6 @@ const Register = ({ navigate }: Object) => {
                   placeholder="Email"
                   fullWidth
                 />
-                {errors.email && touched.email ? (
-                  <ErrorMsg>{errors.email}</ErrorMsg>
-                ) : null}
-
                 <Field
                   id="password"
                   name="password"
@@ -122,7 +112,6 @@ const Register = ({ navigate }: Object) => {
                   type="Password"
                   fullWidth
                 />
-
                 <Button
                   type="submit"
                   fullWidth

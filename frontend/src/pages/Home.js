@@ -7,6 +7,8 @@ import Button from "@material-ui/core/Button";
 import { navigate } from "@reach/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import MockLogo from "../images/Mock_Logo_Largev2.png";
+import BookShelf2 from "../images/BookShelf2.jpg";
 
 const SearchBox = styled.div`
   margin-bottom: 2rem;
@@ -48,6 +50,11 @@ const LogoPosition = styled.div`
   grid-column-end: 4;
   grid-gap: -10px;
   align-items: center;
+const SearchLayout = styled.div`
+  display: grid;
+  padding-top: 10rem;
+  align-items: flex-start;
+  justify-items: center;
 `;
 
 const SearchForm = styled.form`
@@ -147,6 +154,53 @@ const Home = ({ location }) => {
           </SearchPosition>
         </SearchLayout>
       </BkgOverlay>
+    opacity: 0.75;
+  }
+`;
+
+const MainContent = styled.div`
+  background: rgba(0, 0, 0, 0.5) url(${BookShelf2}) center / cover no-repeat;
+  background-blend-mode: darken;
+  height: calc(
+    100vh - 64px
+  ); /* 64px is based off of material-ui navbar, Changes on smaller screens */
+  text-align: center;
+`;
+
+const Home = () => {
+  const [search, setSearch] = useState("");
+
+  return (
+    <MainContent>
+      <SearchLayout>
+        <div>
+          <img src={MockLogo} alt="Very Big Mock Logo" />
+
+          <SearchBox>
+            <SearchForm
+              method="POST"
+              onSubmit={e => {
+                e.preventDefault();
+                navigate(`/search/${search}`);
+              }}
+            >
+              <InputBase
+                placeholder="Title, Author, ISBN..."
+                onChange={e => setSearch(e.target.value)}
+                inputProps={{ "aria-label": "search" }}
+              />
+              <Button
+                type="submit"
+                startIcon={<SearchIcon />}
+                color="primary"
+                variant="contained"
+              >
+                Search
+              </Button>
+            </SearchForm>
+          </SearchBox>
+        </div>
+      </SearchLayout>
     </MainContent>
   );
 };
