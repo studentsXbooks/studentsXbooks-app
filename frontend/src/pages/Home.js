@@ -104,8 +104,10 @@ const Home = ({ location }) => {
   console.log(location.state);
 
   useEffect(() => {
-    const { register } = location.state;
-    if (register) toast(register);
+    if (location.state) {
+      const { register } = location.state;
+      toast(register);
+    }
   });
 
   return (
