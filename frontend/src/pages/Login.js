@@ -1,92 +1,100 @@
 import React, { useState } from "react";
-import {
-  TextField,
-  Button,
-  Card,
-  CardHeader,
-  CardContent,
-  CardActions,
-  Grid,
-  Typography,
-  MuiThemeProvider,
-  createMuiTheme
-} from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
+
 import { apiFetch } from "../utils/fetchLight";
-import FullHeightGrid from "../ui/FullHeightGrid";
+import * as Yup from "yup";
+import styled from "styled-components";
+
+import { Field, Formik, Form } from "formik";
+import Input from "../ui/Input";
+import SiteMargin from "../ui/SiteMargin";
+import Stack from "../ui/Stack";
 
 const Login = ({ navigate }: Object) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const submitButton = createMuiTheme({
-    palette: {
-      primary: {
-        main: "#33578c"
-      }
-    }
+  const loginSchema = Yup.object().shape({
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("Email Required"),
+    password: Yup.string()
+      .min(8, "Password must be at least 8 characters long.")
+      .required("Password required.")
   });
-
+  const StyledForm = styled.div`
+    & > form {
+      width: 750px;
+      margin: auto;
+      border: 3px solid #ccc;
+      border-radius: 5px;
+      padding: 2rem;
+    }
+  `;
   return (
-    <FullHeightGrid container alignItems="center" justify="center">
-      <Grid item>
-        <Card
-          style={{ width: "25rem", padding: 20, marginRight: 25 }}
-          component="article"
-          raised
-        >
-          <form
-            onSubmit={e => {
-              e.preventDefault();
-              apiFetch("users", "POST", { email, password })
-                .then(() => {
-                  navigate("/");
-                })
-                .catch(console.log);
-            }}
-            method="POST"
-          >
-            <CardHeader
-              title={
-                <Typography variant="h4" align="center">
-                  Login!
-                </Typography>
+    <SiteMargin>
+      <Formik
+        validateOnChange
+        validationSchema={loginSchema}
+        initialValues={{
+          email: "",
+          password: ""
+        }}
+        onSubmit={(formValues, formikBag) => {
+          apiFetch("users", "POST", formValues)
+            .then(() => {
+              navigate(`/`);
+            })
+            .catch(async error => {
+              const body = await error.response.json();
+              if (body.message) {
+                formikBag.setStatus(body.message);
               }
-            />
-            <CardContent>
-              <TextField
-                id="email"
-                label="Email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                fullWidth
-              />
-              <br />
-              <TextField
-                id="password"
-                label="Password"
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                fullWidth
-              />
-              <br />
-            </CardContent>
-            <CardActions>
-              <MuiThemeProvider theme={submitButton}>
-                <Button
-                  variant="contained"
-                  color="primary"
+            })
+            .finally(() => formikBag.setSubmitting(false));
+        }}
+      >
+        {({ isSubmitting, isValid, status }) => (
+          <StyledForm>
+            <Form>
+              <Typography variant="h1">Login</Typography>
+              <Stack>
+                {status && <h4 style={{ color: "red" }}>{status}</h4>}
+                <Field
+                  id="email"
+                  name="email"
+                  label="Email"
+                  component={Input}
+                  variant="outlined"
+                  placeholder="Email"
                   fullWidth
-                  type="Submit"
+                />
+                <Field
+                  id="password"
+                  name="password"
+                  label="Password"
+                  component={Input}
+                  variant="outlined"
+                  placeholder="Password"
+                  type="Password"
+                  fullWidth
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  color="primary"
+                  variant="contained"
+                  align="right"
+                  disabled={isSubmitting || !isValid}
                 >
                   Login
                 </Button>
-              </MuiThemeProvider>
-            </CardActions>
-          </form>
-        </Card>
-      </Grid>
-    </FullHeightGrid>
+              </Stack>
+            </Form>
+          </StyledForm>
+        )}
+      </Formik>
+    </SiteMargin>
   );
 };
 
