@@ -20,6 +20,7 @@ import Layout from "./Layout";
 export default () => (
   <Router>
     <Layout path="/">
+      {/* $FlowFixMe */}
       <Home path="/" />
       <Login path="login" />
       <Register path="register" />

@@ -46,19 +46,21 @@ namespace sXb_tests.Integration
                 response.Content.Headers.ContentType.ToString());
         }
 
-        [Fact]
-        public async Task Register_NonEduAddress_ShouldReturn400()
+        [Theory]
+        [InlineData("newuser@wvup.edu")]
+        [InlineData("newuser@gmail.com")]
+        [InlineData("newuser@email.org")]
+        [InlineData("newuser@email.email")]
+        public async Task Register_ValidEmailAddress_ShouldReturn201(string email)
         {
             string url = "/api/users/register";
             var client = _factory.CreateClient();
 
             var newUser = fixture.Create<RegisterViewModel>();
-            newUser.Email = "email@hotmail.com";
+            newUser.Email = email;
             var response = await client.PostAsJsonAsync<RegisterViewModel>(url, newUser);
 
-            var errorMessage = await response.Content.ReadAsAsync<ErrorMessage>();
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-            Assert.NotNull(errorMessage.Message);
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
 
         [Fact]
@@ -84,7 +86,6 @@ namespace sXb_tests.Integration
         [InlineData("Abcde")]
         public async Task Register_PasswordTooShort_ShouldReturn400(string password)
         {
-
             string url = "/api/users/register";
             var client = _factory.CreateClient();
 
@@ -175,8 +176,7 @@ namespace sXb_tests.Integration
             var errorMessage = await response.Content.ReadAsAsync<ValidationProblemDetails>();
             Assert.NotNull(errorMessage);
         }
-
-        // Failing
+        
         [Fact]
         public async Task EmailConfirm_InvalidToken_Return400WithNoCookie()
         {
@@ -191,26 +191,26 @@ namespace sXb_tests.Integration
         }
 
         [Fact]
-        public async Task GetUserName_CallerHasCookie_Return200WithUserName()
+        public async Task GetUserInfo_CallerHasCookie_Return200WithUserName()
         {
-            string url = "/api/users/name";
             var client = _factory.CreateClient();
-            await client.PostAsJsonAsync<LoginViewModel>("/api/users/", new LoginViewModel()
+            await client.PostAsJsonAsync("/api/users/", new LoginViewModel()
             {
                 Email = "test@wvup.edu",
                 Password = "Develop@90"
             });
 
-            var response = await client.GetAsync(url);
-            var username = await response.Content.ReadAsAsync<User>();
+            var response = await client.GetAsync("/api/users/info");
+            var userInfo = await response.Content.ReadAsAsync<UserInfoViewModel>();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal( "TestUser", username.UserName);
+            Assert.Equal("TestUser", userInfo.UserName);
+            Assert.Equal("test@wvup.edu", userInfo.Email);
         }
 
         [Fact]
-        public async Task GetUserName_CallerHasNoCookie_Return400()
+        public async Task GetUserInfo_CallerHasNoCookie_Return400()
         {
-            string url = "/api/users/name";
+            string url = "/api/users/info";
             var client = _factory.CreateClient();
 
             var response = await client.GetAsync(url);
@@ -218,9 +218,9 @@ namespace sXb_tests.Integration
         }
 
         [Fact]
-        public async Task GetUserName_InvalidCookie_Return400()
+        public async Task GetUserInfo_InvalidCookie_Return400()
         {
-            string url = "/api/users/name";
+            string url = "/api/users/info";
             var client = _factory.CreateClient();
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Add("Cookie", "AspnetIdentityCookie=Whatever;");
