@@ -23,8 +23,11 @@ export default () => (
       <Home path="/" />
       <Login path="login" />
       <Register path="register" />
+      {/* $FlowFixMe */}
       <VerifyEmail path="verify-email" />
+      {/* $FlowFixMe */}
       <UserListing path="/user/listings" />
+      {/* $FlowFixMe */}
       <UserListing path="/user/listings/:pageId" />
       {/* $FlowFixMe */}
       <CreateListing path="/listing/new" />
@@ -37,9 +40,13 @@ export default () => (
       <Help path="/help" />
       {/* $FlowFixMe */}
       <FindBook path="/listing/findbook/:term/:pageId" />
+      {/* $FlowFixMe */}
       <ListingDetails path="listing/:id" />
+      {/* $FlowFixMe */}
       <ConfirmEmail path="confirm-email" />
+      {/* $FlowFixMe */}
       <Search path="/search/:term" />
+      {/* $FlowFixMe */}
       <Search path="/search/:term/:pageId" />
     </Layout>
   </Router>

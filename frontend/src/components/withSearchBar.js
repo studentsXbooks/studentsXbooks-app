@@ -4,7 +4,6 @@ import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
 import { navigate } from "@reach/router";
-// $FlowFixMe
 import styled from "styled-components";
 
 const SearchBox = styled.div`

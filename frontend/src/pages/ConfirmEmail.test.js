@@ -9,7 +9,7 @@ const backendURL = process.env.REACT_APP_BACKEND || "";
 afterEach(cleanup);
 
 test("Renders with required props", () => {
-  const { container } = render(<ConfirmEmail />);
+  const { container } = render(<ConfirmEmail term="" />);
   expect(container).toBeDefined();
 });
 
@@ -20,7 +20,7 @@ test("Calls api to confirm account when rendered, display loading during call, t
   navigate(`/confirm-account?id=${id}&code=${code}`);
   const { getByText } = render(
     <Router>
-      <ConfirmEmail path="*" />
+      <ConfirmEmail path="*" term="" />
     </Router>
   );
 
@@ -44,7 +44,7 @@ test("Calls api to confirm account when rendered, fetch return non 2XX, displays
   navigate(`/confirm-account?id=${id}&code=${code}`);
   const { getByText } = render(
     <Router>
-      <ConfirmEmail path="*" />
+      <ConfirmEmail path="*" term="" />
     </Router>
   );
 
