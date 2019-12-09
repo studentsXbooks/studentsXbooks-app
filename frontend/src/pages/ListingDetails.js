@@ -13,6 +13,9 @@ import withSearchBar from "../components/withSearchBar";
 import useToggle from "../hooks/useToggle";
 import FallbackImage from "../components/ImageWithFallback";
 
+// $FlowFixMe
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core";
+
 const OptionBox = styled.div`
   border: 3px solid #ccc;
   border-radius: 5px;
@@ -30,6 +33,14 @@ const ImageBox = styled.div`
 type Props = {
   id: string
 };
+
+const MaoButton = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#33578c"
+    }
+  }
+});
 
 const ListingDetails = ({ id }: Props) => {
   const { data: listing } = useApi(`listings/${id}`);
@@ -65,7 +76,11 @@ const ListingDetails = ({ id }: Props) => {
               <OptionBox>
                 <Grid container spacing={3} justify="space-between">
                   <Grid item>
-                    <Typography variant="h4" style={{ gridArea: "condition" }}>
+                    <Typography
+                      variant="h4"
+                      spacing={5}
+                      style={{ gridArea: "condition" }}
+                    >
                       {listing.condition}
                     </Typography>
                   </Grid>
@@ -86,17 +101,18 @@ const ListingDetails = ({ id }: Props) => {
                       gutterBottom
                       style={{ gridArea: "message" }}
                     >
-                      Message the seller now to make an offer or trade them a
-                      book.
+                      <br></br>
                     </Typography>
-                    <Button
-                      onClick={() => open()}
-                      color="primary"
-                      variant="contained"
-                      fullWidth
-                    >
-                      Contact Seller
-                    </Button>
+                    <MuiThemeProvider theme={MaoButton}>
+                      <Button
+                        onClick={() => open()}
+                        color="primary"
+                        variant="contained"
+                        fullWidth
+                      >
+                        Make an offer
+                      </Button>
+                    </MuiThemeProvider>
                   </>
                 )}
               </OptionBox>

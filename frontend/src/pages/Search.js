@@ -7,12 +7,19 @@ import SiteMargin from "../ui/SiteMargin";
 import Paging from "../components/Paging";
 import withSearchBar from "../components/withSearchBar";
 
+// $FlowFixMe
+import styled from "styled-components";
+
 type Props = {
   pageId: string,
   term: string,
   navigate: string => any,
   location: { search: string }
 };
+
+const NoResults = styled.h2`
+  text-align: center;
+`;
 
 const Search = ({ pageId = "1", term, navigate, location }: Props) => {
   const [page, setPage] = useState();
@@ -39,28 +46,35 @@ const Search = ({ pageId = "1", term, navigate, location }: Props) => {
             {...{ navigate, location }}
           />
         </Grid>
-        <Grid item xs={12} sm={9}>
-          <Paging
-            basePath={`/search/${term}`}
-            currentPage={page ? page.currentPage : "1"}
-            totalPages={page ? page.totalPages : "1"}
-          />
-          <Grid container spacing={3}>
-            {page &&
-              page.data &&
-              page.data.map(listing => (
-                <ListingCard listing={listing} key={listing.id} />
-              ))}
+        {page && page.data && (
+          <Grid item xs={12} sm={9}>
+            {page.data.length > 0 ? (
+              <>
+                <Paging
+                  basePath={`/search/${term}`}
+                  currentPage={page ? page.currentPage : "1"}
+                  totalPages={page ? page.totalPages : "1"}
+                />
+                <Grid container spacing={3}>
+                  {page.data.map(listing => (
+                    <ListingCard listing={listing} key={listing.id} />
+                  ))}
+                </Grid>
+                <Paging
+                  basePath={`/search/${term}`}
+                  currentPage={page ? page.currentPage : "1"}
+                  totalPages={page ? page.totalPages : "1"}
+                />
+              </>
+            ) : (
+              <div>
+                <NoResults>No Results Found</NoResults>
+              </div>
+            )}
           </Grid>
-          <Paging
-            basePath={`/search/${term}`}
-            currentPage={page ? page.currentPage : "1"}
-            totalPages={page ? page.totalPages : "1"}
-          />
-        </Grid>
+        )}
       </Grid>
     </SiteMargin>
   );
 };
-
 export default withSearchBar(Search);
