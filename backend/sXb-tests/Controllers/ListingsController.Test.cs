@@ -26,13 +26,12 @@ namespace sXb_tests.Controllers
         {
             listingRepo = new Mock<IListingRepo>();
             var bookRepo = new Mock<IBookRepo>();
-            var authorRepo = new Mock<IAuthorRepo>();
-            var bookAuthorRepo = new Mock<IBookAuthorRepo>();
+            var bookApi = new Mock<IBookApi>();
             var userManager = MockIdentity.UserManagerMock();
             var mapper = new Mock<IMapper>();
             emailSender = new Mock<IEmailSender>();
 
-            listingsAPI = new ListingsController(listingRepo.Object, bookRepo.Object, authorRepo.Object, bookAuthorRepo.Object, userManager.Object, mapper.Object, emailSender.Object);
+            listingsAPI = new ListingsController(listingRepo.Object, bookRepo.Object, userManager.Object, bookApi.Object, mapper.Object, emailSender.Object);
         }
 
         [Fact]

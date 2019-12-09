@@ -26,7 +26,8 @@ const LogoArea = styled.div`
 
 const SearchForm = styled.form`
   border: 2px solid #3f51b5;
-  border-radius: 8px;
+  border-radius: 25px;
+  border-color: #707070;
   height: 50px;
   display: grid;
   grid-template-columns: 1fr auto;
@@ -35,6 +36,8 @@ const SearchForm = styled.form`
   & > button {
     align-self: stretch;
     width: 150px;
+    background-color: #32a8b3;
+    border-radius: 25px;
   }
   & > div {
     padding-left: 1rem;
@@ -48,7 +51,7 @@ function withSearchBar<C: ComponentType<any>>(WrapComponent: C) {
       <>
         <SearchBox>
           <LogoArea>
-            <img src="https://via.placeholder.com/250x100" alt="logo" />
+            <img src="./Mock_Logo.png" alt="logo" />
           </LogoArea>
           <SearchArea>
             <SearchForm

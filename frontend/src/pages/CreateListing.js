@@ -2,7 +2,6 @@ import React from "react";
 import { Field, Formik, Form } from "formik";
 import { Typography, Button } from "@material-ui/core";
 import * as Yup from "yup";
-// $FlowFixMe
 import styled from "styled-components";
 import useApi from "../hooks/useApi";
 import SiteMargin from "../ui/SiteMargin";
@@ -10,24 +9,45 @@ import RadioButton from "../ui/RadioButton";
 import { apiFetch } from "../utils/fetchLight";
 import Input from "../ui/Input";
 import Stack from "../ui/Stack";
+import { isISBN10, isISBN13 } from "../utils/isbnValidator";
+
+const getQueryParams = url => {
+  const queries = new URLSearchParams(url);
+  const params = {};
+  queries.forEach((value, name) => {
+    params[name] = value;
+  });
+  return params;
+};
+
+const callIfTruthyElseReturnDefault = func => defaultVal => value => {
+  if (value) return func(value);
+  return defaultVal;
+};
 
 const listingSchema = Yup.object().shape({
   title: Yup.string()
     .min(1)
     .required(),
   isbn10: Yup.string()
-    .length(10)
+    .min(1)
+    .test(
+      "is-isbn10",
+      "The value entered is not a valid ISBN10",
+      callIfTruthyElseReturnDefault(isISBN10)(true)
+    )
     .required(),
+  isbn13: Yup.string()
+    .min(1)
+    .test(
+      "is-isbn13",
+      "The value entered is not a valid ISBN13",
+      callIfTruthyElseReturnDefault(isISBN13)(true)
+    ),
   description: Yup.string()
     .min(1)
     .required(),
-  firstName: Yup.string()
-    .min(1)
-    .required(),
-  middleName: Yup.string()
-    .min(1)
-    .required(),
-  lastName: Yup.string()
+  authors: Yup.string()
     .min(1)
     .required(),
   price: Yup.number()
@@ -55,7 +75,7 @@ const ConditionRadios = () => {
   const { data: conditions } = useApi("conditions");
   return (
     <fieldset>
-      <legend>condition</legend>
+      <legend>Condition</legend>
       {conditions &&
         conditions.map(({ value, name }) => (
           <Field
@@ -103,22 +123,34 @@ const MethodOfContactRadios = () => {
 };
 
 type Props = {
-  navigate: string => any
+  navigate: string => any,
+  location: { search: string }
 };
 
 const CreateListing = ({ navigate }: Props) => {
+  const {
+    title,
+    isbn10,
+    isbn13,
+    authors,
+    description,
+    smallThumbnail,
+    thumbnail
+  } = getQueryParams(window.location.search);
+
   return (
     <SiteMargin>
       <Formik
         validationSchema={listingSchema}
         initialValues={{
-          title: "",
-          description: "",
-          isbn10: "",
+          title: title || "",
+          description: description || "",
+          isbn10: isbn10 || "",
+          isbn13: isbn13 || "",
           price: "",
-          firstName: "",
-          middleName: "",
-          lastName: ""
+          authors: authors || "",
+          smallThumbnail: smallThumbnail || "",
+          thumbnail: thumbnail || ""
         }}
         onSubmit={(formValues, formikBag) => {
           apiFetch("listings", "POST", formValues)
@@ -150,6 +182,7 @@ const CreateListing = ({ navigate }: Props) => {
                   label="Title"
                   variant="outlined"
                   fullWidth
+                  disabled={title}
                 />
                 <Field
                   id="isbn10"
@@ -158,6 +191,17 @@ const CreateListing = ({ navigate }: Props) => {
                   component={Input}
                   variant="outlined"
                   placeholder="ISBN 10"
+                  fullWidth
+                  disabled={isbn10}
+                />
+                <Field
+                  id="isbn13"
+                  name="isbn13"
+                  label="ISBN 13"
+                  component={Input}
+                  variant="outlined"
+                  placeholder="ISBN 13"
+                  disabled={isbn13}
                   fullWidth
                 />
                 <Field
@@ -169,40 +213,26 @@ const CreateListing = ({ navigate }: Props) => {
                   placeholder="Description"
                   fullWidth
                   multiline
+                  disabled={description}
                   rows="5"
                 />
-                <Typography variant="h5" gutterBottom>
-                  Author
-                </Typography>
                 <Field
-                  id="firstName"
-                  name="firstName"
-                  label="First Name"
+                  id="authors"
+                  name="authors"
+                  label="Authors "
                   component={Input}
                   variant="outlined"
-                  placeholder="First Name"
+                  placeholder="Author(s)"
+                  disabled={authors}
                   fullWidth
                 />
-                <Field
-                  id="middleName"
-                  name="middleName"
-                  label="Middle Name"
-                  component={Input}
-                  variant="outlined"
-                  placeholder="Middle Name"
-                  fullWidth
-                />
-                <Field
-                  id="lastName"
-                  name="lastName"
-                  component={Input}
-                  label="Last Name"
-                  variant="outlined"
-                  placeholder="Last Name"
-                  fullWidth
-                />
+
                 <Typography variant="h5" gutterBottom>
                   About Your Book
+                </Typography>
+                <hr />
+                <Typography variant="h6" gutterBottom>
+                  Please note that the price must be in US dollars.
                 </Typography>
                 <Field
                   id="price"
