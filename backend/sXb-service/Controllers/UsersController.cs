@@ -33,6 +33,7 @@ namespace sXb_service.Controllers
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             IEmailSender emailSender, IConfiguration configuration, IMapper iMapper)
+
         {
             Repo = repo;
             _userManager = userManager;
@@ -61,6 +62,7 @@ namespace sXb_service.Controllers
             return Json(item);
         }
 
+
         [HttpGet("info")]
         public async Task<IActionResult> GetUserInfo()
         {
@@ -69,6 +71,7 @@ namespace sXb_service.Controllers
             {
                 return BadRequest(new ErrorMessage("No cookie found for user."));
             }
+
             var userInfo = _iMapper.Map<UserInfoViewModel>(user);
             return Ok(userInfo);
         }
@@ -100,10 +103,10 @@ namespace sXb_service.Controllers
             else
                 return BadRequest();
 
-            // Validate: .edu email address.
-            if (!Regex.Match(newUser.Email, ".+@.+[.]edu").Success)
+            if (!Regex.Match(newUser.Email, ".+@.+[.]\\w").Success)
             {
-                return BadRequest(new ErrorMessage("Invalid email address: Not an edu email address."));
+                return BadRequest(new ErrorMessage("Invalid email address."));
+
             }
             // Validate: email doesn't already exist.
             if (await Repo.EmailExists(newUser.Email))
@@ -174,6 +177,8 @@ namespace sXb_service.Controllers
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine(ex);
+
                     return NotFound();
                 }
 

@@ -46,19 +46,21 @@ namespace sXb_tests.Integration
                 response.Content.Headers.ContentType.ToString());
         }
 
-        [Fact]
-        public async Task Register_NonEduAddress_ShouldReturn400()
+        [Theory]
+        [InlineData("newuser@wvup.edu")]
+        [InlineData("newuser@gmail.com")]
+        [InlineData("newuser@email.org")]
+        [InlineData("newuser@email.email")]
+        public async Task Register_ValidEmailAddress_ShouldReturn201(string email)
         {
             string url = "/api/users/register";
             var client = _factory.CreateClient();
 
             var newUser = fixture.Create<RegisterViewModel>();
-            newUser.Email = "email@hotmail.com";
+            newUser.Email = email;
             var response = await client.PostAsJsonAsync<RegisterViewModel>(url, newUser);
 
-            var errorMessage = await response.Content.ReadAsAsync<ErrorMessage>();
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-            Assert.NotNull(errorMessage.Message);
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
 
         [Fact]
@@ -84,7 +86,6 @@ namespace sXb_tests.Integration
         [InlineData("Abcde")]
         public async Task Register_PasswordTooShort_ShouldReturn400(string password)
         {
-
             string url = "/api/users/register";
             var client = _factory.CreateClient();
 
@@ -175,8 +176,7 @@ namespace sXb_tests.Integration
             var errorMessage = await response.Content.ReadAsAsync<ValidationProblemDetails>();
             Assert.NotNull(errorMessage);
         }
-
-        // Failing
+        
         [Fact]
         public async Task EmailConfirm_InvalidToken_Return400WithNoCookie()
         {
