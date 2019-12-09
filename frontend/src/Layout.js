@@ -3,11 +3,12 @@ import type { Node } from "react";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
-import { Link } from "@reach/router";
+import { Link, navigate } from "@reach/router";
 import { Menu, MenuItem } from "@material-ui/core";
 import styled from "styled-components";
 import { isNil } from "ramda";
 import useUserInfo from "./hooks/useUserInfo";
+import { apiFetch } from "./utils/fetchLight";
 
 const CustomToolBar = styled(Toolbar)`
   & > h6 {
@@ -65,6 +66,11 @@ const UserNavOrDefault = () => {
   const { userInfo } = useUserInfo();
   const [anchorEl, setAnchorEl] = useState(null);
 
+  const handleLogout = () => {
+    apiFetch(`users/logout`, "POST", {}).then(() =>
+      window.location.replace(`/login`)
+    );
+  };
   const handleClick = e => setAnchorEl(e.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
@@ -88,7 +94,7 @@ const UserNavOrDefault = () => {
       <Typography
         variant="h6"
         onClick={handleClick}
-        style={{ marginLeft: "auto" }}
+        style={{ marginLeft: "auto", cursor: "pointer" }}
       >
         {userInfo.userName}
       </Typography>
@@ -107,6 +113,13 @@ const UserNavOrDefault = () => {
           <Link to="/listing/findbook"> New Listing</Link>
         </MenuItem>
       </Menu>
+      <Typography
+        variant="h6"
+        onClick={handleLogout}
+        style={{ marginLeft: "relative", cursor: "pointer" }}
+      >
+        Logout
+      </Typography>
     </>
   );
 };
