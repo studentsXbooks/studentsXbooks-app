@@ -29,7 +29,7 @@ const FindBook = ({ pageId = "1", term = "", navigate, location }: Props) => {
       <h2>Search for your book</h2>
       <h3>Enter ISBN, Title, or Author</h3>
       <Formik
-        initialValues={{ search: "" }}
+        initialValues={{ search: term || "" }}
         onSubmit={({ search }, { setSubmitting }) => {
           navigate(`/listing/findbook/${search}`);
           setSubmitting(false);

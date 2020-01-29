@@ -4,7 +4,6 @@ import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
 import { navigate } from "@reach/router";
-// $FlowFixMe
 import styled from "styled-components";
 
 const SearchBox = styled.div`
@@ -44,9 +43,13 @@ const SearchForm = styled.form`
   }
 `;
 
+type SearchBarProps = {
+  term: string
+};
+
 function withSearchBar<C: ComponentType<any>>(WrapComponent: C) {
-  return (props: {}) => {
-    const [search, setSearch] = useState("");
+  return ({ term, ...props }: SearchBarProps) => {
+    const [search, setSearch] = useState(term || "");
     return (
       <>
         <SearchBox>
@@ -65,6 +68,7 @@ function withSearchBar<C: ComponentType<any>>(WrapComponent: C) {
                 placeholder="Title, Author, ISBN..."
                 onChange={e => setSearch(e.target.value)}
                 inputProps={{ "aria-label": "search" }}
+                value={search}
               />
               <Button
                 type="submit"
@@ -77,7 +81,7 @@ function withSearchBar<C: ComponentType<any>>(WrapComponent: C) {
             </SearchForm>
           </SearchArea>
         </SearchBox>
-        <WrapComponent {...props} />
+        <WrapComponent term={term} {...props} />
       </>
     );
   };
